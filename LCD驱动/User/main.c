@@ -21,7 +21,10 @@
 #include <stdio.h>
 
 static void LCD_Test(void);	
+static void LCD_Test1(void);	
 static void Delay ( __IO uint32_t nCount );
+static void LCD_Rec(int x,int y);
+static void LCD_begin(void);
 void Printf_Charater(void)   ;
 
 
@@ -44,12 +47,118 @@ int main ( void )
  //不推荐使用其它模式显示文字	其它模式显示文字会有镜像效果			
  //其中 6 模式为大部分液晶例程的默认显示方向  
   ILI9341_GramScan ( 6 );
+
 	while ( 1 )
 	{
-		LCD_Test();
+		LCD_Test1();
 	}
 	
 	
+}
+
+
+void LCD_Rec(int x,int y)
+{
+  
+}
+
+void LCD_begin(void)
+{
+  static uint8_t testCNT = 0;	
+	char dispBuff[100];
+
+  testCNT++;
+  /* 设置字体与颜色 */
+  LCD_SetFont(&Font8x16);
+	LCD_SetColors(RED,BLACK);
+
+  ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	/* 清屏，显示全黑 */
+  ILI9341_DispStringLine_EN(LINE(0),"LCD Breakout Game");
+
+  LCD_SetFont(&Font16x24);
+	LCD_SetTextColor(GREEN);
+  /*使用c标准库把变量转化成字符串*/
+	sprintf(dispBuff,"Count : %d ",testCNT);
+  LCD_ClearLine(LINE(1));	/* 清除单行文字 */
+	
+	/*然后显示该字符串即可，其它变量也是这样处理*/
+	ILI9341_DispStringLine_EN(LINE(1),dispBuff);
+
+  
+	/*******显示图形示例******/
+	LCD_SetFont(&Font24x32);
+  /* 画直线 */
+  
+  LCD_ClearLine(LINE(2));/* 清除单行文字 */
+	LCD_SetTextColor(BLUE);
+
+  ILI9341_DispStringLine_EN(LINE(2),"Draw line:");
+  
+	LCD_SetTextColor(RED);
+  ILI9341_DrawLine(0,100,230,100);
+	LCD_SetTextColor(BLUE);
+	ILI9341_DrawLine(0,100,0,300);
+	LCD_SetTextColor(RED);
+  ILI9341_DrawLine(0,300,230,300);
+	LCD_SetTextColor(BLUE);
+  ILI9341_DrawLine(230,100,230,300);
+  LCD_SetTextColor(GREEN);
+  ILI9341_DrawRectangle(50,200,100,30,1);
+  LCD_SetTextColor(GREEN);
+  ILI9341_DrawRectangle(50,250,100,10,1);
+  Delay(0xFFFFFF);
+  ILI9341_Clear(0,16*8,LCD_X_LENGTH,LCD_Y_LENGTH-16*8);	/* 清屏，显示全黑 */
+
+}
+
+  /* 原文件中测试 */
+void LCD_Test1(void)
+{
+  static uint8_t testCNT = 0;	
+	char dispBuff[100];
+
+  testCNT++;
+  /* 设置字体与颜色 */
+  LCD_SetFont(&Font8x16);
+	LCD_SetColors(RED,BLACK);
+
+  ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	/* 清屏，显示全黑 */
+  ILI9341_DispStringLine_EN(LINE(0),"LCD Breakout Game");
+
+  LCD_SetFont(&Font16x24);
+	LCD_SetTextColor(GREEN);
+  /*使用c标准库把变量转化成字符串*/
+	sprintf(dispBuff,"Count : %d ",testCNT);
+  LCD_ClearLine(LINE(1));	/* 清除单行文字 */
+	
+	/*然后显示该字符串即可，其它变量也是这样处理*/
+	ILI9341_DispStringLine_EN(LINE(1),dispBuff);
+
+  
+	/*******显示图形示例******/
+	LCD_SetFont(&Font24x32);
+  /* 画直线 */
+  
+  LCD_ClearLine(LINE(2));/* 清除单行文字 */
+	LCD_SetTextColor(BLUE);
+
+  ILI9341_DispStringLine_EN(LINE(2),"Draw line:");
+  
+	LCD_SetTextColor(RED);
+  ILI9341_DrawLine(0,100,230,100);
+	LCD_SetTextColor(BLUE);
+	ILI9341_DrawLine(0,100,0,300);
+	LCD_SetTextColor(RED);
+  ILI9341_DrawLine(0,300,230,300);
+	LCD_SetTextColor(BLUE);
+  ILI9341_DrawLine(230,100,230,300);
+  LCD_SetTextColor(GREEN);
+  ILI9341_DrawRectangle(50,200,100,30,1);
+  LCD_SetTextColor(GREEN);
+  ILI9341_DrawRectangle(50,250,100,10,1);
+  Delay(0xFFFFFF);
+  ILI9341_Clear(0,16*8,LCD_X_LENGTH,LCD_Y_LENGTH-16*8);	/* 清屏，显示全黑 */
+
 }
 
 
