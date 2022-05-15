@@ -56,11 +56,20 @@ int main ( void )
 	
 }
 
-
+//显示函数，x 上限为230 y 上限为200
 void LCD_Rec(int x,int y)
 {
-  
+  static uint8_t testCNT = 0;	
+	char dispBuff[100];
+  LCD_SetTextColor(YELLOW);
+  ILI9341_DrawRectangle(x,y+100,20,20,1);
 }
+//清除函数
+void LCD_Del(int x,int y)
+{
+  ILI9341_Clear(x,y+100,20,20);
+}
+
 
 void LCD_begin(void)
 {
@@ -156,6 +165,9 @@ void LCD_Test1(void)
   ILI9341_DrawRectangle(50,200,100,30,1);
   LCD_SetTextColor(GREEN);
   ILI9341_DrawRectangle(50,250,100,10,1);
+  LCD_Rec(2,1);
+  Delay(0xFFFFFF);
+  LCD_Del(2,1);
   Delay(0xFFFFFF);
   ILI9341_Clear(0,16*8,LCD_X_LENGTH,LCD_Y_LENGTH-16*8);	/* 清屏，显示全黑 */
 
