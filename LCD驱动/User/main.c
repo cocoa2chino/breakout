@@ -20,6 +20,29 @@
 #include "./usart/bsp_usart.h" 
 #include <stdio.h>
 
+//状态数组,存储像素信息
+static int status[200][230] = {0};
+
+//墙宽
+#define WALL_WIDTH 5
+
+void GenWall();
+
+//砖块长宽
+#define BOLCK_LENGTH 10
+#define BLOCK_WIDTH 6
+
+//单个砖块信息
+typedef struct Block
+{
+  //扫描方向下起始点坐标
+  int pos_x;
+  int pos_y;
+}block;
+
+block *GenBlock(int pos_x, int pos_y);
+void DelBlock(block *blk);
+
 //小球信息
 typedef struct Ball
 {
@@ -311,6 +334,70 @@ static void Delay ( __IO uint32_t nCount )
 	
 }
 
+//生成左/右/上方墙壁
+void GenWall()
+{
+  //LCD显示
+  ILI9341_DrawRectangle(0, 0, WALL_WIDTH, 200, 1);
+  ILI9341_DrawRectangle(230 - WALL_WIDTH, 0, WALL_WIDTH, 200, 1);
+  ILI9341_DrawRectangle(WALL_WIDTH, 0, 230 - 2 * WALL_WIDTH, WALL_WIDTH, 1);
+  //更新状态数组
+  for (int i = 0; i < WALL_WIDTH; i++)
+  {
+    for (int j = 0; j < 230; j++)
+    {
+      status[i][j] = 1;
+    }
+  }
+  for (int m = WALL_WIDTH; m < 200; m++)
+  {
+    for (int n1 = 0; n1 < WALL_WIDTH; n1++)
+    {
+      status[m][n1] = 1;
+    }
+    for (int n2 = 230 - WALL_WIDTH; n2 < 230; n2++)
+    {
+      status[m][n2] = 1;
+    }
+  }
+}
+
+//生成单个砖块函数
+block *GenBlock(int pos_x, int pos_y)
+{
+  block *blk =	(block*)malloc(sizeof(struct Block));
+  blk->pos_x = pos_x;
+  blk->pos_y = pos_y;
+
+  //LCD显示
+  ILI9341_DrawRectangle(blk->pos_x, blk->pos_y, BOLCK_LENGTH, BLOCK_WIDTH, 1);
+  //更新状态数组
+  for (int i = blk->pos_y; i < blk->pos_y + BLOCK_WIDTH; i++)
+  {
+    for (int j = blk->pos_x; j < blk->pos_x + BOLCK_LENGTH; j++)
+    {
+      status[i][j] = 1;
+    }
+  }
+  
+  return blk;
+}
+
+//消除单个砖块函数
+void DelBlock(block *blk)
+{
+  //LCD清屏
+  ILI9341_Clear(blk->pos_x, blk->pos_y, BOLCK_LENGTH, BLOCK_WIDTH);
+  //更新状态数组
+  for (int i = blk->pos_y; i < blk->pos_y + BLOCK_WIDTH; i++)
+  {
+    for (int j = blk->pos_x; j < blk->pos_x + BOLCK_LENGTH; j++)
+    {
+      status[i][j] = 0;
+    }
+  }
+}
+
 //球初始化函数,从x轴中间生成
 ball *BallInit()
 {
@@ -344,13 +431,7 @@ void BallMove(ball *bal)
     case 0:
       if(/*碰到右边障碍*/)
       {
-        if(/*碰到墙壁*/)
-        {
-          bal->direct = 2;
-          //再调用一次,保证一个时刻内球会移动
-          BallMove(bal);
-        }
-        else if(/*碰到砖块*/)
+        if(/*碰到砖块*/)
         {
           bal->direct = 2;
 
@@ -359,6 +440,12 @@ void BallMove(ball *bal)
             消除该砖块
           */
 
+          BallMove(bal);
+        }
+        else if(bal->pos_x + bal->radius >= 240 - WALL_WIDTH)
+        {
+          bal->direct = 2;
+          //再调用一次,保证一个时刻内球会移动
           BallMove(bal);
         }
       }
