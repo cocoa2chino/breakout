@@ -20,6 +20,29 @@
 #include "./usart/bsp_usart.h" 
 #include <stdio.h>
 
+//小球信息
+typedef struct Ball
+{
+  //圆心坐标和半径
+  int pos_x;
+  int pos_y;
+  int radius;
+  /*
+    运动方向(45°)
+    0:右上
+    1:右下
+    2:左上
+    3:左下
+  */
+  int direct;
+  //运动速度,下一时刻位置(pos_x +/- speed, pos_y +/- speed)
+  int speed;
+}ball;
+
+ball *BallInit();
+void BallRestart(ball *bal, int pos_x);
+void BallMove(ball *bal);
+
 static void LCD_Test(void);	
 static void LCD_Test1(void);	
 static void Delay ( __IO uint32_t nCount );
@@ -286,6 +309,242 @@ static void Delay ( __IO uint32_t nCount )
 {
   for ( ; nCount != 0; nCount -- );
 	
+}
+
+//球初始化函数,从x轴中间生成
+ball *BallInit()
+{
+  ball *bal =	(ball*)malloc(sizeof(struct Ball));
+
+  bal->pos_x = 120;
+  bal->pos_y = 200;
+  bal->radius = 3;
+  bal->direct = 0;
+  bal->speed = 1;
+
+  return bal;
+}
+
+//球初始化函数,从板子中间生成
+void BallRestart(ball *bal, int pos_x)
+{
+  bal->pos_x = pos_x;
+  bal->pos_y = 200;
+  bal->radius = 3;
+  bal->direct = 0;
+  bal->speed = 1;
+}
+
+//球移动函数(下一时刻)
+void BallMove(ball *bal)
+{
+  switch(bal->direct)
+  {
+    //当前朝右上
+    case 0:
+      if(/*碰到右边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 2;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 2;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到上边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 1;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 1;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else
+      {
+        bal->pos_x = bal->pos_x + bal->speed;
+        bal->pos_y = bal->pos_y - bal->speed;
+      }
+      break;
+    //当前朝右下
+    case 1:
+      if(/*碰到右边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 3;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 3;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到下边障碍*/)
+      {
+        if(/*碰到墙壁(板子)*/)
+        {
+          bal->direct = 0;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 0;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到下边界*/)
+      {
+        /*
+          游戏结束 or 重新开始
+        */
+      }
+      else
+      {
+        bal->pos_x = bal->pos_x + bal->speed;
+        bal->pos_y = bal->pos_y + bal->speed;
+      }
+      break;
+    //当前朝左上
+    case 2:
+      if(/*碰到左边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 0;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 0;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到上边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 3;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 3;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else
+      {
+        bal->pos_x = bal->pos_x - bal->speed;
+        bal->pos_y = bal->pos_y - bal->speed;
+      }
+      break;
+    //当前朝左下
+    case 3:
+      if(/*碰到左边障碍*/)
+      {
+        if(/*碰到墙壁*/)
+        {
+          bal->direct = 1;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 1;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到下边障碍*/)
+      {
+        if(/*碰到墙壁(板子)*/)
+        {
+          bal->direct = 2;
+          //再调用一次,保证一个时刻内球会移动
+          BallMove(bal);
+        }
+        else if(/*碰到砖块*/)
+        {
+          bal->direct = 2;
+
+          /*
+            分数增加
+            消除该砖块
+          */
+
+          BallMove(bal);
+        }
+      }
+      else if(/*碰到下边界*/)
+      {
+        /*
+          游戏结束 or 重新开始
+        */
+      }
+      else
+      {
+        bal->pos_x = bal->pos_x - bal->speed;
+        bal->pos_y = bal->pos_y + bal->speed;
+      }
+      break;
+  }
 }
 
 /* ------------------------------------------end of file---------------------------------------- */
