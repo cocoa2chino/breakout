@@ -20,52 +20,6 @@
 #include "./usart/bsp_usart.h" 
 #include <stdio.h>
 
-//状态数组,存储像素信息
-static int status[200][230] = {0};
-
-//墙宽
-#define WALL_WIDTH 5
-
-void GenWall();
-
-//砖块长宽
-#define BOLCK_LENGTH 10
-#define BLOCK_WIDTH 6
-
-//单个砖块信息
-typedef struct Block
-{
-  //扫描方向下起始点坐标
-  int pos_x;
-  int pos_y;
-}block;
-
-block *GenBlock(int pos_x, int pos_y);
-void DelBlock(block *blk);
-
-//小球信息
-typedef struct Ball
-{
-  //圆心坐标和半径
-  int pos_x;
-  int pos_y;
-  int radius;
-  /*
-    运动方向(45°)
-    0:右上
-    1:右下
-    2:左上
-    3:左下
-  */
-  int direct;
-  //运动速度,下一时刻位置(pos_x +/- speed, pos_y +/- speed)
-  int speed;
-}ball;
-
-ball *BallInit();
-void BallRestart(ball *bal, int pos_x);
-void BallMove(ball *bal);
-
 static void LCD_Test(void);	
 static void LCD_Test1(void);	
 static void Delay ( __IO uint32_t nCount );
@@ -334,34 +288,6 @@ static void Delay ( __IO uint32_t nCount )
 	
 }
 
-//生成左/右/上方墙壁
-void GenWall()
-{
-  //LCD显示
-  ILI9341_DrawRectangle(0, 0, WALL_WIDTH, 200, 1);
-  ILI9341_DrawRectangle(230 - WALL_WIDTH, 0, WALL_WIDTH, 200, 1);
-  ILI9341_DrawRectangle(WALL_WIDTH, 0, 230 - 2 * WALL_WIDTH, WALL_WIDTH, 1);
-  //更新状态数组
-  for (int i = 0; i < WALL_WIDTH; i++)
-  {
-    for (int j = 0; j < 230; j++)
-    {
-      status[i][j] = 1;
-    }
-  }
-  for (int m = WALL_WIDTH; m < 200; m++)
-  {
-    for (int n1 = 0; n1 < WALL_WIDTH; n1++)
-    {
-      status[m][n1] = 1;
-    }
-    for (int n2 = 230 - WALL_WIDTH; n2 < 230; n2++)
-    {
-      status[m][n2] = 1;
-    }
-  }
-}
-
 //生成单个砖块函数
 block *GenBlock(int pos_x, int pos_y)
 {
@@ -396,30 +322,6 @@ void DelBlock(block *blk)
       status[i][j] = 0;
     }
   }
-}
-
-//球初始化函数,从x轴中间生成
-ball *BallInit()
-{
-  ball *bal =	(ball*)malloc(sizeof(struct Ball));
-
-  bal->pos_x = 120;
-  bal->pos_y = 200;
-  bal->radius = 3;
-  bal->direct = 0;
-  bal->speed = 1;
-
-  return bal;
-}
-
-//球初始化函数,从板子中间生成
-void BallRestart(ball *bal, int pos_x)
-{
-  bal->pos_x = pos_x;
-  bal->pos_y = 200;
-  bal->radius = 3;
-  bal->direct = 0;
-  bal->speed = 1;
 }
 
 //球移动函数(下一时刻)
