@@ -288,42 +288,6 @@ static void Delay ( __IO uint32_t nCount )
 	
 }
 
-//生成单个砖块函数
-block *GenBlock(int pos_x, int pos_y)
-{
-  block *blk =	(block*)malloc(sizeof(struct Block));
-  blk->pos_x = pos_x;
-  blk->pos_y = pos_y;
-
-  //LCD显示
-  ILI9341_DrawRectangle(blk->pos_x, blk->pos_y, BOLCK_LENGTH, BLOCK_WIDTH, 1);
-  //更新状态数组
-  for (int i = blk->pos_y; i < blk->pos_y + BLOCK_WIDTH; i++)
-  {
-    for (int j = blk->pos_x; j < blk->pos_x + BOLCK_LENGTH; j++)
-    {
-      status[i][j] = 1;
-    }
-  }
-  
-  return blk;
-}
-
-//消除单个砖块函数
-void DelBlock(block *blk)
-{
-  //LCD清屏
-  ILI9341_Clear(blk->pos_x, blk->pos_y, BOLCK_LENGTH, BLOCK_WIDTH);
-  //更新状态数组
-  for (int i = blk->pos_y; i < blk->pos_y + BLOCK_WIDTH; i++)
-  {
-    for (int j = blk->pos_x; j < blk->pos_x + BOLCK_LENGTH; j++)
-    {
-      status[i][j] = 0;
-    }
-  }
-}
-
 //球移动函数(下一时刻)
 void BallMove(ball *bal)
 {

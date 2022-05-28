@@ -51,17 +51,17 @@
 #define WALL_WIDTH    5       //墙厚度
 #define BOARD_LENGTH  40      //挡板长度
 #define BOARD_WIDTH   3       //挡板厚度
-#define BOLCK_LENGTH  10      //砖块长度
+#define BLOCK_LENGTH  10      //砖块长度
 #define BLOCK_WIDTH   6       //砖块宽度
 
 enum
 {
-  CL_WHITE    = RGB(255,255,255),	/* 白色 */
-	CL_BLACK    = RGB(  0,  0,  0),	/* 黑色 */
-	CL_RED      = RGB(255,	0,  0),	/* 红色 */
-	CL_GREEN    = RGB(  0,255,  0),	/* 绿色 */
-	CL_BLUE     = RGB(  0,	0,255),	/* 蓝色 */
-	CL_YELLOW   = RGB(255,255,  0),	/* 黄色 */
+  CL_WHITE    = RGB(255, 255, 255),	/* 白色 */
+	CL_BLACK    = RGB(  0,   0,   0),	/* 黑色 */
+	CL_RED      = RGB(255,	 0,   0),	/* 红色 */
+	CL_GREEN    = RGB(  0, 255,   0),	/* 绿色 */
+	CL_BLUE     = RGB(  0, 	 0, 255),	/* 蓝色 */
+	CL_YELLOW   = RGB(255, 255,   0),	/* 黄色 */
 
 	CL_GREY     = RGB( 98,  98,  98), 	/* 深灰色 */
 	CL_GREY1		= RGB(150, 150, 150), 	/* 浅灰色 */
@@ -118,6 +118,10 @@ typedef struct Block
 {
   uint16_t pos_x;    //扫描方向下起始点x坐标
   uint16_t pos_y;    //扫描方向下起始点y坐标
+
+  //双链表形式
+  struct Block *prev;
+  struct Block *next;
 }block;
 
 //挡板信息
@@ -156,8 +160,10 @@ void Touch_Button_Up(uint16_t x,uint16_t y);
 
 void GenWall();
 
-block *GenBlock(uint16_t pos_x, uint16_t pos_y);
-void DelBlock(block *blk);
+void GenBlock(block *blk, uint16_t row);
+void DrawBlock(block *blk);
+void DelBlock(block *blki);
+void UpdateDelBlock(block *blki);
 
 void BoardInit(board *brd);
 void BoardMove(board *brd);

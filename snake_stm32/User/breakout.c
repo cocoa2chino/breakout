@@ -15,6 +15,8 @@ uint8_t die = 0;    //die == 0说明活着
 uint8_t MODE = 1;   //MODE == 1说明游戏正在进行
 
 static uint16_t pixel[DISPLAY_Y_MAX][DISPLAY_X_MAX] = {0};   //状态数组,存储像素信息
+block *blk;                                             //砖块链表头指针
+uint16_t blk_row;                                       //生成砖块行数
 board *brd;                                             //挡板指针
 ball *bal;                                              //小球指针
 
@@ -345,6 +347,116 @@ void GenWall()
 }
 
 /**
+* @brief  GenBlock 初始化砖块
+* @param  blk 砖块链表指针引用
+* @param  row 生成砖块行数
+* @retval --
+*/
+void GenBlock(block *blk, uint16_t row)
+{
+    block *tmp;
+
+    //初始化第一个砖块
+    blk = (block*)malloc(sizeof(struct Block));
+    blk->pos_x = WALL_WIDTH;
+    blk->pos_y = WALL_WIDTH;
+    blk->prev = NULL;
+    blk->next = NULL;
+
+    //根据要生成的砖块行数和砖块长度,初始化后续砖块
+    tmp = blk;
+    for(uint16_t i = 0; i < row; i++)
+    {
+        for(uint16_t j = 0; WALL_WIDTH + BLOCK_LENGTH * j < DISPLAY_X_MAX - WALL_WIDTH; j++)
+        {
+            if(i == 0 && j == 0)
+                continue;
+            tmp->next = (block*)malloc(sizeof(struct Block));
+            tmp->next->prev = tmp;
+            tmp = tmp->next;
+            tmp->pos_x = WALL_WIDTH + BLOCK_LENGTH * j;
+            tmp->pos_y = WALL_WIDTH + BLOCK_WIDTH * i;
+            tmp->next = NULL;
+        }
+    }
+}
+
+/**
+* @brief  DrawBlock 砖块绘制
+* @param  blk 砖块链表头指针引用
+* @retval --
+*/
+void DrawBlock(block *blk)
+{
+    block *tmp = blk;
+    while(tmp->next != NULL)    /*遍历链表*/
+    {
+        //LCD显示
+        ILI9341_DrawRectangle(tmp->pos_x, tmp->pos_y, BLOCK_LENGTH - 1, BLOCK_WIDTH - 1, 1);
+        //更新状态数组
+        for(uint16_t i = tmp->pos_y; i < tmp->pos_y + BLOCK_WIDTH; i++)
+        {
+            for(uint16_t j = tmp->pos_x; j < tmp->pos_x + BLOCK_LENGTH; j++)
+            {
+                pixel[i][j] = 1;
+            }
+        }
+        tmp = tmp->next;
+    }
+}
+
+/**
+* @brief  DelBlock 砖块消除
+* @param  blki 砖块指针引用
+* @retval --
+*/
+void DelBlock(block *blki)
+{
+    if(blki->prev == NULL)              /*删除的是链表第一个*/
+    {
+        if(blki->next == NULL)          /*只有一个砖块,将头指针置为空*/
+        {
+            UpdateDelBlock(blk);
+            free(blk);
+            blk = NULL;
+            return;
+        }
+        else                            /*把头指针设为第二个砖块*/
+        {
+            blk = blk->next;
+            blk->prev = NULL;
+        }
+    }
+    else if(blki->next == NULL)         /*删除的是链表最后一个*/
+    {
+        blki->prev->next = NULL;
+    }
+    else
+    {
+        blki->prev->next = blki->next;
+        blki->next->prev = blki->prev;
+    }
+    UpdateDelBlock(blki);
+    free(blki);
+}
+
+/**
+* @brief  UpdateDelBlock 砖块消除中封装的更新状态数组函数
+* @param  blki 砖块指针引用
+* @retval --
+*/
+void UpdateDelBlock(block *blki)
+{
+    for(uint16_t i = blki->pos_y; i < blki->pos_y + BLOCK_WIDTH; i++)
+    {
+        for(uint16_t j = blki->pos_x; j < blki->pos_x + BLOCK_LENGTH; j++)
+        {
+            pixel[i][j] = 0;
+        }
+    }
+}
+
+/**
 * @brief  BoardInit 初始化挡板
 * @param  brd 挡板指针引用
 * @retval --
@@ -431,6 +543,16 @@ void BallRestart(ball *bal, uint16_t pos_x)
     bal->pos_y = DISPLAY_Y_MAX - BOARD_WIDTH - bal->radius;
     bal->direct = 0;
     bal->speed = 5;
+}
+
+/**
+* @brief  BallMove 小球移动过程函数
+* @param  bal 小球指针引用
+* @retval --
+*/
+void BallMove(ball *bal)
+{
+
 }
 
 /* ------------------------------------------end of file---------------------------------------- */
