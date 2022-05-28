@@ -14,9 +14,9 @@ uint8_t score;
 uint8_t die = 0;    //die == 0说明活着
 uint8_t MODE = 1;   //MODE == 1说明游戏正在进行
 
-static uint16_t pixel[DISPLAY_Y_MAX][DISPLAY_X_MAX] = {0};   //状态数组,存储像素信息
+static uint16_t pixel[DISPLAY_Y_MAX][DISPLAY_X_MAX];    //状态数组,存储像素信息
 block *blk;                                             //砖块链表头指针
-uint16_t blk_row;                                       //生成砖块行数
+uint16_t blk_row = 2;                                   //生成砖块行数
 board *brd;                                             //挡板指针
 ball *bal;                                              //小球指针
 
@@ -44,6 +44,13 @@ void Palette_Init(uint8_t LCD_Mode)
 	ILI9341_GramScan(LCD_Mode);
 	score = 0;
 	status = 'S';
+    for(uint16_t j = 0; j < DISPLAY_Y_MAX; j++)
+    {
+        for(uint16_t k = 0; k < DISPLAY_X_MAX; k++)
+        {
+            pixel[j][k] = 0;
+        }
+    }
 	
     /* 整屏清为白色 */
 	LCD_SetBackColor(CL_WHITE);
@@ -59,7 +66,14 @@ void Palette_Init(uint8_t LCD_Mode)
         button[i].draw_btn(&button[i]);
     }
 
+    /* 游戏内画面初始化和绘制 */
     GenWall();
+    GenBlock(blk, blk_row);
+    DrawBlock(blk);
+    BoardInit(brd);
+    BoardDraw(brd);
+    BallInit(bal);
+    BallDraw(bal);
 }
 
 /**
@@ -392,7 +406,7 @@ void DrawBlock(block *blk)
     while(tmp->next != NULL)    /*遍历链表*/
     {
         //LCD显示
-        ILI9341_DrawRectangle(tmp->pos_x, tmp->pos_y, BLOCK_LENGTH - 1, BLOCK_WIDTH - 1, 1);
+        ILI9341_DrawRectangle(tmp->pos_x, tmp->pos_y, BLOCK_LENGTH - 2, BLOCK_WIDTH - 2, 1);
         //更新状态数组
         for(uint16_t i = tmp->pos_y; i < tmp->pos_y + BLOCK_WIDTH; i++)
         {
@@ -400,6 +414,27 @@ void DrawBlock(block *blk)
             {
                 pixel[i][j] = 1;
             }
+        }
+        tmp = tmp->next;
+    }
+}
+
+/**
+* @brief  FindBlock 根据x,y坐标找到对应砖块并消除
+* @param  blk 砖块链表头指针引用
+* @param  pos_x x坐标
+* @param  pos_y y坐标
+* @retval
+*/
+void FindBlock(block *blk, uint16_t pos_x, uint16_t pos_y)
+{
+    block *tmp = blk;
+    while(tmp->next != NULL)    /*遍历链表*/
+    {
+        if(tmp->pos_x <= pos_x && tmp->pos_x + BLOCK_LENGTH >= pos_x && tmp->pos_y <= pos_y && tmp->pos_y + BLOCK_WIDTH >= pos_y)
+        {
+            DelBlock(tmp);
+            return;
         }
         tmp = tmp->next;
     }
@@ -552,7 +587,187 @@ void BallRestart(ball *bal, uint16_t pos_x)
 */
 void BallMove(ball *bal)
 {
+    if(!MODE)   return;     /*游戏暂停,小球位置不变化*/
 
+    uint16_t x = bal->pos_x;
+    uint16_t y = bal->pos_y;
+    uint16_t r = bal->radius;
+    switch(bal->direct)
+    {
+    //当前朝右上
+    case 0:
+        if(x + r >= DISPLAY_X_MAX - WALL_WIDTH)     /*碰到右边墙壁*/
+        {
+            bal->direct = 2;
+            //再调用一次,保证一个时刻内球会移动
+            BallMove(bal);
+        }
+        else if(y - r <= WALL_WIDTH)                /*碰到上面墙壁*/
+        {
+            bal->direct = 1;
+            BallMove(bal);
+        }
+        else if(pixel[y][x + r])                    /*碰到右边砖块*/
+        {
+            bal->direct = 2;
+            FindBlock(blk, x + r, y);
+            score++;
+            BallMove(bal);
+        }
+        else if(pixel[y - r][x])                    /*碰到上面砖块*/
+        {
+            bal->direct = 1;
+            FindBlock(blk, x, y - r);
+            score++;
+            BallMove(bal);
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x + bal->speed;
+            bal->pos_y = bal->pos_y - bal->speed;
+        }
+        break;
+    //当前朝右下
+    case 1:
+        if(x + r >= DISPLAY_X_MAX - WALL_WIDTH)                 /*碰到右边墙壁*/
+        {
+            bal->direct = 3;
+            BallMove(bal);
+        }
+        else if(y + r >= DISPLAY_Y_MAX - BOARD_WIDTH)           /*碰到下面挡板*/
+        {
+            if(pixel[y + r][x])
+            {
+                bal->direct = 0;
+                BallMove(bal);
+            }
+            else
+            {
+                /*本次失败,相关处理*/
+            }
+        }
+        else if(pixel[y][x + r])                                /*碰到右边砖块*/
+        {
+            bal->direct = 3;
+            FindBlock(blk, x + r, y);
+            score++;
+            BallMove(bal);
+        }
+        else if(pixel[y + r][x])                                /*碰到下面砖块*/
+        {
+            bal->direct = 0;
+            FindBlock(blk, x, y + r);
+            score++;
+            BallMove(bal);
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x + bal->speed;
+            bal->pos_y = bal->pos_y + bal->speed;
+        }
+        break;
+    //当前朝左上
+    case 2:
+        if(x - r <= WALL_WIDTH)                     /*碰到左边墙壁*/
+        {
+            bal->direct = 0;
+            //再调用一次,保证一个时刻内球会移动
+            BallMove(bal);
+        }
+        else if(y - r <= WALL_WIDTH)                /*碰到上面墙壁*/
+        {
+            bal->direct = 3;
+            BallMove(bal);
+        }
+        else if(pixel[y][x - r])                    /*碰到左边砖块*/
+        {
+            bal->direct = 0;
+            FindBlock(blk, x - r, y);
+            score++;
+            BallMove(bal);
+        }
+        else if(pixel[y - r][x])                    /*碰到上面砖块*/
+        {
+            bal->direct = 3;
+            FindBlock(blk, x, y - r);
+            score++;
+            BallMove(bal);
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x - bal->speed;
+            bal->pos_y = bal->pos_y - bal->speed;
+        }
+        break;
+    //当前朝左下
+    case 3:
+        if(x - r <= WALL_WIDTH)                                 /*碰到左边墙壁*/
+        {
+            bal->direct = 1;
+            BallMove(bal);
+        }
+        else if(y + r >= DISPLAY_Y_MAX - BOARD_WIDTH)           /*碰到下面挡板*/
+        {
+            if(pixel[y + r][x])
+            {
+                bal->direct = 2;
+                BallMove(bal);
+            }
+            else
+            {
+                /*本次失败,相关处理*/
+            }
+        }
+        else if(pixel[y][x - r])                                /*碰到左边砖块*/
+        {
+            bal->direct = 1;
+            FindBlock(blk, x - r, y);
+            score++;
+            BallMove(bal);
+        }
+        else if(pixel[y + r][x])                                /*碰到下面砖块*/
+        {
+            bal->direct = 2;
+            FindBlock(blk, x, y + r);
+            score++;
+            BallMove(bal);
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x - bal->speed;
+            bal->pos_y = bal->pos_y + bal->speed;
+        }
+        break;
+    }
 }
 
+/**
+* @brief  BallDraw 小球绘制
+* @param  bal 小球指针引用
+* @retval --
+*/
+void BallDraw(ball *bal)
+{
+    ILI9341_DrawCircle(bal->pos_x, bal->pos_y, bal->radius, 1);
+}
+
+/**
+* @brief  Play 游戏运行函数
+* @param  --
+* @retval --
+*/
+void Play()
+{
+    BoardMove(brd);
+    BallMove(bal);
+
+    /* 游戏区域清为白色 */
+	LCD_SetBackColor(CL_WHITE);
+    ILI9341_Clear(0, 0, DISPLAY_X_MAX, DISPLAY_Y_MAX);
+    /* 重新显示新的画面 */
+    GenWall();
+    DrawBlock(blk);
+    BoardDraw(brd);
+    BallDraw(bal);
+}
 /* ------------------------------------------end of file---------------------------------------- */

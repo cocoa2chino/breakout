@@ -52,7 +52,7 @@
 #define BOARD_LENGTH  40      //挡板长度
 #define BOARD_WIDTH   3       //挡板厚度
 #define BLOCK_LENGTH  10      //砖块长度
-#define BLOCK_WIDTH   6       //砖块宽度
+#define BLOCK_WIDTH   8       //砖块宽度
 
 enum
 {
@@ -162,6 +162,7 @@ void GenWall();
 
 void GenBlock(block *blk, uint16_t row);
 void DrawBlock(block *blk);
+void FindBlock(block *blk, uint16_t pos_x, uint16_t pos_y);
 void DelBlock(block *blki);
 void UpdateDelBlock(block *blki);
 
@@ -172,5 +173,7 @@ void BoardDraw(board *brd);
 void BallInit(ball *bal);
 void BallRestart(ball *bal, uint16_t pos_x);
 void BallMove(ball *bal);
+void BallDraw(ball *bal);
 
+void Play();
 #endif //_PALETTE_H
