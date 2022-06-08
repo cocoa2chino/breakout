@@ -49,7 +49,7 @@ int main(void)
  
 	while ( 1 )
 	{
-		//Play();
+		Play();
     //snakeMove();  //һֱѭ�����ƶ��غ���
 	}
 		

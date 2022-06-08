@@ -701,7 +701,7 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_spi.h)(0x5F05C570)
 I (..\..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x5F05C570)
 I (..\..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x5F05C570)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5F05C570)
-F (..\..\User\main.c)(0x62A0868A)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
+F (..\..\User\main.c)(0x62A09142)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\main.o --omf_browse ..\..\output\main.crf --depend ..\..\output\main.d)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x5F05C570)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x5F05C570)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6284B5C7)
@@ -737,7 +737,7 @@ I (..\..\User\./font/fonts.h)(0x5F05C570)
 I (..\..\User\./lcd/bsp_xpt2046_lcd.h)(0x6037B270)
 I (..\..\User\./flash/bsp_spi_flash.h)(0x5F05C570)
 I (..\..\User\./led/bsp_led.h)(0x5F05C570)
-I (..\..\User\palette.h)(0x62A05D2E)
+I (..\..\User\palette.h)(0x62A08ED7)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
 I (..\..\User\TimBase\bsp_TiMbase.h)(0x60374D07)
 F (..\..\User\stm32f10x_it.c)(0x603B3A7A)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\stm32f10x_it.o --omf_browse ..\..\output\stm32f10x_it.crf --depend ..\..\output\stm32f10x_it.d)
@@ -933,7 +933,7 @@ I (..\..\User\./font/fonts.h)(0x5F05C570)
 I (..\..\User\./led/bsp_led.h)(0x5F05C570)
 I (..\..\User\./flash/bsp_spi_flash.h)(0x5F05C570)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C245B8)
-I (..\..\User\palette.h)(0x62A05D2E)
+I (..\..\User\palette.h)(0x62A08ED7)
 I (D:\Keil_v5\ARM\ARMCC\include\string.h)(0x54C245B8)
 F (..\..\User\font\fonts.c)(0x5F05C570)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\fonts.o --omf_browse ..\..\output\fonts.crf --depend ..\..\output\fonts.d)
 I (..\..\User\./font/fonts.h)(0x5F05C570)
@@ -967,8 +967,8 @@ I (..\..\Libraries\FWlib\inc\stm32f10x_wwdg.h)(0x5F05C570)
 I (..\..\Libraries\FWlib\inc\misc.h)(0x5F05C570)
 I (..\..\User\./flash/bsp_spi_flash.h)(0x5F05C570)
 I (D:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C245B8)
-F (..\..\User\palette.c)(0x62A087FB)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\palette.o --omf_browse ..\..\output\palette.crf --depend ..\..\output\palette.d)
-I (..\..\User\palette.h)(0x62A05D2E)
+F (..\..\User\palette.c)(0x62A0A466)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\..\Libraries\CMSIS -I..\..\User -I..\..\Libraries\FWlib\inc -I..\..\User\adc -I..\..\User\TimBase-I c:\Users\86184\Desktop\snake_stm32\Project\RVMDK£¨uv5£©\RTE-I D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.4.0\Device\Include-I D:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="515" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\..\output\palette.o --omf_browse ..\..\output\palette.crf --depend ..\..\output\palette.d)
+I (..\..\User\palette.h)(0x62A08ED7)
 I (..\..\Libraries\CMSIS\stm32f10x.h)(0x5F05C570)
 I (..\..\Libraries\CMSIS\core_cm3.h)(0x5F05C570)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6284B5C7)

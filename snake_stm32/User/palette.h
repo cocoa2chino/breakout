@@ -167,9 +167,7 @@ void GenWall(void);
 
 void GenBlock(void);
 void DrawBlock(void);
-void FindBlock(uint16_t pos_x, uint16_t pos_y);
-void DelBlock(block *blki);
-void UpdateDelBlock(block *blki);
+void DelBlock(int x,int y);
 
 
 void BoardInit(void);
