@@ -12,12 +12,12 @@
 #define PALETTE_START_Y   0
 #define PALETTE_END_Y     LCD_Y_LENGTH
 
-#if 1     //°´Å¥À¸ÔÚ×ó±ß
+#if 1     //ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   #define BUTTON_START_X     0
   #define PALETTE_START_X   (COLOR_BLOCK_WIDTH*2+1)
   #define PALETTE_END_X     LCD_X_LENGTH
 
-#else     //°´Å¥À¸ÔÚÓÒ±ß£¬(´æÔÚ´¥Ãþ°´¼üÊ±Ò²»áµÄbug½öÓÃÓÚ²âÊÔ´¥ÃþÆÁ×ó±ß½ç)
+#else     //ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ß£ï¿½(ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±Ò²ï¿½ï¿½ï¿½bugï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½)
   #define BUTTON_START_X      (LCD_X_LENGTH-2*COLOR_BLOCK_WIDTH)
   #define PALETTE_START_X   	0
   #define PALETTE_END_X     	(LCD_X_LENGTH-2*COLOR_BLOCK_WIDTH)
@@ -27,21 +27,21 @@
 
 
 /*
-	LCD ÑÕÉ«´úÂë£¬CL_ÊÇColorµÄ¼òÐ´
-	16BitÓÉ¸ßÎ»ÖÁµÍÎ»£¬ RRRR RGGG GGGB BBBB
+	LCD ï¿½ï¿½É«ï¿½ï¿½ï¿½ë£¬CL_ï¿½ï¿½Colorï¿½Ä¼ï¿½Ð´
+	16Bitï¿½É¸ï¿½Î»ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ RRRR RGGG GGGB BBBB
 
-	ÏÂÃæµÄRGB ºê½«24Î»µÄRGBÖµ×ª»»Îª16Î»¸ñÊ½¡£
-	Æô¶¯windowsµÄ»­±Ê³ÌÐò£¬µã»÷±à¼­ÑÕÉ«£¬Ñ¡Ôñ×Ô¶¨ÒåÑÕÉ«£¬¿ÉÒÔ»ñµÃµÄRGBÖµ¡£
+	ï¿½ï¿½ï¿½ï¿½ï¿½RGB ï¿½ê½«24Î»ï¿½ï¿½RGBÖµ×ªï¿½ï¿½Îª16Î»ï¿½ï¿½Ê½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½windowsï¿½Ä»ï¿½ï¿½Ê³ï¿½ï¿½ò£¬µï¿½ï¿½ï¿½à¼­ï¿½ï¿½É«ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½Ãµï¿½RGBÖµï¿½ï¿½
 
-	ÍÆ¼öÊ¹ÓÃÃÔÄãÈ¡É«Æ÷Èí¼þ»ñµÃÄã¿´µ½µÄ½çÃæÑÕÉ«¡£
+	ï¿½Æ¼ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã¿´ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
 */
 #if LCD_RGB_888
-/*RGB888ÑÕÉ«×ª»»*/
-#define RGB(R,G,B)	( (R<< 16) | (G << 8) | (B))	/* ½«8Î»R,G,B×ª»¯Îª 24Î»RGB888¸ñÊ½ */
+/*RGB888ï¿½ï¿½É«×ªï¿½ï¿½*/
+#define RGB(R,G,B)	( (R<< 16) | (G << 8) | (B))	/* ï¿½ï¿½8Î»R,G,B×ªï¿½ï¿½Îª 24Î»RGB888ï¿½ï¿½Ê½ */
 
 #else 
-/*RGB565 ÑÕÉ«×ª»»*/
-#define RGB(R,G,B)	(((R >> 3) << 11) | ((G >> 2) << 5) | (B >> 3))	/* ½«8Î»R,G,B×ª»¯Îª 16Î»RGB565¸ñÊ½ */
+/*RGB565 ï¿½ï¿½É«×ªï¿½ï¿½*/
+#define RGB(R,G,B)	(((R >> 3) << 11) | ((G >> 2) << 5) | (B >> 3))	/* ï¿½ï¿½8Î»R,G,B×ªï¿½ï¿½Îª 16Î»RGB565ï¿½ï¿½Ê½ */
 #define RGB565_R(x)  ((x >> 8) & 0xF8)
 #define RGB565_G(x)  ((x >> 3) & 0xFC)
 #define RGB565_B(x)  ((x << 3) & 0xF8)
@@ -51,72 +51,108 @@
 
 enum
 {
-	CL_WHITE    = RGB(255,255,255),	/* °×É« */
-	CL_BLACK    = RGB(  0,  0,  0),	/* ºÚÉ« */
-	CL_RED      = RGB(255,	0,  0),	/* ºìÉ« */
-	CL_GREEN    = RGB(  0,255,  0),	/* ÂÌÉ« */
-	CL_BLUE     = RGB(  0,	0,255),	/* À¶É« */
-	CL_YELLOW   = RGB(255,255,  0),	/* »ÆÉ« */
+	CL_WHITE    = RGB(255,255,255),	/* ï¿½ï¿½É« */
+	CL_BLACK    = RGB(  0,  0,  0),	/* ï¿½ï¿½É« */
+	CL_RED      = RGB(255,	0,  0),	/* ï¿½ï¿½É« */
+	CL_GREEN    = RGB(  0,255,  0),	/* ï¿½ï¿½É« */
+	CL_BLUE     = RGB(  0,	0,255),	/* ï¿½ï¿½É« */
+	CL_YELLOW   = RGB(255,255,  0),	/* ï¿½ï¿½É« */
 
-	CL_GREY    = RGB( 98, 98, 98), 	/* Éî»ÒÉ« */
-	CL_GREY1		= RGB( 150, 150, 150), 	/* Ç³»ÒÉ« */
-	CL_GREY2		= RGB( 180, 180, 180), 	/* Ç³»ÒÉ« */
-	CL_GREY3		= RGB( 200, 200, 200), 	/* ×îÇ³»ÒÉ« */
-	CL_GREY4		= RGB( 230, 230, 230), 	/* ×îÇ³»ÒÉ« */
+	CL_GREY    = RGB( 98, 98, 98), 	/* ï¿½ï¿½ï¿½É« */
+	CL_GREY1		= RGB( 150, 150, 150), 	/* Ç³ï¿½ï¿½É« */
+	CL_GREY2		= RGB( 180, 180, 180), 	/* Ç³ï¿½ï¿½É« */
+	CL_GREY3		= RGB( 200, 200, 200), 	/* ï¿½ï¿½Ç³ï¿½ï¿½É« */
+	CL_GREY4		= RGB( 230, 230, 230), 	/* ï¿½ï¿½Ç³ï¿½ï¿½É« */
 
-	CL_BUTTON_GREY	= RGB( 195, 195, 195), /* WINDOWS °´Å¥±íÃæ»ÒÉ« */
+	CL_BUTTON_GREY	= RGB( 195, 195, 195), /* WINDOWS ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½É« */
 
-	CL_MAGENTA      = RGB(255, 0, 255),	/* ºì×ÏÉ«£¬ÑóºìÉ« */
-	CL_CYAN         = RGB( 0, 255, 255),	/* À¶ÂÌÉ«£¬ÇàÉ« */
+	CL_MAGENTA      = RGB(255, 0, 255),	/* ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½É« */
+	CL_CYAN         = RGB( 0, 255, 255),	/* ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½É« */
 
-	CL_BLUE1        = RGB(  0,  0, 240),		/* ÉîÀ¶É« */
-	CL_BLUE2        = RGB(  0,  0, 128),		/* ÉîÀ¶É« */
-	CL_BLUE3        = RGB(  68, 68, 255),		/* Ç³À¶É«1 */
-	CL_BLUE4        = RGB(  0, 64, 128),		/* Ç³À¶É«1 */
+	CL_BLUE1        = RGB(  0,  0, 240),		/* ï¿½ï¿½ï¿½ï¿½É« */
+	CL_BLUE2        = RGB(  0,  0, 128),		/* ï¿½ï¿½ï¿½ï¿½É« */
+	CL_BLUE3        = RGB(  68, 68, 255),		/* Ç³ï¿½ï¿½É«1 */
+	CL_BLUE4        = RGB(  0, 64, 128),		/* Ç³ï¿½ï¿½É«1 */
 
-	/* UI ½çÃæ Windows¿Ø¼þ³£ÓÃÉ« */
-	CL_BTN_FACE		  = RGB(236, 233, 216),	/* °´Å¥±íÃæÑÕÉ«(»Ò) */
-	CL_BOX_BORDER1	= RGB(172, 168,153),	/* ·Ö×é¿òÖ÷ÏßÑÕÉ« */
-	CL_BOX_BORDER2	= RGB(255, 255,255),	/* ·Ö×é¿òÒõÓ°ÏßÑÕÉ« */
+	/* UI ï¿½ï¿½ï¿½ï¿½ Windowsï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½É« */
+	CL_BTN_FACE		  = RGB(236, 233, 216),	/* ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«(ï¿½ï¿½) */
+	CL_BOX_BORDER1	= RGB(172, 168,153),	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É« */
+	CL_BOX_BORDER2	= RGB(255, 255,255),	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½ï¿½ï¿½É« */
                                                                                                                                                                                                               
-	CL_MASK			    = 0x7FFF	/* RGB565ÑÕÉ«ÑÚÂë£¬ÓÃÓÚÎÄ×Ö±³¾°Í¸Ã÷ */
+	CL_MASK			    = 0x7FFF	/* RGB565ï¿½ï¿½É«ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ */
 };
 
 typedef struct 
 {
-  uint16_t start_x;   //°´¼üµÄxÆðÊ¼×ø±ê  
-  uint16_t start_y;   //°´¼üµÄyÆðÊ¼×ø±ê
-  uint16_t end_x;     //°´¼üµÄx½áÊø×ø±ê 
-  uint16_t end_y;     //°´¼üµÄy½áÊø×ø±ê
-  uint32_t para;      //ÑÕÉ«°´Å¥ÖÐ±íÊ¾Ñ¡ÔñµÄÑÕÉ«£¬±Ê¼£ÐÎ×´°´Å¥ÖÐ±íÊ¾Ñ¡ÔñµÄ»­Ë¢
-  uint8_t touch_flag; //°´¼ü°´ÏÂµÄ±êÖ¾
+  uint16_t start_x;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½  
+  uint16_t start_y;   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+  uint16_t end_x;     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+  uint16_t end_y;     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  uint32_t para;      //ï¿½ï¿½É«ï¿½ï¿½Å¥ï¿½Ð±ï¿½Ê¾Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½×´ï¿½ï¿½Å¥ï¿½Ð±ï¿½Ê¾Ñ¡ï¿½ï¿½Ä»ï¿½Ë¢
+  uint8_t touch_flag; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÂµÄ±ï¿½Ö¾
     
-  void (*draw_btn)(void * btn);     //°´¼üÃè»æº¯Êý
-  void (*btn_command)(void * btn);  //°´¼ü¹¦ÄÜÖ´ÐÐº¯Êý£¬ÀýÈçÇÐ»»ÑÕÉ«¡¢»­Ë¢
+  void (*draw_btn)(void * btn);     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æº¯ï¿½ï¿½
+  void (*btn_command)(void * btn);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ðºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ë¢
  
 }Touch_Button;
 
 
-/*°´Å¥²ÎÊýÁÐ±í*/
+/*ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½*/
 typedef enum 
 {
-  LEFT = 0,   //µ¥ÏñËØÏß
+  LEFT = 0,   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   
-  DOWN,  //2ÏñËØÏß
+  DOWN,  //2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   
-  RIGHT,  //4ÏñËØÏß
+  RIGHT,  //4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   
-	UP,  //6ÏñËØ
+	UP,  //6ï¿½ï¿½ï¿½ï¿½
 	
 }SHAPE;
 
 
-typedef struct Snake//Ïàµ±ÓÚÉßÒ»¸ö½Úµã
+typedef struct Snake//ï¿½àµ±ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Úµï¿½
 {
-	int x;//ºá×ø±ê
-	int y;//×Ý×ø±ê
+	int x;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	int y;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   struct Snake *next;
 }snake;
+
+
+typedef struct Block
+{
+  int pos_x;    //æ‰«ææ–¹å‘ä¸‹èµ·å§‹ç‚¹xåæ ‡
+  int pos_y;    //æ‰«ææ–¹å‘ä¸‹èµ·å§‹ç‚¹yåæ ‡
+
+  //åŒé“¾è¡¨å½¢å¼
+  struct Block *prev;
+  struct Block *next;
+}block;
+
+//æŒ¡æ¿ä¿¡æ¯
+typedef struct Board
+{
+  uint16_t pos_x;    //ä¸­ç‚¹xåæ ‡
+  uint16_t pos_y;    //ä¸­ç‚¹yåæ ‡
+  uint16_t speed;    //ç§»åŠ¨é€Ÿåº¦
+}board;
+
+//å°çƒä¿¡æ¯
+typedef struct Ball
+{
+  uint16_t pos_x;    //åœ†å¿ƒxåæ ‡
+  uint16_t pos_y;    //åœ†å¿ƒyåæ ‡
+  uint16_t radius;   //åœ†åŠå¾„
+  /*
+    è¿åŠ¨æ–¹å‘(45Â°)
+    0:å³ä¸Š
+    1:å³ä¸‹
+    2:å·¦ä¸Š
+    3:å·¦ä¸‹
+  */
+  uint16_t direct;
+  uint16_t speed;    //è¿åŠ¨é€Ÿåº¦,ä¸‹ä¸€æ—¶åˆ»ä½ç½®(pos_x +/- speed, pos_y +/- speed)
+}ball;
 
 
 
@@ -127,6 +163,25 @@ void snakeMove(void);
 void judgeAlive(void);
 void Square_Init(void);
 void Snake_Init(void);
+void GenWall(void);
+
+void GenBlock(void);
+void DrawBlock(void);
+void FindBlock(uint16_t pos_x, uint16_t pos_y);
+void DelBlock(block *blki);
+void UpdateDelBlock(block *blki);
+
+
+void BoardInit(void);
+void BoardMove(void);
+void BoardDraw(void);
+void Play(void);
+
+void BallInit(void);
+void BallRestart(void);
+void BallMove(void);
+void BallDraw(void);
+
 void Touch_Button_Init(void);
 void Touch_Button_Down(uint16_t x,uint16_t y);
 void Touch_Button_Up(uint16_t x,uint16_t y);

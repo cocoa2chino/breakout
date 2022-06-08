@@ -23,7 +23,25 @@
 #include "bsp_adc.h"
 #include "bsp_TiMbase.h"   
 
+#define MAX_X	60
+#define MAX_Y	20
+
+
+#define DISPLAY_X_MAX 240     //游戏主界面显示区域x坐标最大值
+#define DISPLAY_Y_MAX 240     //游戏主界面显示区域y坐标最大值
+#define WALL_WIDTH    5       //墙厚度
+#define BOARD_LENGTH  40      //挡板长度
+#define BOARD_WIDTH   3       //挡板厚度
+#define BLOCK_LENGTH  10      //砖块长度
+#define BLOCK_WIDTH   8       //砖块宽度
+
+block *blk;                                             //砖块链表头指针
+uint16_t row = 2;                                   //生成砖块行数
+int pixel[40][40];    //状态数组,存储像素信息
 extern __IO uint16_t ADC_ConvertedValue;
+
+board *brd;                                             //挡板指针
+ball *bal;                                              //小球指针
 /*按钮结构体数组*/
 Touch_Button button[BUTTON_NUM];
 snake *head;//头指针
@@ -41,7 +59,7 @@ static void Command_Change_Mode(void *btn);
 
 
 
-
+//延时函数
 void Delay(__IO uint32_t nCount)
 {
   for(; nCount != 0; nCount--);
@@ -64,166 +82,451 @@ void Palette_Init(uint8_t LCD_Mode)
 	
   /* 整屏清为白色 */
 	LCD_SetBackColor(CL_WHITE);
-  ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	
+    ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	
 	
 	Touch_Button_Init();  
-  Square_Init();
-	Snake_Init();
-	
-  TIM_ITConfig(BASIC_TIM,TIM_IT_Update,ENABLE);
+    Square_Init();
+    GenWall();
+	GenBlock();
+  	DrawBlock();
+    BoardInit();
+  	BoardDraw();
+    BallInit();
+    BallDraw();
+ 	TIM_ITConfig(BASIC_TIM,TIM_IT_Update,ENABLE);
   /* 描绘按钮 */
   for(i=0;i<BUTTON_NUM;i++)
   {
     button[i].draw_btn(&button[i]);
   }
-	creatFood();
- 
+
+    
+
 }
 
 
+
 /**
-* @brief  Snake_Init 蛇身初始化，给定一个长度4
-* @param  无
-* @retval 无
+* @brief  GenWall 生成左/右/上方墙壁
+* @param  --
+* @retval --
 */
-void Snake_Init(void)//
+void GenWall()
 {
 	int i;
-	snake *tail;//尾指针
-	tail =( snake*)malloc(sizeof(snake));//第一个节点/头结点
-	tail->x = 30;//2的倍数，因为方块的长是两个单位
-	tail->y = 10;//1个单位
-	tail->next=NULL;
-	for(i=1;i<=4;i++)//尾插法
-	{
-		head=(snake*)malloc(sizeof(snake));//申请一个节点
-		head->next=tail;//连接成链
-		head->x = 30-i;//下一个节点的位置
-		head->y = 10;
-		tail=head;
-	} 
-	//遍历打印出来
-	while(tail->next!=NULL)
-	{
-		LCD_SetColors(CL_GREEN,CL_WHITE);
-		ILI9341_DrawRectangle(tail->x*6,tail->y*6,6,6,1);
-		tail = tail->next;
-	}
+	//LCD显示
+    ILI9341_DrawRectangle(0, 0, 6, 240, 1);
+    ILI9341_DrawRectangle(240-6, 0, 6, 240, 1);
+    ILI9341_DrawRectangle(6, 0, 240, 6, 1);
+	for (i = 0; i < 40; i++)
+    {
+        pixel[0][i] = 1;
+    }
+	for (i = 0; i < 40; i++)
+    {
+        pixel[39][i] = 1;
+    }
+	for (i = 0; i < 40; i++)
+    {
+        pixel[i][0] = 1;
+    }
 }
 
-/**
-* @brief snakeMove 蛇移动过程函数，核心部分
-* @param  无
-* @retval 无
-*/
-void snakeMove(void)
-{
-	char disbuff[20];
-	snake *nexthead;
-	snake *p,*q;
-	nexthead=(snake*)malloc(sizeof(snake));
-	if (die == 0 && MODE==1)
-	{
-		if(status=='R')//向右走
-		{
-			nexthead->x = head->x+1;
-			nexthead->y = head->y;
-		}
-		else if(status=='L')//向左走
-		{ 
-			nexthead->x = head->x-1;
-			nexthead->y = head->y;
-		}
-		else if(status=='U')//向上走
-		{
-			nexthead->x = head->x;
-			nexthead->y = head->y-1;
-		}
-		else if(status=='D')//向下走
-		{
-			nexthead->x = head->x;
-			nexthead->y = head->y+1;
-		}
-		LCD_SetColors(CL_GREEN,CL_WHITE);
-		if(nexthead->x==food1->x && nexthead->y==food1->y)//吃掉了食物
-		{
-			nexthead->next=head;
-			head=nexthead;
-			p=head;//p用来从头遍历，打印方块
-			while(p->next!=NULL)
-			{
-				ILI9341_DrawRectangle(p->x*6,p->y*6,6,6,1);
-				p=p->next;
-			}//吃掉了食物得创造
-			score=score+1;
-			sprintf(disbuff,"Score:%d",score);//打印成绩
-			LCD_SetFont(&Font8x16);
-			LCD_SetColors(CL_BLACK,CL_WHITE);
-			ILI9341_DispString_EN_CH(162,253,disbuff);
-			creatFood();
-		}
-		else//没有食物
-		{
-			nexthead->next=head;
-			head=nexthead;
-			p=head;//p用来从头遍历，打印方块
-			while(p->next->next!=NULL)
-			{
-				ILI9341_DrawRectangle(p->x*6,p->y*6,6,6,1);
-				p=p->next;
-			}
-			LCD_SetColors(CL_WHITE,CL_WHITE);
-			ILI9341_DrawRectangle(p->x*6,p->y*6,6,6,1);
-			free(p->next);
-			p->next=NULL;
-		}
-	}
-
-	
-	judgeAlive(); //判断存活情况
-	if(die == 1)    //如果死了就重启
-	{
-		LCD_SetColors(CL_RED,CL_WHITE);
-		LCD_SetFont(&Font24x32);
-		ILI9341_DispString_EN_CH(12,120,"Game over");
-		LCD_SetFont(&Font8x16);
-		ILI9341_DispString_EN_CH(64,157,"点击任意处开始");
-		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //不使能中断，即不是能5个按键
-		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//按任意位置重新初始化
-		p = q = head;
-		while(p != NULL)   //释放内存
-		{
-			p = q->next;
-			free(q);
-			q = p; 
-		}
-		free(p);	
-		Palette_Init(6);  
-		die = 0;
-	}
-	
-	Delay(0xfffff);//可以调节蛇移动的速度，里面是毫秒，越大速度越慢
-}
 
 
 /**
-* @brief judgeAlive 判断蛇的死活
-* @param  无
-* @retval 无
+* @brief  GenBlock 初始化砖块
+* @param  blk 砖块链表指针引用
+* @param  row 生成砖块行数
+* @retval --
 */
-void judgeAlive(void)
+void GenBlock()
 {
-	snake *q;
-	if(head->x==-1||head->y==-1||head->x==40||head->y==40)//碰到墙
-		die=1;
-	q=head->next;
-	while(q!=NULL)   // 吃到自己
-	{
-		if(q->x==head->x && head->y==q->y)
-			die=1;
-		q=q->next;
-	};
+    block *tmp;
+	int i,j;
+    //初始化第一个砖块
+    blk = (block*)malloc(sizeof(block));
+    blk->pos_x = 1;
+    blk->pos_y = 1;
+    blk->prev = NULL;
+    blk->next = NULL;
+
+//根据要生成的砖块行数和砖块长度,初始化后续砖块
+    tmp = blk;
+    for(i = 1; i <= row; i++)
+    {
+        for(j = 1; j < 39; j++)
+        {
+            tmp->next = (block*)malloc(sizeof(block));
+            tmp->next->prev = tmp;
+            tmp = tmp->next;
+            tmp->pos_x = j;
+            tmp->pos_y = i;
+            tmp->next = NULL;
+        }
+   }
 }
+
+
+
+/**
+* @brief  DrawBlock 砖块绘制
+* @param  blk 砖块链表头指针引用
+* @retval --
+*/
+void DrawBlock()
+{
+    block *tmp = blk;
+    while(tmp != NULL)    /*遍历链表*/
+    {
+        //LCD显示
+        LCD_SetColors(CL_GREEN,CL_WHITE);
+		ILI9341_DrawRectangle(tmp->pos_x*6, tmp->pos_y*6, 5, 5, 1);
+        //更新状态数组
+        pixel[tmp->pos_x][tmp->pos_y] = 1;
+        tmp = tmp->next;
+    }
+}
+
+/**
+* @brief  FindBlock 根据x,y坐标找到对应砖块并消除
+* @param  blk 砖块链表头指针引用
+* @param  pos_x x坐标
+* @param  pos_y y坐标
+* @retval
+*/
+void FindBlock(uint16_t pos_x, uint16_t pos_y)
+{
+    block *tmp = blk;
+    while(tmp->next != NULL)    /*遍历链表*/
+    {
+        if(tmp->pos_x == 1 &&  tmp->pos_y == 1 )
+        {
+            DelBlock(tmp);
+            return;
+        }
+        tmp = tmp->next;
+    }
+}
+
+/**
+* @brief  DelBlock 砖块消除
+* @param  blki 砖块指针引用
+* @retval --
+*/
+void DelBlock(block *blki)
+{
+    if(blki->prev == NULL)              /*删除的是链表第一个*/
+    {
+        if(blki->next == NULL)          /*只有一个砖块,将头指针置为空*/
+        {
+            UpdateDelBlock(blk);
+            free(blk);
+            blk = NULL;
+            return;
+        }
+        else                            /*把头指针设为第二个砖块*/
+        {
+            blk = blk->next;
+            blk->prev = NULL;
+        }
+    }
+    else if(blki->next == NULL)         /*删除的是链表最后一个*/
+    {
+        blki->prev->next = NULL;
+    }
+    else
+    {
+        blki->prev->next = blki->next;
+        blki->next->prev = blki->prev;
+    }
+    UpdateDelBlock(blki);
+    free(blki);
+}
+
+/**
+* @brief  UpdateDelBlock 砖块消除中封装的更新状态数组函数
+* @param  blki 砖块指针引用
+* @retval --
+*/
+void UpdateDelBlock(block *blki)
+{
+    
+    pixel[blki->pos_x][blki->pos_y] = 0;
+
+}
+
+
+/**
+* @brief  BallInit 初始化小球
+* @param  bal 小球指针引用
+* @retval --
+*/
+void BallInit()
+{
+    bal =	(ball*)malloc(sizeof(struct Ball));
+
+    bal->pos_x = 20;
+    bal->radius = 3;
+    bal->pos_y = 20;
+    bal->direct = 0;
+    bal->speed = 1;
+    return ;
+}
+
+/**
+* @brief  BallRestart 失败之后重新开始,小球在当前挡板中间生成
+* @param  bal 小球指针引用
+* @param  pos_x 挡板中点x坐标
+* @retval --
+*/
+void BallRestart()
+{
+    bal->pos_x = 20;
+    bal->radius = 3;
+    bal->pos_y = 20;
+    bal->direct = 0;
+    bal->speed = 1;
+}
+
+/**
+* @brief  BallDraw 小球绘制
+* @param  bal 小球指针引用
+* @retval --
+*/
+void BallDraw()
+{
+    ILI9341_DrawCircle(bal->pos_x*6+1, bal->pos_y*6+1, bal->radius, 1);
+}
+
+void Play()
+{
+	BoardMove();
+	BallMove();
+
+	/* 游戏区域清为白色 */
+	LCD_SetBackColor(CL_WHITE);
+	ILI9341_Clear(4, 4, DISPLAY_X_MAX-4, DISPLAY_Y_MAX);
+	/* 重新显示新的画面 */
+	GenWall();
+	DrawBlock();
+	BoardDraw();
+	Delay(0xfffff);
+	BallDraw();
+}
+
+
+/**
+* @brief  BallMove 小球移动过程函数
+* @param  bal 小球指针引用
+* @retval --
+*/
+void BallMove()
+{
+    uint16_t x = bal->pos_x;
+    uint16_t y = bal->pos_y;
+    uint16_t r = bal->radius;
+    if(!MODE)   return;     /*游戏暂停,小球位置不变化*/
+
+    
+    switch(bal->direct)
+    {
+    //当前朝右上
+    case 0:
+        if(x+1 >= 59)     /*碰到右边墙壁*/
+        {
+            bal->direct = 2;
+            //再调用一次,保证一个时刻内球会移动
+            BallMove();
+        }
+        else if(y-1 <= 1)                /*碰到上面墙壁*/
+        {
+            bal->direct = 1;
+            BallMove();
+        }
+        else if(pixel[y][x+1])                    /*碰到右边砖块*/
+        {
+            bal->direct = 2;
+            FindBlock(x + 1, y);
+            score++;
+            BallMove();
+        }
+        else if(pixel[y-1][x])                    /*碰到上面砖块*/
+        {
+            bal->direct = 1;
+            FindBlock( x, y - 1);
+            score++;
+            BallMove();
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x + bal->speed;
+            bal->pos_y = bal->pos_y - bal->speed;
+        }
+        break;
+    //当前朝右下
+    case 1:
+        if(x + 1 >= 59)                 /*碰到右边墙壁*/
+        {
+            bal->direct = 3;
+            BallMove();
+        }
+        else if(y + 1 >= 59)           /*碰到下面挡板*/
+        {
+            if(pixel[y + 1][x])
+            {
+                bal->direct = 0;
+                BallMove();
+            }
+            else
+            {
+                /*本次失败,相关处理*/
+            }
+        }
+        else if(pixel[y][x + r])                                /*碰到右边砖块*/
+        {
+            bal->direct = 3;
+            FindBlock( x + r, y);
+            score++;
+            BallMove();
+        }
+        else if(pixel[y + r][x])                                /*碰到下面砖块*/
+        {
+            bal->direct = 0;
+            FindBlock( x, y + r);
+            score++;
+            BallMove();
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x + bal->speed;
+            bal->pos_y = bal->pos_y + bal->speed;
+        }
+        break;
+    //当前朝左上
+    case 2:
+        if(x - r <= WALL_WIDTH)                     /*碰到左边墙壁*/
+        {
+            bal->direct = 0;
+            //再调用一次,保证一个时刻内球会移动
+            BallMove();
+        }
+        else if(y - r <= WALL_WIDTH)                /*碰到上面墙壁*/
+        {
+            bal->direct = 3;
+            BallMove();
+        }
+        else if(pixel[y][x - r])                    /*碰到左边砖块*/
+        {
+            bal->direct = 0;
+            FindBlock( x - r, y);
+            score++;
+            BallMove();
+        }
+        else if(pixel[y - r][x])                    /*碰到上面砖块*/
+        {
+            bal->direct = 3;
+            FindBlock( x, y - r);
+            score++;
+            BallMove();
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x - bal->speed;
+            bal->pos_y = bal->pos_y - bal->speed;
+        }
+        break;
+    //当前朝左下
+    case 3:
+        if(x - r <= WALL_WIDTH)                                 /*碰到左边墙壁*/
+        {
+            bal->direct = 1;
+            BallMove();
+        }
+        else if(y + r >= DISPLAY_Y_MAX - BOARD_WIDTH)           /*碰到下面挡板*/
+        {
+            if(pixel[y + r][x])
+            {
+                bal->direct = 2;
+                BallMove();
+            }
+            else
+            {
+                /*本次失败,相关处理*/
+            }
+        }
+        else if(pixel[y][x - r])                                /*碰到左边砖块*/
+        {
+            bal->direct = 1;
+            FindBlock( x - r, y);
+            score++;
+            BallMove();
+        }
+        else if(pixel[y + r][x])                                /*碰到下面砖块*/
+        {
+            bal->direct = 2;
+            FindBlock( x, y + r);
+            score++;
+            BallMove();
+        }
+        else
+        {
+            bal->pos_x = bal->pos_x - bal->speed;
+            bal->pos_y = bal->pos_y + bal->speed;
+        }
+        break;
+    }
+}
+
+
+
+void BoardInit(void)
+{
+    brd = (board*)malloc(sizeof(struct Board));
+    brd->pos_x = 18;
+    brd->pos_y = 39;
+    brd->speed = 3;
+}
+
+/**
+* @brief  BoardMove 挡板移动
+* @param  brd 挡板指针引用
+* @retval --
+*/
+void BoardMove()
+{
+    if(MODE && status == 'L')                                               /*游戏正在进行且左方向键被按下*/
+    {
+        if(brd->pos_x > 0)                      /*没有碰到左侧墙壁*/
+        {
+            brd->pos_x = brd->pos_x - brd->speed;
+        }
+    }
+    else if(MODE && status == 'R')                                          /*游戏正在进行且右方向键被按下*/
+    {
+        if(brd->pos_x + 10 < 60)      /*没有碰到右侧墙壁*/
+        {
+            brd->pos_x = brd->pos_x + brd->speed;
+        }
+    }
+}
+
+/**
+* @brief  BoardDraw 挡板绘制
+* @param  brd 挡板指针引用
+* @retval --
+*/
+void BoardDraw()
+{
+    int i=0;
+	//LCD显示
+    ILI9341_DrawRectangle(brd->pos_x *6, brd->pos_y*6, BOARD_LENGTH, 6, 1);
+	for(i=0;i<10;i++){
+		pixel[brd->pos_x+i][brd->pos_y] = 1;
+	}
+    //更新状态数组
+}
+
 
 /**
 * @brief  Touch_Button_Init 初始化外框游戏区域
@@ -250,34 +553,6 @@ void Square_Init(void)
 														COLOR_BLOCK_HEIGHT,0);
 }
 
-/**
-* @brief  creatFood 随机生成一个坐标并绘制食物
-* @param  无
-* @retval 无
-*/
-void creatFood(void)
-{
-	snake *food;//创造一个食物
-	snake *p;
-  food=(snake*)malloc(sizeof(snake));
-	srand(ADC_ConvertedValue);//随着ADC变化，产生不一样种子，就会得到没规律的食物
-	food->x = rand()%39;
-	food->y = rand()%39;
-	p = head;//用p来遍历
-  while(p->next!=NULL)//解决食物出现在蛇本身
-	{
-	    if(food->x==p->x&&food->y==p->y)
-			{
-				free(food);
-				creatFood();
-			}
-			p=p->next;
-	}
-	LCD_SetColors(CL_RED,CL_WHITE);
-	ILI9341_DrawRectangle(food->x*6,food->y*6,6,6,1);
-	food1=food;//food1用来标记的作用
-
-}
 
 /**
 * @brief  Touch_Button_Init 初始化按钮参数
@@ -554,11 +829,16 @@ static void Command_Control_Direction(void *btn)
 		status='U';
 	if(ptr->para==DOWN && status!='U')
 		status='D';
-	if(ptr->para==LEFT && status!='R')
+	if(ptr->para==LEFT )
 		status='L';
-	if(ptr->para==RIGHT && status!='L')
+	if(ptr->para==RIGHT)
 		status='R';
 }
+
+
+
+#define ABS(X)  ((X) > 0 ? (X) : -(X))
+
 
 
 

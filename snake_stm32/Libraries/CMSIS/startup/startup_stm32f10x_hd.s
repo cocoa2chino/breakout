@@ -53,7 +53,6 @@ __heap_limit
                 THUMB
 
 
-
 ; Vector Table Mapped to Address 0 at Reset
                 AREA    RESET, DATA, READONLY
                 EXPORT  __Vectors
