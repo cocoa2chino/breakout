@@ -284,7 +284,7 @@ void BallRestart()
 */
 void BallDraw()
 {
-    ILI9341_DrawCircle(bal->pos_x*6+3, bal->pos_y*6+3, bal->radius, 1);
+    ILI9341_DrawCircle(bal->pos_x*6+3, bal->pos_y*6+3, bal->radius-0.5, 1);
 }
 
 void Play()
@@ -329,7 +329,7 @@ void BallMove()
             //再调用一次,保证一个时刻内球会移动
             BallMove();
         }
-        else if(y-1 <= 1)                /*碰到上面墙壁*/
+        else if(y-1 <= 0)                /*碰到上面墙壁*/
         {
             bal->direct = 1;
             BallMove();
@@ -382,7 +382,7 @@ void BallMove()
         }
         else if(y + 1 >= 39)           /*碰到下面挡板*/
         {
-            if((brd->pos_x<=x)&&(brd->pos_x+48>=x))
+            if((brd->pos_x<=x)&&(brd->pos_x+8>=x))
             {
                 bal->direct = 0;
                 BallMove();
@@ -433,13 +433,13 @@ void BallMove()
         break;
     //当前朝左上
     case 2:
-        if(x - 1 <=1)                     /*碰到左边墙壁*/
+        if(x - 1 <=0)                     /*碰到左边墙壁*/
         {
             bal->direct = 0;
             //再调用一次,保证一个时刻内球会移动
             BallMove();
         }
-        else if(y - 1 <= 1)                /*碰到上面墙壁*/
+        else if(y - 1 <= 0)                /*碰到上面墙壁*/
         {
             bal->direct = 3;
             BallMove();
@@ -485,14 +485,14 @@ void BallMove()
         break;
     //当前朝左下
     case 3:
-        if(x - 1 <=1)                                 /*碰到左边墙壁*/
+        if(x - 1 <=0)                                 /*碰到左边墙壁*/
         {
             bal->direct = 1;
             BallMove();
         }
        else if(y + 1 >= 39)           /*碰到下面挡板*/
         {
-            if((brd->pos_x<=x)&&(brd->pos_x+48>=x))
+            if((brd->pos_x<=x)&&(brd->pos_x+8>=x))
             {
                 bal->direct = 2;
                 BallMove();
@@ -542,7 +542,7 @@ void BallMove()
         }
         break;
     }
-    ILI9341_DrawCircle(bal->pos_x*6+3, bal->pos_y*6+3, bal->radius, 1);
+    ILI9341_DrawCircle(bal->pos_x*6+3, bal->pos_y*6+3, bal->radius-0.5, 1);
 }
 
 
@@ -583,6 +583,23 @@ void BoardMove()
             ILI9341_DrawRectangle(brd->pos_x *6+48, brd->pos_y*6, 6, 6, 1);
         }
     }
+
+    if(die == 1)    //如果死了就重启
+	{
+		LCD_SetColors(CL_RED,CL_WHITE);
+		LCD_SetFont(&Font24x32);
+		ILI9341_DispString_EN_CH(12,120,"Game over");
+		LCD_SetFont(&Font8x16);
+		ILI9341_DispString_EN_CH(64,157,"点击任意处开始");
+		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //不使能中断，即不是能5个按键
+		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//按任意位置重新初始化
+		free(blk);
+        free(brd);
+        free(bal);
+        free(pixel);
+		Palette_Init(6);  
+		die = 0;
+	}
 }
 
 /**
@@ -694,6 +711,7 @@ void Touch_Button_Down(uint16_t x,uint16_t y)
   uint8_t i;
   for(i=0;i<BUTTON_NUM;i++)
   {
+    
     /* 触摸到了按钮 */
     if(x<=button[i].end_x && y<=button[i].end_y && y>=button[i].start_y && x>=button[i].start_x )
     {
@@ -727,6 +745,8 @@ void Touch_Button_Up(uint16_t x,uint16_t y)
    uint8_t i; 
    for(i=0;i<BUTTON_NUM;i++)
    {
+     
+     
      /* 触笔在按钮区域释放 */
       if((x<button[i].end_x && x>button[i].start_x && y<button[i].end_y && y>button[i].start_y))
       {        
