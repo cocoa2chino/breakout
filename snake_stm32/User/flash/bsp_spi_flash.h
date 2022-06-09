@@ -12,7 +12,7 @@
 #define SPI_FLASH_PageSize              256
 #define SPI_FLASH_PerWritePageSize      256
 
-/*ÃüÁî¶¨Òå-¿ªÍ·*******************************/
+/*å‘½ä»¤å®šä¹‰-å¼€å¤´*******************************/
 #define W25X_WriteEnable		      0x06 
 #define W25X_WriteDisable		      0x04 
 #define W25X_ReadStatusReg		    0x05 
@@ -30,34 +30,34 @@
 #define W25X_ManufactDeviceID   	0x90 
 #define W25X_JedecDeviceID		    0x9F
 
-/* WIP(busy)±êÖ¾£¬FLASHÄÚ²¿ÕıÔÚĞ´Èë */
+/* WIP(busy)æ ‡å¿—ï¼ŒFLASHå†…éƒ¨æ­£åœ¨å†™å…¥ */
 #define WIP_Flag                  0x01
 #define Dummy_Byte                0xFF
-/*ÃüÁî¶¨Òå-½áÎ²*******************************/
+/*å‘½ä»¤å®šä¹‰-ç»“å°¾*******************************/
 
 
-/*SPI½Ó¿Ú¶¨Òå-¿ªÍ·****************************/
+/*SPIæ¥å£å®šä¹‰-å¼€å¤´****************************/
 #define      FLASH_SPIx                        SPI1
 #define      FLASH_SPI_APBxClock_FUN          RCC_APB2PeriphClockCmd
 #define      FLASH_SPI_CLK                     RCC_APB2Periph_SPI1
 
-//CS(NSS)Òı½Å Æ¬Ñ¡Ñ¡ÆÕÍ¨GPIO¼´¿É
+//CS(NSS)å¼•è„š ç‰‡é€‰é€‰æ™®é€šGPIOå³å¯
 #define      FLASH_SPI_CS_APBxClock_FUN       RCC_APB2PeriphClockCmd
 #define      FLASH_SPI_CS_CLK                  RCC_APB2Periph_GPIOC    
 #define      FLASH_SPI_CS_PORT                 GPIOC
 #define      FLASH_SPI_CS_PIN                  GPIO_Pin_0
 
-//SCKÒı½Å
+//SCKå¼•è„š
 #define      FLASH_SPI_SCK_APBxClock_FUN      RCC_APB2PeriphClockCmd
 #define      FLASH_SPI_SCK_CLK                 RCC_APB2Periph_GPIOA   
 #define      FLASH_SPI_SCK_PORT                GPIOA   
 #define      FLASH_SPI_SCK_PIN                 GPIO_Pin_5
-//MISOÒı½Å
+//MISOå¼•è„š
 #define      FLASH_SPI_MISO_APBxClock_FUN     RCC_APB2PeriphClockCmd
 #define      FLASH_SPI_MISO_CLK                RCC_APB2Periph_GPIOA    
 #define      FLASH_SPI_MISO_PORT               GPIOA 
 #define      FLASH_SPI_MISO_PIN                GPIO_Pin_6
-//MOSIÒı½Å
+//MOSIå¼•è„š
 #define      FLASH_SPI_MOSI_APBxClock_FUN     RCC_APB2PeriphClockCmd
 #define      FLASH_SPI_MOSI_CLK                RCC_APB2Periph_GPIOA    
 #define      FLASH_SPI_MOSI_PORT               GPIOA 
@@ -66,13 +66,13 @@
 #define  		SPI_FLASH_CS_LOW()     						GPIO_ResetBits( FLASH_SPI_CS_PORT, FLASH_SPI_CS_PIN )
 #define  		SPI_FLASH_CS_HIGH()    						GPIO_SetBits( FLASH_SPI_CS_PORT, FLASH_SPI_CS_PIN )
 
-/*SPI½Ó¿Ú¶¨Òå-½áÎ²****************************/
+/*SPIæ¥å£å®šä¹‰-ç»“å°¾****************************/
 
-/*µÈ´ı³¬Ê±Ê±¼ä*/
+/*ç­‰å¾…è¶…æ—¶æ—¶é—´*/
 #define SPIT_FLAG_TIMEOUT         ((uint32_t)0x1000)
 #define SPIT_LONG_TIMEOUT         ((uint32_t)(10 * SPIT_FLAG_TIMEOUT))
 
-/*ĞÅÏ¢Êä³ö*/
+/*ä¿¡æ¯è¾“å‡º*/
 #define FLASH_DEBUG_ON         1
 
 #define FLASH_INFO(fmt,arg...)           printf("<<-FLASH-INFO->> "fmt"\n",##arg)

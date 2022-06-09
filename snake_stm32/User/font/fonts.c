@@ -4,16 +4,16 @@
   * @file    bsp_ili9341_lcd.c
   * @version V1.0
   * @date    2013-xx-xx
-  * @brief   Òº¾§ÆÁ×ÖÄ£Ïà¹Ø
-	*					-Ö§³ÖÖĞÓ¢ÎÄ£¬ĞèÒªÊ¹ÓÃSPI FLASH×ÖÄ£
-	*					-ÈôÒªÊ¹ÓÃSD¿¨ÎÄ¼şÏµÍ³µÄ×ÖÄ£ĞèÒªÌí¼ÓSDÎÄ¼şÏµÍ³Çı¶¯£¬²¢ÅäÖÃºê£ºGBKCODE_FLASH
-	*					  ¿É²Î¿¼¡°Òº¾§ÏÔÊ¾Ó¢ÎÄ£¨×Ö¿âÔÚSD¿¨£©¹¤³Ì¡±
+  * @brief   æ¶²æ™¶å±å­—æ¨¡ç›¸å…³
+	*					-æ”¯æŒä¸­è‹±æ–‡ï¼Œéœ€è¦ä½¿ç”¨SPI FLASHå­—æ¨¡
+	*					-è‹¥è¦ä½¿ç”¨SDå¡æ–‡ä»¶ç³»ç»Ÿçš„å­—æ¨¡éœ€è¦æ·»åŠ SDæ–‡ä»¶ç³»ç»Ÿé©±åŠ¨ï¼Œå¹¶é…ç½®å®ï¼šGBKCODE_FLASH
+	*					  å¯å‚è€ƒâ€œæ¶²æ™¶æ˜¾ç¤ºè‹±æ–‡ï¼ˆå­—åº“åœ¨SDå¡ï¼‰å·¥ç¨‹â€
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ F103-Ö¸ÄÏÕß STM32 ¿ª·¢°å 
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç« F103-æŒ‡å—è€… STM32 å¼€å‘æ¿ 
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */ 
@@ -29,11 +29,11 @@
 
 #endif
 
-/***********************Ó¢ÎÄ×ÖÄ£******************************/
+/***********************è‹±æ–‡å­—æ¨¡******************************/
 /*
- * ³£ÓÃASCII±í£¬Æ«ÒÆÁ¿32£¬´óĞ¡:16£¨¸ß¶È£©* 8 £¨¿í¶È£©
+ * å¸¸ç”¨ASCIIè¡¨ï¼Œåç§»é‡32ï¼Œå¤§å°:16ï¼ˆé«˜åº¦ï¼‰* 8 ï¼ˆå®½åº¦ï¼‰
  */
-const uint8_t ASCII8x16_Table [ ] = {       //@conslons×ÖÌå£¬ÒõÂëµãÕó¸ñÊ½£¬ÖğĞĞË³ÏòÈ¡Ãş
+const uint8_t ASCII8x16_Table [ ] = {       //@conslonså­—ä½“ï¼Œé˜´ç ç‚¹é˜µæ ¼å¼ï¼Œé€è¡Œé¡ºå‘å–æ‘¸
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x18,0x18,0x18,0x18,0x18,0x18,0x08,0x00,0x08,0x18,0x00,0x00,0x00,
 0x00,0x00,0x00,0x34,0x24,0x24,0x24,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -132,9 +132,9 @@ const uint8_t ASCII8x16_Table [ ] = {       //@conslons×ÖÌå£¬ÒõÂëµãÕó¸ñÊ½£¬ÖğĞĞË
 };  
 
 /*
- * ³£ÓÃASCII±í£¬Æ«ÒÆÁ¿32£¬´óĞ¡:24£¨¸ß¶È£©* 16 £¨¿í¶È£©
+ * å¸¸ç”¨ASCIIè¡¨ï¼Œåç§»é‡32ï¼Œå¤§å°:24ï¼ˆé«˜åº¦ï¼‰* 16 ï¼ˆå®½åº¦ï¼‰
  */
-const uint8_t ASCII16x24_Table [ ] = {       //@conslons×ÖÌå£¬ÒõÂëµãÕó¸ñÊ½£¬ÖğĞĞË³ÏòÈ¡Ãş
+const uint8_t ASCII16x24_Table [ ] = {       //@conslonså­—ä½“ï¼Œé˜´ç ç‚¹é˜µæ ¼å¼ï¼Œé€è¡Œé¡ºå‘å–æ‘¸
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -423,9 +423,9 @@ const uint8_t ASCII16x24_Table [ ] = {       //@conslons×ÖÌå£¬ÒõÂëµãÕó¸ñÊ½£¬ÖğĞĞ
 };
 
 /*
- * ³£ÓÃASCII±í£¬Æ«ÒÆÁ¿32£¬´óĞ¡:32£¨¸ß¶È£©* 24 £¨¿í¶È£©
+ * å¸¸ç”¨ASCIIè¡¨ï¼Œåç§»é‡32ï¼Œå¤§å°:32ï¼ˆé«˜åº¦ï¼‰* 24 ï¼ˆå®½åº¦ï¼‰
  */
-const uint8_t ASCII24x32_Table [ ] = {       //@conslons×ÖÌå£¬ÒõÂëµãÕó¸ñÊ½£¬ÖğĞĞË³ÏòÈ¡Ãş
+const uint8_t ASCII24x32_Table [ ] = {       //@conslonså­—ä½“ï¼Œé˜´ç ç‚¹é˜µæ ¼å¼ï¼Œé€è¡Œé¡ºå‘å–æ‘¸
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -1018,22 +1018,22 @@ sFONT Font24x32 = {
 };
 
 
-//Ñ¡ÔñÊ¹ÓÃFLASH×ÖÄ£»¹ÊÇSD¿¨µÄ×ÖÄ£
+//é€‰æ‹©ä½¿ç”¨FLASHå­—æ¨¡è¿˜æ˜¯SDå¡çš„å­—æ¨¡
 #if GBKCODE_FLASH
 
-//Ñ¡Ôñ 1£ºGB2312×ÖÄ£
-//Ñ¡Ôñ 0£ºHZLIB×ÖÄ£(¾É°æ£¬²»½¨ÒéÊ¹ÓÃ)
+//é€‰æ‹© 1ï¼šGB2312å­—æ¨¡
+//é€‰æ‹© 0ï¼šHZLIBå­—æ¨¡(æ—§ç‰ˆï¼Œä¸å»ºè®®ä½¿ç”¨)
 #if 1
 
-/*Ê¹ÓÃFLASH×ÖÄ£*/
-//×ÖÄ£GB2312_H1616ÅäÌ×µÄº¯Êı
+/*ä½¿ç”¨FLASHå­—æ¨¡*/
+//å­—æ¨¡GB2312_H1616é…å¥—çš„å‡½æ•°
 
-//ÖĞÎÄ×Ö¿â´æ´¢ÔÚFLASHµÄÆğÊ¼µØÖ· £º
-//GBKCODE_START_ADDRESS ÔÚfonts.hÎÄ¼ş¶¨Òå
+//ä¸­æ–‡å­—åº“å­˜å‚¨åœ¨FLASHçš„èµ·å§‹åœ°å€ ï¼š
+//GBKCODE_START_ADDRESS åœ¨fonts.hæ–‡ä»¶å®šä¹‰
 /**
-  * @brief  »ñÈ¡FLASHÖĞÎÄÏÔÊ¾×Ö¿âÊı¾İ
-	* @param  pBuffer:´æ´¢×Ö¿â¾ØÕóµÄ»º³åÇø
-	* @param  c £º Òª»ñÈ¡µÄÎÄ×Ö
+  * @brief  è·å–FLASHä¸­æ–‡æ˜¾ç¤ºå­—åº“æ•°æ®
+	* @param  pBuffer:å­˜å‚¨å­—åº“çŸ©é˜µçš„ç¼“å†²åŒº
+	* @param  c ï¼š è¦è·å–çš„æ–‡å­—
   * @retval None.
   */
 int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
@@ -1043,34 +1043,34 @@ int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
 	
 		static uint8_t everRead=0;
 		
-		/*µÚÒ»´ÎÊ¹ÓÃ£¬³õÊ¼»¯FLASH*/
+		/*ç¬¬ä¸€æ¬¡ä½¿ç”¨ï¼Œåˆå§‹åŒ–FLASH*/
 		if(everRead == 0)
 		{
 			SPI_FLASH_Init();
 			everRead = 1;
 		}
 	
-	  High8bit= c >> 8;     /* È¡¸ß8Î»Êı¾İ */
-    Low8bit= c & 0x00FF;  /* È¡µÍ8Î»Êı¾İ */		
+	  High8bit= c >> 8;     /* å–é«˜8ä½æ•°æ® */
+    Low8bit= c & 0x00FF;  /* å–ä½8ä½æ•°æ® */		
 	  	
-		/*GB2312 ¹«Ê½*/
+		/*GB2312 å…¬å¼*/
     pos = ((High8bit-0xa1)*94+Low8bit-0xa1)*WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8; 
-		SPI_FLASH_BufferRead(pBuffer,GBKCODE_START_ADDRESS+pos,WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8); //¶ÁÈ¡×Ö¿âÊı¾İ  
+		SPI_FLASH_BufferRead(pBuffer,GBKCODE_START_ADDRESS+pos,WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8); //è¯»å–å­—åº“æ•°æ®  
 //	  printf ( "%02x %02x %02x %02x\n", pBuffer[0],pBuffer[1],pBuffer[2],pBuffer[3]);
 	
 		return 0;  
      
 }
 
-#else	//¾É°æ×ÖÄ£HZLIB ÅäÌ×µÄº¯Êı
+#else	//æ—§ç‰ˆå­—æ¨¡HZLIB é…å¥—çš„å‡½æ•°
 
-//!!HZLIB²»Ö§³Ö±êµã£¬±¾º¯Êı½öÎª¼æÈİ¶ø±£Áô£¬²»½¨ÒéÊ¹ÓÃ
+//!!HZLIBä¸æ”¯æŒæ ‡ç‚¹ï¼Œæœ¬å‡½æ•°ä»…ä¸ºå…¼å®¹è€Œä¿ç•™ï¼Œä¸å»ºè®®ä½¿ç”¨
 
-/*HZLIBÖĞÎÄ×Ö¿â´æ´¢ÔÚFLASHµÄÆğÊ¼µØÖ·*/
+/*HZLIBä¸­æ–‡å­—åº“å­˜å‚¨åœ¨FLASHçš„èµ·å§‹åœ°å€*/
 #define HZLIB_START_ADDRESS   1*4096
 
-//¾É°æHZLIB×Ö¿âÊ¹ÓÃµÄº¯Êı£¬HZLIB²»Ö§³Ö±êµã
-//±¾º¯ÊıÊ¹ÓÃµÄÑ°Ö·¹«Ê½¸úGB2312µÄÒ²ÉÔÓĞÇø±ğ
+//æ—§ç‰ˆHZLIBå­—åº“ä½¿ç”¨çš„å‡½æ•°ï¼ŒHZLIBä¸æ”¯æŒæ ‡ç‚¹
+//æœ¬å‡½æ•°ä½¿ç”¨çš„å¯»å€å…¬å¼è·ŸGB2312çš„ä¹Ÿç¨æœ‰åŒºåˆ«
 int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
 { 
     unsigned char High8bit,Low8bit;
@@ -1078,7 +1078,7 @@ int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
 		
 		static uint8_t everRead=0;
 		
-		/*µÚÒ»´ÎÊ¹ÓÃ£¬³õÊ¼»¯FLASH*/
+		/*ç¬¬ä¸€æ¬¡ä½¿ç”¨ï¼Œåˆå§‹åŒ–FLASH*/
 		if(everRead == 0)
 		{
 			SPI_FLASH_Init();
@@ -1086,12 +1086,12 @@ int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
 		}
 
 	
-    High8bit= c >> 8;     /* È¡¸ß8Î»Êı¾İ */
-    Low8bit= c & 0x00FF;  /* È¡µÍ8Î»Êı¾İ */	
+    High8bit= c >> 8;     /* å–é«˜8ä½æ•°æ® */
+    Low8bit= c & 0x00FF;  /* å–ä½8ä½æ•°æ® */	
 	
-	  //±¾×ÖÄ£Ê¹ÓÃµÄÑ°Ö·¹«Ê½¸úGB2312µÄÉÔÓĞÇø±ğ
+	  //æœ¬å­—æ¨¡ä½¿ç”¨çš„å¯»å€å…¬å¼è·ŸGB2312çš„ç¨æœ‰åŒºåˆ«
     pos = ((High8bit-0xa0-16)*94+Low8bit-0xa1)*WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8;
-		//µØÖ·Ö¸ÏòHZLIB×ÖÄ£µÄµØÖ·HZLIB_START_ADDRESS
+		//åœ°å€æŒ‡å‘HZLIBå­—æ¨¡çš„åœ°å€HZLIB_START_ADDRESS
 		SPI_FLASH_BufferRead(pBuffer,HZLIB_START_ADDRESS+pos,WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8);
 //	  printf ( "%02x %02x %02x %02x\n", pBuffer[0],pBuffer[1],pBuffer[2],pBuffer[3]);
 	
@@ -1104,22 +1104,22 @@ int GetGBKCode_from_EXFlash( uint8_t * pBuffer, uint16_t c)
 
 
 
-#else //SD¿¨×ÖÄ£
+#else //SDå¡å­—æ¨¡
 
-/*Ê¹ÓÃSD×ÖÄ£*/
+/*ä½¿ç”¨SDå­—æ¨¡*/
 
 static FIL fnew;													/* file objects */
 static FATFS fs;													/* Work area (file system object) for logical drives */
 static FRESULT res_sd; 
 static UINT br;            					/* File R/W count */
 
-//×Ö¿âÎÄ¼ş´æ´¢Î»ÖÃ£¬fonts.hÖĞµÄºê£º
+//å­—åº“æ–‡ä»¶å­˜å‚¨ä½ç½®ï¼Œfonts.hä¸­çš„å®ï¼š
 //#define GBKCODE_FILE_NAME			"0:/Font/GB2312_H2424.FON"
 
 /**
-  * @brief  »ñÈ¡SD¿¨ÖĞÎÄÏÔÊ¾×Ö¿âÊı¾İ
-	* @param  pBuffer:´æ´¢×Ö¿â¾ØÕóµÄ»º³åÇø
-	* @param  c £º Òª»ñÈ¡µÄÎÄ×Ö
+  * @brief  è·å–SDå¡ä¸­æ–‡æ˜¾ç¤ºå­—åº“æ•°æ®
+	* @param  pBuffer:å­˜å‚¨å­—åº“çŸ©é˜µçš„ç¼“å†²åŒº
+	* @param  c ï¼š è¦è·å–çš„æ–‡å­—
   * @retval None.
   */
 int GetGBKCode_from_sd ( uint8_t * pBuffer, uint16_t c)
@@ -1129,12 +1129,12 @@ int GetGBKCode_from_sd ( uint8_t * pBuffer, uint16_t c)
 		
 		static uint8_t everRead = 0;
 	
-    High8bit= c >> 8;     /* È¡¸ß8Î»Êı¾İ */
-    Low8bit= c & 0x00FF;  /* È¡µÍ8Î»Êı¾İ */
+    High8bit= c >> 8;     /* å–é«˜8ä½æ•°æ® */
+    Low8bit= c & 0x00FF;  /* å–ä½8ä½æ•°æ® */
 		
     pos = ((High8bit-0xa1)*94+Low8bit-0xa1)*WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8;
 	
-		/*µÚÒ»´ÎÊ¹ÓÃ£¬¹ÒÔØÎÄ¼şÏµÍ³£¬³õÊ¼»¯sd*/
+		/*ç¬¬ä¸€æ¬¡ä½¿ç”¨ï¼ŒæŒ‚è½½æ–‡ä»¶ç³»ç»Ÿï¼Œåˆå§‹åŒ–sd*/
 		if(everRead == 0)
 		{
 			res_sd = f_mount(&fs,"0:",1);
@@ -1146,9 +1146,9 @@ int GetGBKCode_from_sd ( uint8_t * pBuffer, uint16_t c)
     
     if ( res_sd == FR_OK ) 
     {
-        f_lseek (&fnew, pos);		//Ö¸ÕëÆ«ÒÆ
+        f_lseek (&fnew, pos);		//æŒ‡é’ˆåç§»
 			
-				//16*16´óĞ¡µÄºº×Ö Æä×ÖÄ£ Õ¼ÓÃ16*16/8¸ö×Ö½Ú
+				//16*16å¤§å°çš„æ±‰å­— å…¶å­—æ¨¡ å ç”¨16*16/8ä¸ªå­—èŠ‚
         res_sd = f_read( &fnew, pBuffer, WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8, &br );		 
         
         f_close(&fnew);

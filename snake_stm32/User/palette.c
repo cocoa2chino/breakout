@@ -351,8 +351,7 @@ void GenWall()
 
 /**
 * @brief  GenBlock 初始化砖块
-* @param  blk 砖块链表指针引用
-* @param  row 生成砖块行数
+* @param  --
 * @retval --
 */
 void GenBlock()
@@ -372,7 +371,7 @@ void GenBlock()
 
 /**
 * @brief  DrawBlock 砖块绘制
-* @param  blk 砖块链表头指针引用
+* @param  --
 * @retval --
 */
 void DrawBlock()
@@ -390,7 +389,8 @@ void DrawBlock()
 
 /**
 * @brief  DelBlock 砖块消除
-* @param  blki 砖块指针引用
+* @param  x 横坐标
+* @param  y 纵坐标
 * @retval --
 */
 void DelBlock(int x,int y)
@@ -403,7 +403,7 @@ void DelBlock(int x,int y)
 
 /**
 * @brief  BallInit 初始化小球
-* @param  bal 小球指针引用
+* @param  --
 * @retval --
 */
 void BallInit()
@@ -420,8 +420,7 @@ void BallInit()
 
 /**
 * @brief  BallRestart 失败之后重新开始,小球在当前挡板中间生成
-* @param  bal 小球指针引用
-* @param  pos_x 挡板中点x坐标
+* @param  --
 * @retval --
 */
 void BallRestart()
@@ -435,7 +434,7 @@ void BallRestart()
 
 /**
 * @brief  BallDraw 小球绘制
-* @param  bal 小球指针引用
+* @param  --
 * @retval --
 */
 void BallDraw()
@@ -463,7 +462,7 @@ void Play()
 
 /**
 * @brief  BallMove 小球移动过程函数
-* @param  bal 小球指针引用
+* @param  --
 * @retval --
 */
 void BallMove()
@@ -700,7 +699,11 @@ void BallMove()
 }
 
 
-
+/**
+* @brief  BoardInit 挡板初始化
+* @param  --
+* @retval --
+*/
 void BoardInit(void)
 {
     brd = (board*)malloc(sizeof(struct Board));
@@ -711,7 +714,7 @@ void BoardInit(void)
 
 /**
 * @brief  BoardMove 挡板移动
-* @param  brd 挡板指针引用
+* @param  --
 * @retval --
 */
 void BoardMove()
@@ -754,7 +757,7 @@ void BoardMove()
 
 /**
 * @brief  BoardDraw 挡板绘制
-* @param  brd 挡板指针引用
+* @param  --
 * @retval --
 */
 void BoardDraw()
