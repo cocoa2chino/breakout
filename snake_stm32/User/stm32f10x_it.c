@@ -158,7 +158,7 @@ void  BASIC_TIM_IRQHandler (void)
 {
 	if ( TIM_GetITStatus( BASIC_TIM, TIM_IT_Update) != RESET ) 
 	{	
-		XPT2046_TouchEvenHandler();  //´¥Ãþ¼ì²â
+		XPT2046_TouchEvenHandler();  //è§¦æ‘¸æ£€æµ‹
 		TIM_ClearITPendingBit(BASIC_TIM, TIM_FLAG_Update);  		 
 	}		 	
 }

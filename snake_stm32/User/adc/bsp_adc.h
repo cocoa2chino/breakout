@@ -4,8 +4,8 @@
 
 #include "stm32f10x.h"
 
-// ×¢Òâ£ºÓÃ×÷ADC²É¼¯µÄIO±ØÐëÃ»ÓÐ¸´ÓÃ£¬·ñÔò²É¼¯µçÑ¹»áÓÐÓ°Ïì
-/********************ADC1ÊäÈëÍ¨µÀ£¨Òý½Å£©ÅäÖÃ**************************/
+// æ³¨æ„ï¼šç”¨ä½œADCé‡‡é›†çš„IOå¿…é¡»æ²¡æœ‰å¤ç”¨ï¼Œå¦åˆ™é‡‡é›†ç”µåŽ‹ä¼šæœ‰å½±å“
+/********************ADC1è¾“å…¥é€šé“ï¼ˆå¼•è„šï¼‰é…ç½®**************************/
 #define    ADCx                          ADC1
 #define    ADC_APBxClock_FUN             RCC_APB2PeriphClockCmd
 #define    ADC_CLK                       RCC_APB2Periph_ADC1
@@ -14,7 +14,7 @@
 #define    ADC_GPIO_CLK                  RCC_APB2Periph_GPIOC  
 #define    ADC_PORT                      GPIOC
 
-// PC1-Í¨µÀ11 ¶ÀÁ¢IO
+// PC1-é€šé“11 ç‹¬ç«‹IO
 #define    ADC_PIN                       GPIO_Pin_3
 #define    ADC_CHANNEL                   ADC_Channel_13
 #define    ADC_DMA_CHANNEL               DMA1_Channel1

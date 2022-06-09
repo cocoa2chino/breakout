@@ -5,10 +5,10 @@
 #include "stm32f10x.h"
 
 
-/********************»ù±¾¶¨Ê±Æ÷TIM²ÎÊı¶¨Òå£¬Ö»ÏŞTIM6¡¢7************/
-#define BASIC_TIM6 // Èç¹ûÊ¹ÓÃTIM7£¬×¢ÊÍµôÕâ¸öºê¼´¿É
+/********************åŸºæœ¬å®šæ—¶å™¨TIMå‚æ•°å®šä¹‰ï¼Œåªé™TIM6ã€7************/
+#define BASIC_TIM6 // å¦‚æœä½¿ç”¨TIM7ï¼Œæ³¨é‡Šæ‰è¿™ä¸ªå®å³å¯
 
-#ifdef  BASIC_TIM6 // Ê¹ÓÃ»ù±¾¶¨Ê±Æ÷TIM6
+#ifdef  BASIC_TIM6 // ä½¿ç”¨åŸºæœ¬å®šæ—¶å™¨TIM6
 #define            BASIC_TIM                   TIM6
 #define            BASIC_TIM_APBxClock_FUN     RCC_APB1PeriphClockCmd
 #define            BASIC_TIM_CLK               RCC_APB1Periph_TIM6
@@ -17,7 +17,7 @@
 #define            BASIC_TIM_IRQ               TIM6_IRQn
 #define            BASIC_TIM_IRQHandler        TIM6_IRQHandler
 
-#else  // Ê¹ÓÃ»ù±¾¶¨Ê±Æ÷TIM7
+#else  // ä½¿ç”¨åŸºæœ¬å®šæ—¶å™¨TIM7
 #define            BASIC_TIM                   TIM7
 #define            BASIC_TIM_APBxClock_FUN     RCC_APB1PeriphClockCmd
 #define            BASIC_TIM_CLK               RCC_APB1Periph_TIM7
@@ -27,7 +27,7 @@
 #define            BASIC_TIM_IRQHandler        TIM7_IRQHandler
 
 #endif
-/**************************º¯ÊıÉùÃ÷********************************/
+/**************************å‡½æ•°å£°æ˜********************************/
 
 void BASIC_TIM_Init(void);
 

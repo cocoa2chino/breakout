@@ -7,65 +7,65 @@
 
 
 /***************************************************************************************
-2^26 =0X0400 0000 = 64MB,Ã¿¸ö BANK ÓĞ4*64MB = 256MB
+2^26 =0X0400 0000 = 64MB,æ¯ä¸ª BANK æœ‰4*64MB = 256MB
 64MB:FSMC_Bank1_NORSRAM1:0X6000 0000 ~ 0X63FF FFFF
 64MB:FSMC_Bank1_NORSRAM2:0X6400 0000 ~ 0X67FF FFFF
 64MB:FSMC_Bank1_NORSRAM3:0X6800 0000 ~ 0X6BFF FFFF
 64MB:FSMC_Bank1_NORSRAM4:0X6C00 0000 ~ 0X6FFF FFFF
 
-Ñ¡ÔñBANK1-BORSRAM1 Á¬½Ó TFT£¬µØÖ··¶Î§Îª0X6000 0000 ~ 0X63FF FFFF
-FSMC_A16 ½ÓLCDµÄDC(¼Ä´æÆ÷/Êı¾İÑ¡Ôñ)½Å
-¼Ä´æÆ÷»ùµØÖ· = 0X60000000
-RAM»ùµØÖ· = 0X60020000 = 0X60000000+2^16*2 = 0X60000000 + 0X20000 = 0X60020000
-µ±Ñ¡Ôñ²»Í¬µÄµØÖ·ÏßÊ±£¬µØÖ·ÒªÖØĞÂ¼ÆËã  
+é€‰æ‹©BANK1-BORSRAM1 è¿æ¥ TFTï¼Œåœ°å€èŒƒå›´ä¸º0X6000 0000 ~ 0X63FF FFFF
+FSMC_A16 æ¥LCDçš„DC(å¯„å­˜å™¨/æ•°æ®é€‰æ‹©)è„š
+å¯„å­˜å™¨åŸºåœ°å€ = 0X60000000
+RAMåŸºåœ°å€ = 0X60020000 = 0X60000000+2^16*2 = 0X60000000 + 0X20000 = 0X60020000
+å½“é€‰æ‹©ä¸åŒçš„åœ°å€çº¿æ—¶ï¼Œåœ°å€è¦é‡æ–°è®¡ç®—  
 ****************************************************************************************/
 
-/******************************* ILI9341 ÏÔÊ¾ÆÁµÄ FSMC ²ÎÊı¶¨Òå ***************************/
-//FSMC_Bank1_NORSRAMÓÃÓÚLCDÃüÁî²Ù×÷µÄµØÖ·
+/******************************* ILI9341 æ˜¾ç¤ºå±çš„ FSMC å‚æ•°å®šä¹‰ ***************************/
+//FSMC_Bank1_NORSRAMç”¨äºLCDå‘½ä»¤æ“ä½œçš„åœ°å€
 #define      FSMC_Addr_ILI9341_CMD         ( ( uint32_t ) 0x60000000 )
 
-//FSMC_Bank1_NORSRAMÓÃÓÚLCDÊı¾İ²Ù×÷µÄµØÖ·      
+//FSMC_Bank1_NORSRAMç”¨äºLCDæ•°æ®æ“ä½œçš„åœ°å€      
 #define      FSMC_Addr_ILI9341_DATA        ( ( uint32_t ) 0x60020000 )
 
-//ÓÉÆ¬Ñ¡Òı½Å¾ö¶¨µÄNOR/SRAM¿é
+//ç”±ç‰‡é€‰å¼•è„šå†³å®šçš„NOR/SRAMå—
 #define      FSMC_Bank1_NORSRAMx           FSMC_Bank1_NORSRAM1
 
 
 
-/******************************* ILI9341 ÏÔÊ¾ÆÁ8080Í¨Ñ¶Òı½Å¶¨Òå ***************************/
-/******¿ØÖÆĞÅºÅÏß******/
-//Æ¬Ñ¡£¬Ñ¡ÔñNOR/SRAM¿é
+/******************************* ILI9341 æ˜¾ç¤ºå±8080é€šè®¯å¼•è„šå®šä¹‰ ***************************/
+/******æ§åˆ¶ä¿¡å·çº¿******/
+//ç‰‡é€‰ï¼Œé€‰æ‹©NOR/SRAMå—
 #define      ILI9341_CS_CLK                RCC_APB2Periph_GPIOD   
 #define      ILI9341_CS_PORT               GPIOD
 #define      ILI9341_CS_PIN                GPIO_Pin_7
 
-//DCÒı½Å£¬Ê¹ÓÃFSMCµÄµØÖ·ĞÅºÅ¿ØÖÆ£¬±¾Òı½Å¾ö¶¨ÁË·ÃÎÊLCDÊ±Ê¹ÓÃµÄµØÖ·
-//PD11ÎªFSMC_A16
+//DCå¼•è„šï¼Œä½¿ç”¨FSMCçš„åœ°å€ä¿¡å·æ§åˆ¶ï¼Œæœ¬å¼•è„šå†³å®šäº†è®¿é—®LCDæ—¶ä½¿ç”¨çš„åœ°å€
+//PD11ä¸ºFSMC_A16
 #define      ILI9341_DC_CLK                RCC_APB2Periph_GPIOD   
 #define      ILI9341_DC_PORT               GPIOD
 #define      ILI9341_DC_PIN                GPIO_Pin_11
 
-//Ğ´Ê¹ÄÜ
+//å†™ä½¿èƒ½
 #define      ILI9341_WR_CLK                RCC_APB2Periph_GPIOD   
 #define      ILI9341_WR_PORT               GPIOD
 #define      ILI9341_WR_PIN                GPIO_Pin_5
 
-//¶ÁÊ¹ÄÜ
+//è¯»ä½¿èƒ½
 #define      ILI9341_RD_CLK                RCC_APB2Periph_GPIOD   
 #define      ILI9341_RD_PORT               GPIOD
 #define      ILI9341_RD_PIN                GPIO_Pin_4
 
-//¸´Î»Òı½Å
+//å¤ä½å¼•è„š
 #define      ILI9341_RST_CLK               RCC_APB2Periph_GPIOE
 #define      ILI9341_RST_PORT              GPIOE
 #define      ILI9341_RST_PIN               GPIO_Pin_1
 
-//±³¹âÒı½Å
+//èƒŒå…‰å¼•è„š
 #define      ILI9341_BK_CLK                RCC_APB2Periph_GPIOD    
 #define      ILI9341_BK_PORT               GPIOD
 #define      ILI9341_BK_PIN                GPIO_Pin_12
 
-/********Êı¾İĞÅºÅÏß***************/
+/********æ•°æ®ä¿¡å·çº¿***************/
 #define      ILI9341_D0_CLK                RCC_APB2Periph_GPIOD   
 #define      ILI9341_D0_PORT               GPIOD
 #define      ILI9341_D0_PIN                GPIO_Pin_14
@@ -130,52 +130,52 @@ RAM»ùµØÖ· = 0X60020000 = 0X60000000+2^16*2 = 0X60000000 + 0X20000 = 0X60020000
 #define      ILI9341_D15_PORT               GPIOD
 #define      ILI9341_D15_PIN                GPIO_Pin_10
 
-/*************************************** µ÷ÊÔÔ¤ÓÃ ******************************************/
+/*************************************** è°ƒè¯•é¢„ç”¨ ******************************************/
 #define      DEBUG_DELAY()                
 
-/***************************** ILI934 ÏÔÊ¾ÇøÓòµÄÆğÊ¼×ø±êºÍ×ÜĞĞÁĞÊı ***************************/
-#define      ILI9341_DispWindow_X_Star		    0     //ÆğÊ¼µãµÄX×ø±ê
-#define      ILI9341_DispWindow_Y_Star		    0     //ÆğÊ¼µãµÄY×ø±ê
+/***************************** ILI934 æ˜¾ç¤ºåŒºåŸŸçš„èµ·å§‹åæ ‡å’Œæ€»è¡Œåˆ—æ•° ***************************/
+#define      ILI9341_DispWindow_X_Star		    0     //èµ·å§‹ç‚¹çš„Xåæ ‡
+#define      ILI9341_DispWindow_Y_Star		    0     //èµ·å§‹ç‚¹çš„Yåæ ‡
 
-#define 			ILI9341_LESS_PIXEL	  							240			//Òº¾§ÆÁ½Ï¶Ì·½ÏòµÄÏñËØ¿í¶È
-#define 			ILI9341_MORE_PIXEL	 								320			//Òº¾§ÆÁ½Ï³¤·½ÏòµÄÏñËØ¿í¶È
+#define 			ILI9341_LESS_PIXEL	  							240			//æ¶²æ™¶å±è¾ƒçŸ­æ–¹å‘çš„åƒç´ å®½åº¦
+#define 			ILI9341_MORE_PIXEL	 								320			//æ¶²æ™¶å±è¾ƒé•¿æ–¹å‘çš„åƒç´ å®½åº¦
 
-//¸ù¾İÒº¾§É¨Ãè·½Ïò¶ø±ä»¯µÄXYÏñËØ¿í¶È
-//µ÷ÓÃILI9341_GramScanº¯ÊıÉèÖÃ·½ÏòÊ±»á×Ô¶¯¸ü¸Ä
+//æ ¹æ®æ¶²æ™¶æ‰«ææ–¹å‘è€Œå˜åŒ–çš„XYåƒç´ å®½åº¦
+//è°ƒç”¨ILI9341_GramScanå‡½æ•°è®¾ç½®æ–¹å‘æ—¶ä¼šè‡ªåŠ¨æ›´æ”¹
 extern uint16_t LCD_X_LENGTH,LCD_Y_LENGTH; 
 
-//Òº¾§ÆÁÉ¨ÃèÄ£Ê½
-//²ÎÊı¿ÉÑ¡ÖµÎª0-7
+//æ¶²æ™¶å±æ‰«ææ¨¡å¼
+//å‚æ•°å¯é€‰å€¼ä¸º0-7
 extern uint8_t LCD_SCAN_MODE;
 
-/******************************* ¶¨Òå ILI934 ÏÔÊ¾ÆÁ³£ÓÃÑÕÉ« ********************************/
-#define      BACKGROUND		                BLACK   //Ä¬ÈÏ±³¾°ÑÕÉ«
+/******************************* å®šä¹‰ ILI934 æ˜¾ç¤ºå±å¸¸ç”¨é¢œè‰² ********************************/
+#define      BACKGROUND		                BLACK   //é»˜è®¤èƒŒæ™¯é¢œè‰²
 
-#define      WHITE		 		                  0xFFFF	   //°×É«
-#define      BLACK                         0x0000	   //ºÚÉ« 
-#define      GREY                          0xF7DE	   //»ÒÉ« 
-#define      BLUE                          0x001F	   //À¶É« 
-#define      BLUE2                         0x051F	   //Ç³À¶É« 
-#define      RED                           0xF800	   //ºìÉ« 
-#define      MAGENTA                       0xF81F	   //ºì×ÏÉ«£¬ÑóºìÉ« 
-#define      GREEN                         0x07E0	   //ÂÌÉ« 
-#define      CYAN                          0x7FFF	   //À¶ÂÌÉ«£¬ÇàÉ« 
-#define      YELLOW                        0xFFE0	   //»ÆÉ« 
+#define      WHITE		 		                  0xFFFF	   //ç™½è‰²
+#define      BLACK                         0x0000	   //é»‘è‰² 
+#define      GREY                          0xF7DE	   //ç°è‰² 
+#define      BLUE                          0x001F	   //è“è‰² 
+#define      BLUE2                         0x051F	   //æµ…è“è‰² 
+#define      RED                           0xF800	   //çº¢è‰² 
+#define      MAGENTA                       0xF81F	   //çº¢ç´«è‰²ï¼Œæ´‹çº¢è‰² 
+#define      GREEN                         0x07E0	   //ç»¿è‰² 
+#define      CYAN                          0x7FFF	   //è“ç»¿è‰²ï¼Œé’è‰² 
+#define      YELLOW                        0xFFE0	   //é»„è‰² 
 #define      BRED                          0xF81F
 #define      GRED                          0xFFE0
 #define      GBLUE                         0x07FF
 
 
 
-/******************************* ¶¨Òå ILI934 ³£ÓÃÃüÁî ********************************/
-#define      CMD_SetCoordinateX		 		    0x2A	     //ÉèÖÃX×ø±ê
-#define      CMD_SetCoordinateY		 		    0x2B	     //ÉèÖÃY×ø±ê
-#define      CMD_SetPixel		 		          0x2C	     //Ìî³äÏñËØ
+/******************************* å®šä¹‰ ILI934 å¸¸ç”¨å‘½ä»¤ ********************************/
+#define      CMD_SetCoordinateX		 		    0x2A	     //è®¾ç½®Xåæ ‡
+#define      CMD_SetCoordinateY		 		    0x2B	     //è®¾ç½®Yåæ ‡
+#define      CMD_SetPixel		 		          0x2C	     //å¡«å……åƒç´ 
 
 
 
 
-/********************************** ÉùÃ÷ ILI934 º¯Êı ***************************************/
+/********************************** å£°æ˜ ILI934 å‡½æ•° ***************************************/
 void                     ILI9341_Init                    ( void );
 void                     ILI9341_Rst                     ( void );
 void                     ILI9341_BackLed_Control         ( FunctionalState enumState );
@@ -205,19 +205,19 @@ void 											LCD_SetTextColor								(uint16_t Color)	;
 void 											LCD_SetColors										(uint16_t TextColor, uint16_t BackColor);
 void 											LCD_GetColors										(uint16_t *TextColor, uint16_t *BackColor);
 
-void ILI9341_DisplayStringEx(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
-																 uint16_t y, 				//×Ö·ûÏÔÊ¾Î»ÖÃy
-																 uint16_t Font_width,	//ÒªÏÔÊ¾µÄ×ÖÌå¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
-																 uint16_t Font_Height,	//ÒªÏÔÊ¾µÄ×ÖÌå¸ß¶È£¬×¢ÒâÎªÅ¼Êı
-																 uint8_t *ptr,					//ÏÔÊ¾µÄ×Ö·ûÄÚÈİ
-																 uint16_t DrawModel);  //ÊÇ·ñ·´É«ÏÔÊ¾
+void ILI9341_DisplayStringEx(uint16_t x, 		//å­—ç¬¦æ˜¾ç¤ºä½ç½®x
+																 uint16_t y, 				//å­—ç¬¦æ˜¾ç¤ºä½ç½®y
+																 uint16_t Font_width,	//è¦æ˜¾ç¤ºçš„å­—ä½“å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+																 uint16_t Font_Height,	//è¦æ˜¾ç¤ºçš„å­—ä½“é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+																 uint8_t *ptr,					//æ˜¾ç¤ºçš„å­—ç¬¦å†…å®¹
+																 uint16_t DrawModel);  //æ˜¯å¦åè‰²æ˜¾ç¤º
 
-void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
-																			 uint16_t y, 				//×Ö·ûÏÔÊ¾Î»ÖÃy
-																			 uint16_t Font_width,	//ÒªÏÔÊ¾µÄ×ÖÌå¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
-																			 uint16_t Font_Height,	//ÒªÏÔÊ¾µÄ×ÖÌå¸ß¶È£¬×¢ÒâÎªÅ¼Êı
-																			 uint8_t *ptr,					//ÏÔÊ¾µÄ×Ö·ûÄÚÈİ
-																			 uint16_t DrawModel);  //ÊÇ·ñ·´É«ÏÔÊ¾
+void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//å­—ç¬¦æ˜¾ç¤ºä½ç½®x
+																			 uint16_t y, 				//å­—ç¬¦æ˜¾ç¤ºä½ç½®y
+																			 uint16_t Font_width,	//è¦æ˜¾ç¤ºçš„å­—ä½“å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+																			 uint16_t Font_Height,	//è¦æ˜¾ç¤ºçš„å­—ä½“é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+																			 uint8_t *ptr,					//æ˜¾ç¤ºçš„å­—ç¬¦å†…å®¹
+																			 uint16_t DrawModel);  //æ˜¯å¦åè‰²æ˜¾ç¤º
 
 #endif /* __BSP_ILI9341_ILI9341_H */
 

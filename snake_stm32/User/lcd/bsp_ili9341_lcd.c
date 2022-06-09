@@ -3,13 +3,13 @@
   * @file    bsp_ili9341_lcd.c
   * @version V1.0
   * @date    2013-xx-xx
-  * @brief   ili9341Òº¾§ÆÁÇı¶¯
+  * @brief   ili9341æ¶²æ™¶å±é©±åŠ¨
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ F103-Ö¸ÄÏÕß STM32 ¿ª·¢°å 
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç« F103-æŒ‡å—è€… STM32 å¼€å‘æ¿ 
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */ 
@@ -17,21 +17,21 @@
 #include "./lcd/bsp_ili9341_lcd.h"
 #include "./font/fonts.h"	
 
-//¸ù¾İÒº¾§É¨Ãè·½Ïò¶ø±ä»¯µÄXYÏñËØ¿í¶È
-//µ÷ÓÃILI9341_GramScanº¯ÊıÉèÖÃ·½ÏòÊ±»á×Ô¶¯¸ü¸Ä
+//æ ¹æ®æ¶²æ™¶æ‰«ææ–¹å‘è€Œå˜åŒ–çš„XYåƒç´ å®½åº¦
+//è°ƒç”¨ILI9341_GramScanå‡½æ•°è®¾ç½®æ–¹å‘æ—¶ä¼šè‡ªåŠ¨æ›´æ”¹
 uint16_t LCD_X_LENGTH = ILI9341_LESS_PIXEL;
 uint16_t LCD_Y_LENGTH = ILI9341_MORE_PIXEL;
 
-//Òº¾§ÆÁÉ¨ÃèÄ£Ê½£¬±¾±äÁ¿Ö÷ÒªÓÃÓÚ·½±ãÑ¡Ôñ´¥ÃşÆÁµÄ¼ÆËã²ÎÊı
-//²ÎÊı¿ÉÑ¡ÖµÎª0-7
-//µ÷ÓÃILI9341_GramScanº¯ÊıÉèÖÃ·½ÏòÊ±»á×Ô¶¯¸ü¸Ä
-//LCD¸Õ³õÊ¼»¯Íê³ÉÊ±»áÊ¹ÓÃ±¾Ä¬ÈÏÖµ
+//æ¶²æ™¶å±æ‰«ææ¨¡å¼ï¼Œæœ¬å˜é‡ä¸»è¦ç”¨äºæ–¹ä¾¿é€‰æ‹©è§¦æ‘¸å±çš„è®¡ç®—å‚æ•°
+//å‚æ•°å¯é€‰å€¼ä¸º0-7
+//è°ƒç”¨ILI9341_GramScanå‡½æ•°è®¾ç½®æ–¹å‘æ—¶ä¼šè‡ªåŠ¨æ›´æ”¹
+//LCDåˆšåˆå§‹åŒ–å®Œæˆæ—¶ä¼šä½¿ç”¨æœ¬é»˜è®¤å€¼
 uint8_t LCD_SCAN_MODE = 6;
 
 
-static sFONT *LCD_Currentfonts = &Font8x16;  //Ó¢ÎÄ×ÖÌå
-static uint16_t CurrentTextColor   = BLACK;//Ç°¾°É«
-static uint16_t CurrentBackColor   = WHITE;//±³¾°É«
+static sFONT *LCD_Currentfonts = &Font8x16;  //è‹±æ–‡å­—ä½“
+static uint16_t CurrentTextColor   = BLACK;//å‰æ™¯è‰²
+static uint16_t CurrentBackColor   = WHITE;//èƒŒæ™¯è‰²
 
 __inline void                 ILI9341_Write_Cmd           ( uint16_t usCmd );
 __inline void                 ILI9341_Write_Data          ( uint16_t usData );
@@ -48,9 +48,9 @@ static uint16_t               ILI9341_Read_PixelData      ( void );
 
 
 /**
-  * @brief  ÏòILI9341Ğ´ÈëÃüÁî
-  * @param  usCmd :ÒªĞ´ÈëµÄÃüÁî£¨±í¼Ä´æÆ÷µØÖ·£©
-  * @retval ÎŞ
+  * @brief  å‘ILI9341å†™å…¥å‘½ä»¤
+  * @param  usCmd :è¦å†™å…¥çš„å‘½ä»¤ï¼ˆè¡¨å¯„å­˜å™¨åœ°å€ï¼‰
+  * @retval æ— 
   */	
 __inline void ILI9341_Write_Cmd ( uint16_t usCmd )
 {
@@ -60,9 +60,9 @@ __inline void ILI9341_Write_Cmd ( uint16_t usCmd )
 
 
 /**
-  * @brief  ÏòILI9341Ğ´ÈëÊı¾İ
-  * @param  usData :ÒªĞ´ÈëµÄÊı¾İ
-  * @retval ÎŞ
+  * @brief  å‘ILI9341å†™å…¥æ•°æ®
+  * @param  usData :è¦å†™å…¥çš„æ•°æ®
+  * @retval æ— 
   */	
 __inline void ILI9341_Write_Data ( uint16_t usData )
 {
@@ -72,9 +72,9 @@ __inline void ILI9341_Write_Data ( uint16_t usData )
 
 
 /**
-  * @brief  ´ÓILI9341¶ÁÈ¡Êı¾İ
-  * @param  ÎŞ
-  * @retval ¶ÁÈ¡µ½µÄÊı¾İ
+  * @brief  ä»ILI9341è¯»å–æ•°æ®
+  * @param  æ— 
+  * @retval è¯»å–åˆ°çš„æ•°æ®
   */	
 __inline uint16_t ILI9341_Read_Data ( void )
 {
@@ -84,9 +84,9 @@ __inline uint16_t ILI9341_Read_Data ( void )
 
 
 /**
-  * @brief  ÓÃÓÚ ILI9341 ¼òµ¥ÑÓÊ±º¯Êı
-  * @param  nCount £ºÑÓÊ±¼ÆÊıÖµ
-  * @retval ÎŞ
+  * @brief  ç”¨äº ILI9341 ç®€å•å»¶æ—¶å‡½æ•°
+  * @param  nCount ï¼šå»¶æ—¶è®¡æ•°å€¼
+  * @retval æ— 
   */	
 static void ILI9341_Delay ( __IO uint32_t nCount )
 {
@@ -96,20 +96,20 @@ static void ILI9341_Delay ( __IO uint32_t nCount )
 
 
 /**
-  * @brief  ³õÊ¼»¯ILI9341µÄIOÒı½Å
-  * @param  ÎŞ
-  * @retval ÎŞ
+  * @brief  åˆå§‹åŒ–ILI9341çš„IOå¼•è„š
+  * @param  æ— 
+  * @retval æ— 
   */
 static void ILI9341_GPIO_Config ( void )
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	/* Ê¹ÄÜFSMC¶ÔÓ¦ÏàÓ¦¹Ü½ÅÊ±ÖÓ*/
+	/* ä½¿èƒ½FSMCå¯¹åº”ç›¸åº”ç®¡è„šæ—¶é’Ÿ*/
 	RCC_APB2PeriphClockCmd ( 	
-													/*¿ØÖÆĞÅºÅ*/
+													/*æ§åˆ¶ä¿¡å·*/
 													ILI9341_CS_CLK|ILI9341_DC_CLK|ILI9341_WR_CLK|
 													ILI9341_RD_CLK	|ILI9341_BK_CLK|ILI9341_RST_CLK|
-													/*Êı¾İĞÅºÅ*/
+													/*æ•°æ®ä¿¡å·*/
 													ILI9341_D0_CLK|ILI9341_D1_CLK|	ILI9341_D2_CLK | 
 													ILI9341_D3_CLK | ILI9341_D4_CLK|ILI9341_D5_CLK|
 													ILI9341_D6_CLK | ILI9341_D7_CLK|ILI9341_D8_CLK|
@@ -118,7 +118,7 @@ static void ILI9341_GPIO_Config ( void )
 													ILI9341_D15_CLK	, ENABLE );
 		
 	
-	/* ÅäÖÃFSMCÏà¶ÔÓ¦µÄÊı¾İÏß,FSMC-D0~D15 */	
+	/* é…ç½®FSMCç›¸å¯¹åº”çš„æ•°æ®çº¿,FSMC-D0~D15 */	
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode =  GPIO_Mode_AF_PP;
 	
@@ -172,7 +172,7 @@ static void ILI9341_GPIO_Config ( void )
 	
 
 	
-	/* ÅäÖÃFSMCÏà¶ÔÓ¦µÄ¿ØÖÆÏß
+	/* é…ç½®FSMCç›¸å¯¹åº”çš„æ§åˆ¶çº¿
 	 * FSMC_NOE   :LCD-RD
 	 * FSMC_NWE   :LCD-WR
 	 * FSMC_NE1   :LCD-CS
@@ -194,7 +194,7 @@ static void ILI9341_GPIO_Config ( void )
 	GPIO_Init ( ILI9341_DC_PORT, & GPIO_InitStructure );
 	
 
-  /* ÅäÖÃLCD¸´Î»RST¿ØÖÆ¹Ü½Å*/
+  /* é…ç½®LCDå¤ä½RSTæ§åˆ¶ç®¡è„š*/
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	
@@ -202,7 +202,7 @@ static void ILI9341_GPIO_Config ( void )
 	GPIO_Init ( ILI9341_RST_PORT, & GPIO_InitStructure );
 	
 	
-	/* ÅäÖÃLCD±³¹â¿ØÖÆ¹Ü½ÅBK*/
+	/* é…ç½®LCDèƒŒå…‰æ§åˆ¶ç®¡è„šBK*/
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;  
 	
@@ -212,34 +212,34 @@ static void ILI9341_GPIO_Config ( void )
 
 
  /**
-  * @brief  LCD  FSMC Ä£Ê½ÅäÖÃ
-  * @param  ÎŞ
-  * @retval ÎŞ
+  * @brief  LCD  FSMC æ¨¡å¼é…ç½®
+  * @param  æ— 
+  * @retval æ— 
   */
 static void ILI9341_FSMC_Config ( void )
 {
 	FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
 	FSMC_NORSRAMTimingInitTypeDef  readWriteTiming; 	
 	
-	/* Ê¹ÄÜFSMCÊ±ÖÓ*/
+	/* ä½¿èƒ½FSMCæ—¶é’Ÿ*/
 	RCC_AHBPeriphClockCmd ( RCC_AHBPeriph_FSMC, ENABLE );
 
-	//µØÖ·½¨Á¢Ê±¼ä£¨ADDSET£©Îª1¸öHCLK 2/72M=28ns
-	readWriteTiming.FSMC_AddressSetupTime      = 0x01;	 //µØÖ·½¨Á¢Ê±¼ä
-	//Êı¾İ±£³ÖÊ±¼ä£¨DATAST£©+ 1¸öHCLK = 5/72M=70ns	
-	readWriteTiming.FSMC_DataSetupTime         = 0x04;	 //Êı¾İ½¨Á¢Ê±¼ä
-	//Ñ¡Ôñ¿ØÖÆµÄÄ£Ê½
-	//Ä£Ê½B,Òì²½NOR FLASHÄ£Ê½£¬ÓëILI9341µÄ8080Ê±ĞòÆ¥Åä
+	//åœ°å€å»ºç«‹æ—¶é—´ï¼ˆADDSETï¼‰ä¸º1ä¸ªHCLK 2/72M=28ns
+	readWriteTiming.FSMC_AddressSetupTime      = 0x01;	 //åœ°å€å»ºç«‹æ—¶é—´
+	//æ•°æ®ä¿æŒæ—¶é—´ï¼ˆDATASTï¼‰+ 1ä¸ªHCLK = 5/72M=70ns	
+	readWriteTiming.FSMC_DataSetupTime         = 0x04;	 //æ•°æ®å»ºç«‹æ—¶é—´
+	//é€‰æ‹©æ§åˆ¶çš„æ¨¡å¼
+	//æ¨¡å¼B,å¼‚æ­¥NOR FLASHæ¨¡å¼ï¼Œä¸ILI9341çš„8080æ—¶åºåŒ¹é…
 	readWriteTiming.FSMC_AccessMode            = FSMC_AccessMode_B;	
 	
-	/*ÒÔÏÂÅäÖÃÓëÄ£Ê½BÎŞ¹Ø*/
-	//µØÖ·±£³ÖÊ±¼ä£¨ADDHLD£©Ä£Ê½AÎ´ÓÃµ½
-	readWriteTiming.FSMC_AddressHoldTime       = 0x00;	 //µØÖ·±£³ÖÊ±¼ä
-	//ÉèÖÃ×ÜÏß×ª»»ÖÜÆÚ£¬½öÓÃÓÚ¸´ÓÃÄ£Ê½µÄNOR²Ù×÷
+	/*ä»¥ä¸‹é…ç½®ä¸æ¨¡å¼Bæ— å…³*/
+	//åœ°å€ä¿æŒæ—¶é—´ï¼ˆADDHLDï¼‰æ¨¡å¼Aæœªç”¨åˆ°
+	readWriteTiming.FSMC_AddressHoldTime       = 0x00;	 //åœ°å€ä¿æŒæ—¶é—´
+	//è®¾ç½®æ€»çº¿è½¬æ¢å‘¨æœŸï¼Œä»…ç”¨äºå¤ç”¨æ¨¡å¼çš„NORæ“ä½œ
 	readWriteTiming.FSMC_BusTurnAroundDuration = 0x00;
-	//ÉèÖÃÊ±ÖÓ·ÖÆµ£¬½öÓÃÓÚÍ¬²½ÀàĞÍµÄ´æ´¢Æ÷
+	//è®¾ç½®æ—¶é’Ÿåˆ†é¢‘ï¼Œä»…ç”¨äºåŒæ­¥ç±»å‹çš„å­˜å‚¨å™¨
 	readWriteTiming.FSMC_CLKDivision           = 0x00;
-	//Êı¾İ±£³ÖÊ±¼ä£¬½öÓÃÓÚÍ¬²½ĞÍµÄNOR	
+	//æ•°æ®ä¿æŒæ—¶é—´ï¼Œä»…ç”¨äºåŒæ­¥å‹çš„NOR	
 	readWriteTiming.FSMC_DataLatency           = 0x00;	
 
 	
@@ -261,7 +261,7 @@ static void ILI9341_FSMC_Config ( void )
 	FSMC_NORSRAMInit ( & FSMC_NORSRAMInitStructure ); 
 	
 	
-	/* Ê¹ÄÜ FSMC_Bank1_NORSRAM4 */
+	/* ä½¿èƒ½ FSMC_Bank1_NORSRAM4 */
 	FSMC_NORSRAMCmd ( FSMC_Bank1_NORSRAMx, ENABLE );  
 		
 		
@@ -269,9 +269,9 @@ static void ILI9341_FSMC_Config ( void )
 
 
 /**
- * @brief  ³õÊ¼»¯ILI9341¼Ä´æÆ÷
- * @param  ÎŞ
- * @retval ÎŞ
+ * @brief  åˆå§‹åŒ–ILI9341å¯„å­˜å™¨
+ * @param  æ— 
+ * @retval æ— 
  */
 static void ILI9341_REG_Config ( void )
 {
@@ -396,7 +396,7 @@ static void ILI9341_REG_Config ( void )
 	/* memory access control set */
 	DEBUG_DELAY ();
 	ILI9341_Write_Cmd ( 0x36 ); 	
-	ILI9341_Write_Data ( 0xC8 );    /*ÊúÆÁ  ×óÉÏ½Çµ½ (Æğµã)µ½ÓÒÏÂ½Ç (ÖÕµã)É¨Ãè·½Ê½*/
+	ILI9341_Write_Data ( 0xC8 );    /*ç«–å±  å·¦ä¸Šè§’åˆ° (èµ·ç‚¹)åˆ°å³ä¸‹è§’ (ç»ˆç‚¹)æ‰«ææ–¹å¼*/
 	DEBUG_DELAY ();
 	
 	/* column address control set */
@@ -432,31 +432,31 @@ static void ILI9341_REG_Config ( void )
 
 
 /**
- * @brief  ILI9341³õÊ¼»¯º¯Êı£¬Èç¹ûÒªÓÃµ½lcd£¬Ò»¶¨Òªµ÷ÓÃÕâ¸öº¯Êı
- * @param  ÎŞ
- * @retval ÎŞ
+ * @brief  ILI9341åˆå§‹åŒ–å‡½æ•°ï¼Œå¦‚æœè¦ç”¨åˆ°lcdï¼Œä¸€å®šè¦è°ƒç”¨è¿™ä¸ªå‡½æ•°
+ * @param  æ— 
+ * @retval æ— 
  */
 void ILI9341_Init ( void )
 {
 	ILI9341_GPIO_Config ();
 	ILI9341_FSMC_Config ();
 	
-	ILI9341_BackLed_Control ( ENABLE );      //µãÁÁLCD±³¹âµÆ
+	ILI9341_BackLed_Control ( ENABLE );      //ç‚¹äº®LCDèƒŒå…‰ç¯
 	ILI9341_Rst ();
 	ILI9341_REG_Config ();
 	
-	//ÉèÖÃÄ¬ÈÏÉ¨Ãè·½Ïò£¬ÆäÖĞ 6 Ä£Ê½Îª´ó²¿·ÖÒº¾§Àı³ÌµÄÄ¬ÈÏÏÔÊ¾·½Ïò  
+	//è®¾ç½®é»˜è®¤æ‰«ææ–¹å‘ï¼Œå…¶ä¸­ 6 æ¨¡å¼ä¸ºå¤§éƒ¨åˆ†æ¶²æ™¶ä¾‹ç¨‹çš„é»˜è®¤æ˜¾ç¤ºæ–¹å‘  
 	ILI9341_GramScan(LCD_SCAN_MODE);
 }
 
 
 /**
- * @brief  ILI9341±³¹âLED¿ØÖÆ
- * @param  enumState £º¾ö¶¨ÊÇ·ñÊ¹ÄÜ±³¹âLED
-  *   ¸Ã²ÎÊıÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg ENABLE :Ê¹ÄÜ±³¹âLED
-  *     @arg DISABLE :½ûÓÃ±³¹âLED
- * @retval ÎŞ
+ * @brief  ILI9341èƒŒå…‰LEDæ§åˆ¶
+ * @param  enumState ï¼šå†³å®šæ˜¯å¦ä½¿èƒ½èƒŒå…‰LED
+  *   è¯¥å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg ENABLE :ä½¿èƒ½èƒŒå…‰LED
+  *     @arg DISABLE :ç¦ç”¨èƒŒå…‰LED
+ * @retval æ— 
  */
 void ILI9341_BackLed_Control ( FunctionalState enumState )
 {
@@ -470,13 +470,13 @@ void ILI9341_BackLed_Control ( FunctionalState enumState )
 
 
 /**
- * @brief  ILI9341 Èí¼ş¸´Î»
- * @param  ÎŞ
- * @retval ÎŞ
+ * @brief  ILI9341 è½¯ä»¶å¤ä½
+ * @param  æ— 
+ * @retval æ— 
  */
 void ILI9341_Rst ( void )
 {			
-	GPIO_ResetBits ( ILI9341_RST_PORT, ILI9341_RST_PIN );	 //µÍµçÆ½¸´Î»
+	GPIO_ResetBits ( ILI9341_RST_PORT, ILI9341_RST_PIN );	 //ä½ç”µå¹³å¤ä½
 
 	ILI9341_Delay ( 0xAFF ); 					   
 
@@ -490,42 +490,42 @@ void ILI9341_Rst ( void )
 
 
 /**
- * @brief  ÉèÖÃILI9341µÄGRAMµÄÉ¨Ãè·½Ïò 
- * @param  ucOption £ºÑ¡ÔñGRAMµÄÉ¨Ãè·½Ïò 
- *     @arg 0-7 :²ÎÊı¿ÉÑ¡ÖµÎª0-7Õâ°Ë¸ö·½Ïò
+ * @brief  è®¾ç½®ILI9341çš„GRAMçš„æ‰«ææ–¹å‘ 
+ * @param  ucOption ï¼šé€‰æ‹©GRAMçš„æ‰«ææ–¹å‘ 
+ *     @arg 0-7 :å‚æ•°å¯é€‰å€¼ä¸º0-7è¿™å…«ä¸ªæ–¹å‘
  *
- *	£¡£¡£¡ÆäÖĞ0¡¢3¡¢5¡¢6 Ä£Ê½ÊÊºÏ´Ó×óÖÁÓÒÏÔÊ¾ÎÄ×Ö£¬
- *				²»ÍÆ¼öÊ¹ÓÃÆäËüÄ£Ê½ÏÔÊ¾ÎÄ×Ö	ÆäËüÄ£Ê½ÏÔÊ¾ÎÄ×Ö»áÓĞ¾µÏñĞ§¹û			
+ *	ï¼ï¼ï¼å…¶ä¸­0ã€3ã€5ã€6 æ¨¡å¼é€‚åˆä»å·¦è‡³å³æ˜¾ç¤ºæ–‡å­—ï¼Œ
+ *				ä¸æ¨èä½¿ç”¨å…¶å®ƒæ¨¡å¼æ˜¾ç¤ºæ–‡å­—	å…¶å®ƒæ¨¡å¼æ˜¾ç¤ºæ–‡å­—ä¼šæœ‰é•œåƒæ•ˆæœ			
  *		
- *	ÆäÖĞ0¡¢2¡¢4¡¢6 Ä£Ê½µÄX·½ÏòÏñËØÎª240£¬Y·½ÏòÏñËØÎª320
- *	ÆäÖĞ1¡¢3¡¢5¡¢7 Ä£Ê½ÏÂX·½ÏòÏñËØÎª320£¬Y·½ÏòÏñËØÎª240
+ *	å…¶ä¸­0ã€2ã€4ã€6 æ¨¡å¼çš„Xæ–¹å‘åƒç´ ä¸º240ï¼ŒYæ–¹å‘åƒç´ ä¸º320
+ *	å…¶ä¸­1ã€3ã€5ã€7 æ¨¡å¼ä¸‹Xæ–¹å‘åƒç´ ä¸º320ï¼ŒYæ–¹å‘åƒç´ ä¸º240
  *
- *	ÆäÖĞ 6 Ä£Ê½Îª´ó²¿·ÖÒº¾§Àı³ÌµÄÄ¬ÈÏÏÔÊ¾·½Ïò
- *	ÆäÖĞ 3 Ä£Ê½ÎªÉãÏñÍ·Àı³ÌÊ¹ÓÃµÄ·½Ïò
- *	ÆäÖĞ 0 Ä£Ê½ÎªBMPÍ¼Æ¬ÏÔÊ¾Àı³ÌÊ¹ÓÃµÄ·½Ïò
+ *	å…¶ä¸­ 6 æ¨¡å¼ä¸ºå¤§éƒ¨åˆ†æ¶²æ™¶ä¾‹ç¨‹çš„é»˜è®¤æ˜¾ç¤ºæ–¹å‘
+ *	å…¶ä¸­ 3 æ¨¡å¼ä¸ºæ‘„åƒå¤´ä¾‹ç¨‹ä½¿ç”¨çš„æ–¹å‘
+ *	å…¶ä¸­ 0 æ¨¡å¼ä¸ºBMPå›¾ç‰‡æ˜¾ç¤ºä¾‹ç¨‹ä½¿ç”¨çš„æ–¹å‘
  *
- * @retval ÎŞ
- * @note  ×ø±êÍ¼Àı£ºA±íÊ¾ÏòÉÏ£¬V±íÊ¾ÏòÏÂ£¬<±íÊ¾Ïò×ó£¬>±íÊ¾ÏòÓÒ
-					X±íÊ¾XÖá£¬Y±íÊ¾YÖá
+ * @retval æ— 
+ * @note  åæ ‡å›¾ä¾‹ï¼šAè¡¨ç¤ºå‘ä¸Šï¼ŒVè¡¨ç¤ºå‘ä¸‹ï¼Œ<è¡¨ç¤ºå‘å·¦ï¼Œ>è¡¨ç¤ºå‘å³
+					Xè¡¨ç¤ºXè½´ï¼ŒYè¡¨ç¤ºYè½´
 
 ------------------------------------------------------------
-Ä£Ê½0£º				.		Ä£Ê½1£º		.	Ä£Ê½2£º			.	Ä£Ê½3£º					
+æ¨¡å¼0ï¼š				.		æ¨¡å¼1ï¼š		.	æ¨¡å¼2ï¼š			.	æ¨¡å¼3ï¼š					
 					A		.					A		.		A					.		A									
 					|		.					|		.		|					.		|							
 					Y		.					X		.		Y					.		X					
 					0		.					1		.		2					.		3					
 	<--- X0 o		.	<----Y1	o		.		o 2X--->  .		o 3Y--->	
 ------------------------------------------------------------	
-Ä£Ê½4£º				.	Ä£Ê½5£º			.	Ä£Ê½6£º			.	Ä£Ê½7£º					
+æ¨¡å¼4ï¼š				.	æ¨¡å¼5ï¼š			.	æ¨¡å¼6ï¼š			.	æ¨¡å¼7ï¼š					
 	<--- X4 o		.	<--- Y5 o		.		o 6X--->  .		o 7Y--->	
 					4		.					5		.		6					.		7	
 					Y		.					X		.		Y					.		X						
 					|		.					|		.		|					.		|							
 					V		.					V		.		V					.		V		
 ---------------------------------------------------------				
-											 LCDÆÁÊ¾Àı
+											 LCDå±ç¤ºä¾‹
 								|-----------------|
-								|			Ò°»ğLogo		|
+								|			é‡ç«Logo		|
 								|									|
 								|									|
 								|									|
@@ -535,46 +535,46 @@ void ILI9341_Rst ( void )
 								|									|
 								|									|
 								|-----------------|
-								ÆÁÄ»ÕıÃæ£¨¿í240£¬¸ß320£©
+								å±å¹•æ­£é¢ï¼ˆå®½240ï¼Œé«˜320ï¼‰
 
  *******************************************************/
 void ILI9341_GramScan ( uint8_t ucOption )
 {	
-	//²ÎÊı¼ì²é£¬Ö»¿ÉÊäÈë0-7
+	//å‚æ•°æ£€æŸ¥ï¼Œåªå¯è¾“å…¥0-7
 	if(ucOption >7 )
 		return;
 	
-	//¸ù¾İÄ£Ê½¸üĞÂLCD_SCAN_MODEµÄÖµ£¬Ö÷ÒªÓÃÓÚ´¥ÃşÆÁÑ¡Ôñ¼ÆËã²ÎÊı
+	//æ ¹æ®æ¨¡å¼æ›´æ–°LCD_SCAN_MODEçš„å€¼ï¼Œä¸»è¦ç”¨äºè§¦æ‘¸å±é€‰æ‹©è®¡ç®—å‚æ•°
 	LCD_SCAN_MODE = ucOption;
 	
-	//¸ù¾İÄ£Ê½¸üĞÂXY·½ÏòµÄÏñËØ¿í¶È
+	//æ ¹æ®æ¨¡å¼æ›´æ–°XYæ–¹å‘çš„åƒç´ å®½åº¦
 	if(ucOption%2 == 0)	
 	{
-		//0 2 4 6Ä£Ê½ÏÂX·½ÏòÏñËØ¿í¶ÈÎª240£¬Y·½ÏòÎª320
+		//0 2 4 6æ¨¡å¼ä¸‹Xæ–¹å‘åƒç´ å®½åº¦ä¸º240ï¼ŒYæ–¹å‘ä¸º320
 		LCD_X_LENGTH = ILI9341_LESS_PIXEL;
 		LCD_Y_LENGTH =	ILI9341_MORE_PIXEL;
 	}
 	else				
 	{
-		//1 3 5 7Ä£Ê½ÏÂX·½ÏòÏñËØ¿í¶ÈÎª320£¬Y·½ÏòÎª240
+		//1 3 5 7æ¨¡å¼ä¸‹Xæ–¹å‘åƒç´ å®½åº¦ä¸º320ï¼ŒYæ–¹å‘ä¸º240
 		LCD_X_LENGTH = ILI9341_MORE_PIXEL;
 		LCD_Y_LENGTH =	ILI9341_LESS_PIXEL; 
 	}
 
-	//0x36ÃüÁî²ÎÊıµÄ¸ß3Î»¿ÉÓÃÓÚÉèÖÃGRAMÉ¨Ãè·½Ïò	
+	//0x36å‘½ä»¤å‚æ•°çš„é«˜3ä½å¯ç”¨äºè®¾ç½®GRAMæ‰«ææ–¹å‘	
 	ILI9341_Write_Cmd ( 0x36 ); 
-	ILI9341_Write_Data ( 0x08 |(ucOption<<5));//¸ù¾İucOptionµÄÖµÉèÖÃLCD²ÎÊı£¬¹²0-7ÖÖÄ£Ê½
+	ILI9341_Write_Data ( 0x08 |(ucOption<<5));//æ ¹æ®ucOptionçš„å€¼è®¾ç½®LCDå‚æ•°ï¼Œå…±0-7ç§æ¨¡å¼
 	ILI9341_Write_Cmd ( CMD_SetCoordinateX ); 
-	ILI9341_Write_Data ( 0x00 );		/* x ÆğÊ¼×ø±ê¸ß8Î» */
-	ILI9341_Write_Data ( 0x00 );		/* x ÆğÊ¼×ø±êµÍ8Î» */
-	ILI9341_Write_Data ( ((LCD_X_LENGTH-1)>>8)&0xFF ); /* x ½áÊø×ø±ê¸ß8Î» */	
-	ILI9341_Write_Data ( (LCD_X_LENGTH-1)&0xFF );				/* x ½áÊø×ø±êµÍ8Î» */
+	ILI9341_Write_Data ( 0x00 );		/* x èµ·å§‹åæ ‡é«˜8ä½ */
+	ILI9341_Write_Data ( 0x00 );		/* x èµ·å§‹åæ ‡ä½8ä½ */
+	ILI9341_Write_Data ( ((LCD_X_LENGTH-1)>>8)&0xFF ); /* x ç»“æŸåæ ‡é«˜8ä½ */	
+	ILI9341_Write_Data ( (LCD_X_LENGTH-1)&0xFF );				/* x ç»“æŸåæ ‡ä½8ä½ */
 
 	ILI9341_Write_Cmd ( CMD_SetCoordinateY ); 
-	ILI9341_Write_Data ( 0x00 );		/* y ÆğÊ¼×ø±ê¸ß8Î» */
-	ILI9341_Write_Data ( 0x00 );		/* y ÆğÊ¼×ø±êµÍ8Î» */
-	ILI9341_Write_Data ( ((LCD_Y_LENGTH-1)>>8)&0xFF );	/* y ½áÊø×ø±ê¸ß8Î» */	 
-	ILI9341_Write_Data ( (LCD_Y_LENGTH-1)&0xFF );				/* y ½áÊø×ø±êµÍ8Î» */
+	ILI9341_Write_Data ( 0x00 );		/* y èµ·å§‹åæ ‡é«˜8ä½ */
+	ILI9341_Write_Data ( 0x00 );		/* y èµ·å§‹åæ ‡ä½8ä½ */
+	ILI9341_Write_Data ( ((LCD_Y_LENGTH-1)>>8)&0xFF );	/* y ç»“æŸåæ ‡é«˜8ä½ */	 
+	ILI9341_Write_Data ( (LCD_Y_LENGTH-1)&0xFF );				/* y ç»“æŸåæ ‡ä½8ä½ */
 
 	/* write gram start */
 	ILI9341_Write_Cmd ( CMD_SetPixel );	
@@ -583,22 +583,22 @@ void ILI9341_GramScan ( uint8_t ucOption )
 
 
 /**
- * @brief  ÔÚILI9341ÏÔÊ¾Æ÷ÉÏ¿ª±ÙÒ»¸ö´°¿Ú
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ´°¿ÚµÄÆğµãX×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ´°¿ÚµÄÆğµãY×ø±ê
- * @param  usWidth £º´°¿ÚµÄ¿í¶È
- * @param  usHeight £º´°¿ÚµÄ¸ß¶È
- * @retval ÎŞ
+ * @brief  åœ¨ILI9341æ˜¾ç¤ºå™¨ä¸Šå¼€è¾Ÿä¸€ä¸ªçª—å£
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çª—å£çš„èµ·ç‚¹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çª—å£çš„èµ·ç‚¹Yåæ ‡
+ * @param  usWidth ï¼šçª—å£çš„å®½åº¦
+ * @param  usHeight ï¼šçª—å£çš„é«˜åº¦
+ * @retval æ— 
  */
 void ILI9341_OpenWindow ( uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHeight )
 {	
-	ILI9341_Write_Cmd ( CMD_SetCoordinateX ); 				 /* ÉèÖÃX×ø±ê */
-	ILI9341_Write_Data ( usX >> 8  );	 /* ÏÈ¸ß8Î»£¬È»ºóµÍ8Î» */
-	ILI9341_Write_Data ( usX & 0xff  );	 /* ÉèÖÃÆğÊ¼µãºÍ½áÊøµã*/
+	ILI9341_Write_Cmd ( CMD_SetCoordinateX ); 				 /* è®¾ç½®Xåæ ‡ */
+	ILI9341_Write_Data ( usX >> 8  );	 /* å…ˆé«˜8ä½ï¼Œç„¶åä½8ä½ */
+	ILI9341_Write_Data ( usX & 0xff  );	 /* è®¾ç½®èµ·å§‹ç‚¹å’Œç»“æŸç‚¹*/
 	ILI9341_Write_Data ( ( usX + usWidth - 1 ) >> 8  );
 	ILI9341_Write_Data ( ( usX + usWidth - 1 ) & 0xff  );
 
-	ILI9341_Write_Cmd ( CMD_SetCoordinateY ); 			     /* ÉèÖÃY×ø±ê*/
+	ILI9341_Write_Cmd ( CMD_SetCoordinateY ); 			     /* è®¾ç½®Yåæ ‡*/
 	ILI9341_Write_Data ( usY >> 8  );
 	ILI9341_Write_Data ( usY & 0xff  );
 	ILI9341_Write_Data ( ( usY + usHeight - 1 ) >> 8 );
@@ -608,10 +608,10 @@ void ILI9341_OpenWindow ( uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t
 
 
 /**
- * @brief  Éè¶¨ILI9341µÄ¹â±ê×ø±ê
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¹â±êµÄX×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¹â±êµÄY×ø±ê
- * @retval ÎŞ
+ * @brief  è®¾å®šILI9341çš„å…‰æ ‡åæ ‡
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å…‰æ ‡çš„Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å…‰æ ‡çš„Yåæ ‡
+ * @retval æ— 
  */
 static void ILI9341_SetCursor ( uint16_t usX, uint16_t usY )	
 {
@@ -620,10 +620,10 @@ static void ILI9341_SetCursor ( uint16_t usX, uint16_t usY )
 
 
 /**
- * @brief  ÔÚILI9341ÏÔÊ¾Æ÷ÉÏÒÔÄ³Ò»ÑÕÉ«Ìî³äÏñËØµã
- * @param  ulAmout_Point £ºÒªÌî³äÑÕÉ«µÄÏñËØµãµÄ×ÜÊıÄ¿
- * @param  usColor £ºÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ILI9341æ˜¾ç¤ºå™¨ä¸Šä»¥æŸä¸€é¢œè‰²å¡«å……åƒç´ ç‚¹
+ * @param  ulAmout_Point ï¼šè¦å¡«å……é¢œè‰²çš„åƒç´ ç‚¹çš„æ€»æ•°ç›®
+ * @param  usColor ï¼šé¢œè‰²
+ * @retval æ— 
  */
 static __inline void ILI9341_FillColor ( uint32_t ulAmout_Point, uint16_t usColor )
 {
@@ -641,13 +641,13 @@ static __inline void ILI9341_FillColor ( uint32_t ulAmout_Point, uint16_t usColo
 
 
 /**
- * @brief  ¶ÔILI9341ÏÔÊ¾Æ÷µÄÄ³Ò»´°¿ÚÒÔÄ³ÖÖÑÕÉ«½øĞĞÇåÆÁ
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ´°¿ÚµÄÆğµãX×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ´°¿ÚµÄÆğµãY×ø±ê
- * @param  usWidth £º´°¿ÚµÄ¿í¶È
- * @param  usHeight £º´°¿ÚµÄ¸ß¶È
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  å¯¹ILI9341æ˜¾ç¤ºå™¨çš„æŸä¸€çª—å£ä»¥æŸç§é¢œè‰²è¿›è¡Œæ¸…å±
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çª—å£çš„èµ·ç‚¹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çª—å£çš„èµ·ç‚¹Yåæ ‡
+ * @param  usWidth ï¼šçª—å£çš„å®½åº¦
+ * @param  usHeight ï¼šçª—å£çš„é«˜åº¦
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_Clear ( uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHeight )
 {
@@ -659,11 +659,11 @@ void ILI9341_Clear ( uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHe
 
 
 /**
- * @brief  ¶ÔILI9341ÏÔÊ¾Æ÷µÄÄ³Ò»µãÒÔÄ³ÖÖÑÕÉ«½øĞĞÌî³ä
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¸ÃµãµÄX×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¸ÃµãµÄY×ø±ê
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  å¯¹ILI9341æ˜¾ç¤ºå™¨çš„æŸä¸€ç‚¹ä»¥æŸç§é¢œè‰²è¿›è¡Œå¡«å……
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹è¯¥ç‚¹çš„Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹è¯¥ç‚¹çš„Yåæ ‡
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_SetPointPixel ( uint16_t usX, uint16_t usY )	
 {	
@@ -678,16 +678,16 @@ void ILI9341_SetPointPixel ( uint16_t usX, uint16_t usY )
 
 
 /**
- * @brief  ¶ÁÈ¡ILI9341 GRAN µÄÒ»¸öÏñËØÊı¾İ
- * @param  ÎŞ
- * @retval ÏñËØÊı¾İ
+ * @brief  è¯»å–ILI9341 GRAN çš„ä¸€ä¸ªåƒç´ æ•°æ®
+ * @param  æ— 
+ * @retval åƒç´ æ•°æ®
  */
 static uint16_t ILI9341_Read_PixelData ( void )	
 {	
 	uint16_t usR=0, usG=0, usB=0 ;
 
 	
-	ILI9341_Write_Cmd ( 0x2E );   /* ¶ÁÊı¾İ */
+	ILI9341_Write_Cmd ( 0x2E );   /* è¯»æ•°æ® */
 	
 	usR = ILI9341_Read_Data (); 	/*FIRST READ OUT DUMMY DATA*/
 	
@@ -701,10 +701,10 @@ static uint16_t ILI9341_Read_PixelData ( void )
 
 
 /**
- * @brief  »ñÈ¡ ILI9341 ÏÔÊ¾Æ÷ÉÏÄ³Ò»¸ö×ø±êµãµÄÏñËØÊı¾İ
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¸ÃµãµÄX×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¸ÃµãµÄY×ø±ê
- * @retval ÏñËØÊı¾İ
+ * @brief  è·å– ILI9341 æ˜¾ç¤ºå™¨ä¸ŠæŸä¸€ä¸ªåæ ‡ç‚¹çš„åƒç´ æ•°æ®
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹è¯¥ç‚¹çš„Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹è¯¥ç‚¹çš„Yåæ ‡
+ * @retval åƒç´ æ•°æ®
  */
 uint16_t ILI9341_GetPointPixel ( uint16_t usX, uint16_t usY )
 { 
@@ -721,13 +721,13 @@ uint16_t ILI9341_GetPointPixel ( uint16_t usX, uint16_t usY )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÊ¹ÓÃ Bresenham Ëã·¨»­Ïß¶Î 
- * @param  usX1 £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÏß¶ÎµÄÒ»¸ö¶ËµãX×ø±ê
- * @param  usY1 £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÏß¶ÎµÄÒ»¸ö¶ËµãY×ø±ê
- * @param  usX2 £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÏß¶ÎµÄÁíÒ»¸ö¶ËµãX×ø±ê
- * @param  usY2 £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÏß¶ÎµÄÁíÒ»¸ö¶ËµãY×ø±ê
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šä½¿ç”¨ Bresenham ç®—æ³•ç”»çº¿æ®µ 
+ * @param  usX1 ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çº¿æ®µçš„ä¸€ä¸ªç«¯ç‚¹Xåæ ‡
+ * @param  usY1 ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çº¿æ®µçš„ä¸€ä¸ªç«¯ç‚¹Yåæ ‡
+ * @param  usX2 ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çº¿æ®µçš„å¦ä¸€ä¸ªç«¯ç‚¹Xåæ ‡
+ * @param  usY2 ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çº¿æ®µçš„å¦ä¸€ä¸ªç«¯ç‚¹Yåæ ‡
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t usY2 )
 {
@@ -738,7 +738,7 @@ void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t us
 	int32_t lIncrease_X, lIncrease_Y; 	
 	
 	
-	lDelta_X = usX2 - usX1; //¼ÆËã×ø±êÔöÁ¿ 
+	lDelta_X = usX2 - usX1; //è®¡ç®—åæ ‡å¢é‡ 
 	lDelta_Y = usY2 - usY1; 
 	
 	usX_Current = usX1; 
@@ -746,10 +746,10 @@ void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t us
 	
 	
 	if ( lDelta_X > 0 ) 
-		lIncrease_X = 1; //ÉèÖÃµ¥²½·½Ïò 
+		lIncrease_X = 1; //è®¾ç½®å•æ­¥æ–¹å‘ 
 	
 	else if ( lDelta_X == 0 ) 
-		lIncrease_X = 0;//´¹Ö±Ïß 
+		lIncrease_X = 0;//å‚ç›´çº¿ 
 	
 	else 
   { 
@@ -762,7 +762,7 @@ void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t us
 		lIncrease_Y = 1; 
 	
 	else if ( lDelta_Y == 0 )
-		lIncrease_Y = 0;//Ë®Æ½Ïß 
+		lIncrease_Y = 0;//æ°´å¹³çº¿ 
 	
 	else 
   {
@@ -772,15 +772,15 @@ void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t us
 
 	
 	if (  lDelta_X > lDelta_Y )
-		lDistance = lDelta_X; //Ñ¡È¡»ù±¾ÔöÁ¿×ø±êÖá 
+		lDistance = lDelta_X; //é€‰å–åŸºæœ¬å¢é‡åæ ‡è½´ 
 	
 	else 
 		lDistance = lDelta_Y; 
 
 	
-	for ( us = 0; us <= lDistance + 1; us ++ )//»­ÏßÊä³ö 
+	for ( us = 0; us <= lDistance + 1; us ++ )//ç”»çº¿è¾“å‡º 
 	{  
-		ILI9341_SetPointPixel ( usX_Current, usY_Current );//»­µã 
+		ILI9341_SetPointPixel ( usX_Current, usY_Current );//ç”»ç‚¹ 
 		
 		lError_X += lDelta_X ; 
 		lError_Y += lDelta_Y ; 
@@ -804,17 +804,17 @@ void ILI9341_DrawLine ( uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t us
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏ»­Ò»¸ö¾ØĞÎ
- * @param  usX_Start £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¾ØĞÎµÄÆğÊ¼µãX×ø±ê
- * @param  usY_Start £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¾ØĞÎµÄÆğÊ¼µãY×ø±ê
- * @param  usWidth£º¾ØĞÎµÄ¿í¶È£¨µ¥Î»£ºÏñËØ£©
- * @param  usHeight£º¾ØĞÎµÄ¸ß¶È£¨µ¥Î»£ºÏñËØ£©
- * @param  ucFilled £ºÑ¡ÔñÊÇ·ñÌî³ä¸Ã¾ØĞÎ
-  *   ¸Ã²ÎÊıÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 0 :¿ÕĞÄ¾ØĞÎ
-  *     @arg 1 :ÊµĞÄ¾ØĞÎ 
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šç”»ä¸€ä¸ªçŸ©å½¢
+ * @param  usX_Start ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çŸ©å½¢çš„èµ·å§‹ç‚¹Xåæ ‡
+ * @param  usY_Start ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹çŸ©å½¢çš„èµ·å§‹ç‚¹Yåæ ‡
+ * @param  usWidthï¼šçŸ©å½¢çš„å®½åº¦ï¼ˆå•ä½ï¼šåƒç´ ï¼‰
+ * @param  usHeightï¼šçŸ©å½¢çš„é«˜åº¦ï¼ˆå•ä½ï¼šåƒç´ ï¼‰
+ * @param  ucFilled ï¼šé€‰æ‹©æ˜¯å¦å¡«å……è¯¥çŸ©å½¢
+  *   è¯¥å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 0 :ç©ºå¿ƒçŸ©å½¢
+  *     @arg 1 :å®å¿ƒçŸ©å½¢ 
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DrawRectangle ( uint16_t usX_Start, uint16_t usY_Start, uint16_t usWidth, uint16_t usHeight, uint8_t ucFilled )
 {
@@ -835,16 +835,16 @@ void ILI9341_DrawRectangle ( uint16_t usX_Start, uint16_t usY_Start, uint16_t us
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÊ¹ÓÃ Bresenham Ëã·¨»­Ô²
- * @param  usX_Center £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÔ²ĞÄµÄX×ø±ê
- * @param  usY_Center £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÔ²ĞÄµÄY×ø±ê
- * @param  usRadius£ºÔ²µÄ°ë¾¶£¨µ¥Î»£ºÏñËØ£©
- * @param  ucFilled £ºÑ¡ÔñÊÇ·ñÌî³ä¸ÃÔ²
-  *   ¸Ã²ÎÊıÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 0 :¿ÕĞÄÔ²
-  *     @arg 1 :ÊµĞÄÔ²
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šä½¿ç”¨ Bresenham ç®—æ³•ç”»åœ†
+ * @param  usX_Center ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹åœ†å¿ƒçš„Xåæ ‡
+ * @param  usY_Center ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹åœ†å¿ƒçš„Yåæ ‡
+ * @param  usRadiusï¼šåœ†çš„åŠå¾„ï¼ˆå•ä½ï¼šåƒç´ ï¼‰
+ * @param  ucFilled ï¼šé€‰æ‹©æ˜¯å¦å¡«å……è¯¥åœ†
+  *   è¯¥å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 0 :ç©ºå¿ƒåœ†
+  *     @arg 1 :å®å¿ƒåœ†
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DrawCircle ( uint16_t usX_Center, uint16_t usY_Center, uint16_t usRadius, uint8_t ucFilled )
 {
@@ -854,7 +854,7 @@ void ILI9341_DrawCircle ( uint16_t usX_Center, uint16_t usY_Center, uint16_t usR
 	
 	sCurrentX = 0; sCurrentY = usRadius;	  
 	
-	sError = 3 - ( usRadius << 1 );     //ÅĞ¶ÏÏÂ¸öµãÎ»ÖÃµÄ±êÖ¾
+	sError = 3 - ( usRadius << 1 );     //åˆ¤æ–­ä¸‹ä¸ªç‚¹ä½ç½®çš„æ ‡å¿—
 	
 	
 	while ( sCurrentX <= sCurrentY )
@@ -865,7 +865,7 @@ void ILI9341_DrawCircle ( uint16_t usX_Center, uint16_t usY_Center, uint16_t usR
 		if ( ucFilled ) 			
 			for ( sCountY = sCurrentX; sCountY <= sCurrentY; sCountY ++ ) 
 			{                      
-				ILI9341_SetPointPixel ( usX_Center + sCurrentX, usY_Center + sCountY );           //1£¬ÑĞ¾¿¶ÔÏó 
+				ILI9341_SetPointPixel ( usX_Center + sCurrentX, usY_Center + sCountY );           //1ï¼Œç ”ç©¶å¯¹è±¡ 
 				ILI9341_SetPointPixel ( usX_Center - sCurrentX, usY_Center + sCountY );           //2       
 				ILI9341_SetPointPixel ( usX_Center - sCountY,   usY_Center + sCurrentX );           //3
 				ILI9341_SetPointPixel ( usX_Center - sCountY,   usY_Center - sCurrentX );           //4
@@ -877,7 +877,7 @@ void ILI9341_DrawCircle ( uint16_t usX_Center, uint16_t usY_Center, uint16_t usR
 		
 		else
 		{          
-			ILI9341_SetPointPixel ( usX_Center + sCurrentX, usY_Center + sCurrentY );             //1£¬ÑĞ¾¿¶ÔÏó
+			ILI9341_SetPointPixel ( usX_Center + sCurrentX, usY_Center + sCurrentY );             //1ï¼Œç ”ç©¶å¯¹è±¡
 			ILI9341_SetPointPixel ( usX_Center - sCurrentX, usY_Center + sCurrentY );             //2      
 			ILI9341_SetPointPixel ( usX_Center - sCurrentY, usY_Center + sCurrentX );             //3
 			ILI9341_SetPointPixel ( usX_Center - sCurrentY, usY_Center - sCurrentX );             //4
@@ -907,12 +907,12 @@ void ILI9341_DrawCircle ( uint16_t usX_Center, uint16_t usY_Center, uint16_t usR
 }
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾Ò»¸öÓ¢ÎÄ×Ö·û
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ¸ÃµãµÄÆğÊ¼Y×ø±ê
- * @param  cChar £ºÒªÏÔÊ¾µÄÓ¢ÎÄ×Ö·û
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸€ä¸ªè‹±æ–‡å­—ç¬¦
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹è¯¥ç‚¹çš„èµ·å§‹Yåæ ‡
+ * @param  cChar ï¼šè¦æ˜¾ç¤ºçš„è‹±æ–‡å­—ç¬¦
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispChar_EN ( uint16_t usX, uint16_t usY, const char cChar )
 {
@@ -920,26 +920,26 @@ void ILI9341_DispChar_EN ( uint16_t usX, uint16_t usY, const char cChar )
 	uint16_t ucRelativePositon;
 	uint8_t *Pfont;
 	
-	//¶ÔasciiÂë±íÆ«ÒÆ£¨×ÖÄ£±í²»°üº¬ASCII±íµÄÇ°32¸ö·ÇÍ¼ĞÎ·ûºÅ£©
+	//å¯¹asciiç è¡¨åç§»ï¼ˆå­—æ¨¡è¡¨ä¸åŒ…å«ASCIIè¡¨çš„å‰32ä¸ªéå›¾å½¢ç¬¦å·ï¼‰
 	ucRelativePositon = cChar - ' ';
 	
-	//Ã¿¸ö×ÖÄ£µÄ×Ö½ÚÊı
+	//æ¯ä¸ªå­—æ¨¡çš„å­—èŠ‚æ•°
 	fontLength = (LCD_Currentfonts->Width*LCD_Currentfonts->Height)/8;
 		
-	//×ÖÄ£Ê×µØÖ·
-	/*asciiÂë±íÆ«ÒÆÖµ³ËÒÔÃ¿¸ö×ÖÄ£µÄ×Ö½ÚÊı£¬Çó³ö×ÖÄ£µÄÆ«ÒÆÎ»ÖÃ*/
+	//å­—æ¨¡é¦–åœ°å€
+	/*asciiç è¡¨åç§»å€¼ä¹˜ä»¥æ¯ä¸ªå­—æ¨¡çš„å­—èŠ‚æ•°ï¼Œæ±‚å‡ºå­—æ¨¡çš„åç§»ä½ç½®*/
 	Pfont = (uint8_t *)&LCD_Currentfonts->table[ucRelativePositon * fontLength];
 	
-	//ÉèÖÃÏÔÊ¾´°¿Ú
+	//è®¾ç½®æ˜¾ç¤ºçª—å£
 	ILI9341_OpenWindow ( usX, usY, LCD_Currentfonts->Width, LCD_Currentfonts->Height);
 	
 	ILI9341_Write_Cmd ( CMD_SetPixel );			
 
-	//°´×Ö½Ú¶ÁÈ¡×ÖÄ£Êı¾İ
-	//ÓÉÓÚÇ°ÃæÖ±½ÓÉèÖÃÁËÏÔÊ¾´°¿Ú£¬ÏÔÊ¾Êı¾İ»á×Ô¶¯»»ĞĞ
+	//æŒ‰å­—èŠ‚è¯»å–å­—æ¨¡æ•°æ®
+	//ç”±äºå‰é¢ç›´æ¥è®¾ç½®äº†æ˜¾ç¤ºçª—å£ï¼Œæ˜¾ç¤ºæ•°æ®ä¼šè‡ªåŠ¨æ¢è¡Œ
 	for ( byteCount = 0; byteCount < fontLength; byteCount++ )
 	{
-			//Ò»Î»Ò»Î»´¦ÀíÒªÏÔÊ¾µÄÑÕÉ«
+			//ä¸€ä½ä¸€ä½å¤„ç†è¦æ˜¾ç¤ºçš„é¢œè‰²
 			for ( bitCount = 0; bitCount < 8; bitCount++ )
 			{
 					if ( Pfont[byteCount] & (0x80>>bitCount) )
@@ -952,14 +952,14 @@ void ILI9341_DispChar_EN ( uint16_t usX, uint16_t usY, const char cChar )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾Ó¢ÎÄ×Ö·û´®
- * @param  line £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·û´®µÄÆğÊ¼Y×ø±ê
-  *   ±¾²ÎÊı¿ÉÊ¹ÓÃºêLINE(0)¡¢LINE(1)µÈ·½Ê½Ö¸¶¨ÎÄ×Ö×ø±ê£¬
-  *   ºêLINE(x)»á¸ù¾İµ±Ç°Ñ¡ÔñµÄ×ÖÌåÀ´¼ÆËãY×ø±êÖµ¡£
-	*		ÏÔÊ¾ÖĞÎÄÇÒÊ¹ÓÃLINEºêÊ±£¬ĞèÒª°ÑÓ¢ÎÄ×ÖÌåÉèÖÃ³ÉFont8x16
- * @param  pStr £ºÒªÏÔÊ¾µÄÓ¢ÎÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºè‹±æ–‡å­—ç¬¦ä¸²
+ * @param  line ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦ä¸²çš„èµ·å§‹Yåæ ‡
+  *   æœ¬å‚æ•°å¯ä½¿ç”¨å®LINE(0)ã€LINE(1)ç­‰æ–¹å¼æŒ‡å®šæ–‡å­—åæ ‡ï¼Œ
+  *   å®LINE(x)ä¼šæ ¹æ®å½“å‰é€‰æ‹©çš„å­—ä½“æ¥è®¡ç®—Yåæ ‡å€¼ã€‚
+	*		æ˜¾ç¤ºä¸­æ–‡ä¸”ä½¿ç”¨LINEå®æ—¶ï¼Œéœ€è¦æŠŠè‹±æ–‡å­—ä½“è®¾ç½®æˆFont8x16
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„è‹±æ–‡å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispStringLine_EN (  uint16_t line,  char * pStr )
 {
@@ -991,12 +991,12 @@ void ILI9341_DispStringLine_EN (  uint16_t line,  char * pStr )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾Ó¢ÎÄ×Ö·û´®
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼Y×ø±ê
- * @param  pStr £ºÒªÏÔÊ¾µÄÓ¢ÎÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºè‹±æ–‡å­—ç¬¦ä¸²
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Yåæ ‡
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„è‹±æ–‡å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispString_EN ( 	uint16_t usX ,uint16_t usY,  char * pStr )
 {
@@ -1026,12 +1026,12 @@ void ILI9341_DispString_EN ( 	uint16_t usX ,uint16_t usY,  char * pStr )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾Ó¢ÎÄ×Ö·û´®(ÑØYÖá·½Ïò)
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼Y×ø±ê
- * @param  pStr £ºÒªÏÔÊ¾µÄÓ¢ÎÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºè‹±æ–‡å­—ç¬¦ä¸²(æ²¿Yè½´æ–¹å‘)
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Yåæ ‡
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„è‹±æ–‡å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispString_EN_YDir (	 uint16_t usX,uint16_t usY ,  char * pStr )
 {	
@@ -1058,12 +1058,12 @@ void ILI9341_DispString_EN_YDir (	 uint16_t usX,uint16_t usY ,  char * pStr )
 }
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾Ò»¸öÖĞÎÄ×Ö·û
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼Y×ø±ê
- * @param  usChar £ºÒªÏÔÊ¾µÄÖĞÎÄ×Ö·û£¨¹ú±êÂë£©
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸€ä¸ªä¸­æ–‡å­—ç¬¦
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Yåæ ‡
+ * @param  usChar ï¼šè¦æ˜¾ç¤ºçš„ä¸­æ–‡å­—ç¬¦ï¼ˆå›½æ ‡ç ï¼‰
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */ 
 void ILI9341_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar )
 {
@@ -1071,24 +1071,24 @@ void ILI9341_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar )
 	uint8_t ucBuffer [ WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8 ];	
   uint16_t usTemp; 	
 
-	//ÉèÖÃÏÔÊ¾´°¿Ú
+	//è®¾ç½®æ˜¾ç¤ºçª—å£
 	ILI9341_OpenWindow ( usX, usY, WIDTH_CH_CHAR, HEIGHT_CH_CHAR );
 	
 	ILI9341_Write_Cmd ( CMD_SetPixel );
 	
-	//È¡×ÖÄ£Êı¾İ  
+	//å–å­—æ¨¡æ•°æ®  
   GetGBKCode ( ucBuffer, usChar );	
 	
 	for ( rowCount = 0; rowCount < HEIGHT_CH_CHAR; rowCount++ )
 	{
-    /* È¡³öÁ½¸ö×Ö½ÚµÄÊı¾İ£¬ÔÚlcdÉÏ¼´ÊÇÒ»¸öºº×ÖµÄÒ»ĞĞ */
+    /* å–å‡ºä¸¤ä¸ªå­—èŠ‚çš„æ•°æ®ï¼Œåœ¨lcdä¸Šå³æ˜¯ä¸€ä¸ªæ±‰å­—çš„ä¸€è¡Œ */
 		usTemp = ucBuffer [ rowCount * 2 ];
 		usTemp = ( usTemp << 8 );
 		usTemp |= ucBuffer [ rowCount * 2 + 1 ];
 		
 		for ( bitCount = 0; bitCount < WIDTH_CH_CHAR; bitCount ++ )
 		{			
-			if ( usTemp & ( 0x8000 >> bitCount ) )  //¸ßÎ»ÔÚÇ° 
+			if ( usTemp & ( 0x8000 >> bitCount ) )  //é«˜ä½åœ¨å‰ 
 			  ILI9341_Write_Data ( CurrentTextColor );				
 			else
 				ILI9341_Write_Data ( CurrentBackColor );			
@@ -1099,14 +1099,14 @@ void ILI9341_DispChar_CH ( uint16_t usX, uint16_t usY, uint16_t usChar )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾ÖĞÎÄ×Ö·û´®
- * @param  line £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·û´®µÄÆğÊ¼Y×ø±ê
-  *   ±¾²ÎÊı¿ÉÊ¹ÓÃºêLINE(0)¡¢LINE(1)µÈ·½Ê½Ö¸¶¨ÎÄ×Ö×ø±ê£¬
-  *   ºêLINE(x)»á¸ù¾İµ±Ç°Ñ¡ÔñµÄ×ÖÌåÀ´¼ÆËãY×ø±êÖµ¡£
-	*		ÏÔÊ¾ÖĞÎÄÇÒÊ¹ÓÃLINEºêÊ±£¬ĞèÒª°ÑÓ¢ÎÄ×ÖÌåÉèÖÃ³ÉFont8x16
- * @param  pStr £ºÒªÏÔÊ¾µÄÓ¢ÎÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸­æ–‡å­—ç¬¦ä¸²
+ * @param  line ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦ä¸²çš„èµ·å§‹Yåæ ‡
+  *   æœ¬å‚æ•°å¯ä½¿ç”¨å®LINE(0)ã€LINE(1)ç­‰æ–¹å¼æŒ‡å®šæ–‡å­—åæ ‡ï¼Œ
+  *   å®LINE(x)ä¼šæ ¹æ®å½“å‰é€‰æ‹©çš„å­—ä½“æ¥è®¡ç®—Yåæ ‡å€¼ã€‚
+	*		æ˜¾ç¤ºä¸­æ–‡ä¸”ä½¿ç”¨LINEå®æ—¶ï¼Œéœ€è¦æŠŠè‹±æ–‡å­—ä½“è®¾ç½®æˆFont8x16
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„è‹±æ–‡å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispString_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 {	
@@ -1134,7 +1134,7 @@ void ILI9341_DispString_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 		
 		usX += WIDTH_CH_CHAR;
 		
-		pStr += 2;           //Ò»¸öºº×ÖÁ½¸ö×Ö½Ú 
+		pStr += 2;           //ä¸€ä¸ªæ±‰å­—ä¸¤ä¸ªå­—èŠ‚ 
 
 	}	   
 	
@@ -1142,14 +1142,14 @@ void ILI9341_DispString_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾ÖĞÓ¢ÎÄ×Ö·û´®
- * @param  line £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·û´®µÄÆğÊ¼Y×ø±ê
-  *   ±¾²ÎÊı¿ÉÊ¹ÓÃºêLINE(0)¡¢LINE(1)µÈ·½Ê½Ö¸¶¨ÎÄ×Ö×ø±ê£¬
-  *   ºêLINE(x)»á¸ù¾İµ±Ç°Ñ¡ÔñµÄ×ÖÌåÀ´¼ÆËãY×ø±êÖµ¡£
-	*		ÏÔÊ¾ÖĞÎÄÇÒÊ¹ÓÃLINEºêÊ±£¬ĞèÒª°ÑÓ¢ÎÄ×ÖÌåÉèÖÃ³ÉFont8x16
- * @param  pStr £ºÒªÏÔÊ¾µÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸­è‹±æ–‡å­—ç¬¦ä¸²
+ * @param  line ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦ä¸²çš„èµ·å§‹Yåæ ‡
+  *   æœ¬å‚æ•°å¯ä½¿ç”¨å®LINE(0)ã€LINE(1)ç­‰æ–¹å¼æŒ‡å®šæ–‡å­—åæ ‡ï¼Œ
+  *   å®LINE(x)ä¼šæ ¹æ®å½“å‰é€‰æ‹©çš„å­—ä½“æ¥è®¡ç®—Yåæ ‡å€¼ã€‚
+	*		æ˜¾ç¤ºä¸­æ–‡ä¸”ä½¿ç”¨LINEå®æ—¶ï¼Œéœ€è¦æŠŠè‹±æ–‡å­—ä½“è®¾ç½®æˆFont8x16
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispStringLine_EN_CH (  uint16_t line, char * pStr )
 {
@@ -1158,7 +1158,7 @@ void ILI9341_DispStringLine_EN_CH (  uint16_t line, char * pStr )
 	
 	while( * pStr != '\0' )
 	{
-		if ( * pStr <= 126 )	           	//Ó¢ÎÄ×Ö·û
+		if ( * pStr <= 126 )	           	//è‹±æ–‡å­—ç¬¦
 		{
 			if ( ( usX - ILI9341_DispWindow_X_Star + LCD_Currentfonts->Width ) > LCD_X_LENGTH )
 			{
@@ -1180,7 +1180,7 @@ void ILI9341_DispStringLine_EN_CH (  uint16_t line, char * pStr )
 
 		}
 		
-		else	                            //ºº×Ö×Ö·û
+		else	                            //æ±‰å­—å­—ç¬¦
 		{
 			if ( ( usX - ILI9341_DispWindow_X_Star + WIDTH_CH_CHAR ) > LCD_X_LENGTH )
 			{
@@ -1202,7 +1202,7 @@ void ILI9341_DispStringLine_EN_CH (  uint16_t line, char * pStr )
 			
 			usX += WIDTH_CH_CHAR;
 			
-			pStr += 2;           //Ò»¸öºº×ÖÁ½¸ö×Ö½Ú 
+			pStr += 2;           //ä¸€ä¸ªæ±‰å­—ä¸¤ä¸ªå­—èŠ‚ 
 		
     }
 		
@@ -1210,12 +1210,12 @@ void ILI9341_DispStringLine_EN_CH (  uint16_t line, char * pStr )
 } 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾ÖĞÓ¢ÎÄ×Ö·û´®
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼Y×ø±ê
- * @param  pStr £ºÒªÏÔÊ¾µÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸­è‹±æ–‡å­—ç¬¦ä¸²
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Yåæ ‡
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispString_EN_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 {
@@ -1223,7 +1223,7 @@ void ILI9341_DispString_EN_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 	
 	while( * pStr != '\0' )
 	{
-		if ( * pStr <= 126 )	           	//Ó¢ÎÄ×Ö·û
+		if ( * pStr <= 126 )	           	//è‹±æ–‡å­—ç¬¦
 		{
 			if ( ( usX - ILI9341_DispWindow_X_Star + LCD_Currentfonts->Width ) > LCD_X_LENGTH )
 			{
@@ -1245,7 +1245,7 @@ void ILI9341_DispString_EN_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 
 		}
 		
-		else	                            //ºº×Ö×Ö·û
+		else	                            //æ±‰å­—å­—ç¬¦
 		{
 			if ( ( usX - ILI9341_DispWindow_X_Star + WIDTH_CH_CHAR ) > LCD_X_LENGTH )
 			{
@@ -1267,7 +1267,7 @@ void ILI9341_DispString_EN_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 			
 			usX += WIDTH_CH_CHAR;
 			
-			pStr += 2;           //Ò»¸öºº×ÖÁ½¸ö×Ö½Ú 
+			pStr += 2;           //ä¸€ä¸ªæ±‰å­—ä¸¤ä¸ªå­—èŠ‚ 
 		
     }
 		
@@ -1275,12 +1275,12 @@ void ILI9341_DispString_EN_CH ( 	uint16_t usX , uint16_t usY, char * pStr )
 } 
 
 /**
- * @brief  ÔÚ ILI9341 ÏÔÊ¾Æ÷ÉÏÏÔÊ¾ÖĞÓ¢ÎÄ×Ö·û´®(ÑØYÖá·½Ïò)
- * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼X×ø±ê
- * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂ×Ö·ûµÄÆğÊ¼Y×ø±ê
- * @param  pStr £ºÒªÏÔÊ¾µÄÖĞÓ¢ÎÄ×Ö·û´®µÄÊ×µØÖ·
- * @note ¿ÉÊ¹ÓÃLCD_SetBackColor¡¢LCD_SetTextColor¡¢LCD_SetColorsº¯ÊıÉèÖÃÑÕÉ«
- * @retval ÎŞ
+ * @brief  åœ¨ ILI9341 æ˜¾ç¤ºå™¨ä¸Šæ˜¾ç¤ºä¸­è‹±æ–‡å­—ç¬¦ä¸²(æ²¿Yè½´æ–¹å‘)
+ * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Xåæ ‡
+ * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹å­—ç¬¦çš„èµ·å§‹Yåæ ‡
+ * @param  pStr ï¼šè¦æ˜¾ç¤ºçš„ä¸­è‹±æ–‡å­—ç¬¦ä¸²çš„é¦–åœ°å€
+ * @note å¯ä½¿ç”¨LCD_SetBackColorã€LCD_SetTextColorã€LCD_SetColorså‡½æ•°è®¾ç½®é¢œè‰²
+ * @retval æ— 
  */
 void ILI9341_DispString_EN_CH_YDir (  uint16_t usX,uint16_t usY , char * pStr )
 {
@@ -1288,7 +1288,7 @@ void ILI9341_DispString_EN_CH_YDir (  uint16_t usX,uint16_t usY , char * pStr )
 	
 	while( * pStr != '\0' )
 	{			
-			//Í³Ò»Ê¹ÓÃºº×ÖµÄ¿í¸ßÀ´¼ÆËã»»ĞĞ
+			//ç»Ÿä¸€ä½¿ç”¨æ±‰å­—çš„å®½é«˜æ¥è®¡ç®—æ¢è¡Œ
 			if ( ( usY - ILI9341_DispWindow_Y_Star + HEIGHT_CH_CHAR ) >LCD_Y_LENGTH  )
 			{
 				usY = ILI9341_DispWindow_Y_Star;
@@ -1300,8 +1300,8 @@ void ILI9341_DispString_EN_CH_YDir (  uint16_t usX,uint16_t usY , char * pStr )
 				usY = ILI9341_DispWindow_Y_Star;
 			}
 			
-		//ÏÔÊ¾	
-		if ( * pStr <= 126 )	           	//Ó¢ÎÄ×Ö·û
+		//æ˜¾ç¤º	
+		if ( * pStr <= 126 )	           	//è‹±æ–‡å­—ç¬¦
 		{			
 			ILI9341_DispChar_EN ( usX, usY, * pStr);
 			
@@ -1309,7 +1309,7 @@ void ILI9341_DispString_EN_CH_YDir (  uint16_t usX,uint16_t usY , char * pStr )
 			
 			usY += HEIGHT_CH_CHAR;		
 		}
-		else	                            //ºº×Ö×Ö·û
+		else	                            //æ±‰å­—å­—ç¬¦
 		{			
 			usCh = * ( uint16_t * ) pStr;	
 			
@@ -1319,41 +1319,41 @@ void ILI9341_DispString_EN_CH_YDir (  uint16_t usX,uint16_t usY , char * pStr )
 			
 			usY += HEIGHT_CH_CHAR;
 			
-			pStr += 2;           //Ò»¸öºº×ÖÁ½¸ö×Ö½Ú 
+			pStr += 2;           //ä¸€ä¸ªæ±‰å­—ä¸¤ä¸ªå­—èŠ‚ 
 		
     }
 		
   }	
 } 
 
-/***********************Ëõ·Å×ÖÌå****************************/
+/***********************ç¼©æ”¾å­—ä½“****************************/
 #define ZOOMMAXBUFF 16384
-uint8_t zoomBuff[ZOOMMAXBUFF] = {0};	//ÓÃÓÚËõ·ÅµÄ»º´æ£¬×î´óÖ§³Öµ½128*128
+uint8_t zoomBuff[ZOOMMAXBUFF] = {0};	//ç”¨äºç¼©æ”¾çš„ç¼“å­˜ï¼Œæœ€å¤§æ”¯æŒåˆ°128*128
 uint8_t zoomTempBuff[1024] = {0};
 
 /**
- * @brief  Ëõ·Å×ÖÄ££¬Ëõ·ÅºóµÄ×ÖÄ£ÓÉ1¸öÏñËØµãÓÉ8¸öÊı¾İÎ»À´±íÊ¾
-										0x01±íÊ¾±Ê¼££¬0x00±íÊ¾¿Õ°×Çø
- * @param  in_width £ºÔ­Ê¼×Ö·û¿í¶È
- * @param  in_heig £ºÔ­Ê¼×Ö·û¸ß¶È
- * @param  out_width £ºËõ·ÅºóµÄ×Ö·û¿í¶È
- * @param  out_heig£ºËõ·ÅºóµÄ×Ö·û¸ß¶È
- * @param  in_ptr £º×Ö¿âÊäÈëÖ¸Õë	×¢Òâ£º1pixel 1bit
- * @param  out_ptr £ºËõ·ÅºóµÄ×Ö·ûÊä³öÖ¸Õë ×¢Òâ: 1pixel 8bit
- *		out_ptrÊµ¼ÊÉÏÃ»ÓĞÕı³£Êä³ö£¬¸Ä³ÉÁËÖ±½ÓÊä³öµ½È«¾ÖÖ¸ÕëzoomBuffÖĞ
- * @param  en_cn £º0ÎªÓ¢ÎÄ£¬1ÎªÖĞÎÄ
- * @retval ÎŞ
+ * @brief  ç¼©æ”¾å­—æ¨¡ï¼Œç¼©æ”¾åçš„å­—æ¨¡ç”±1ä¸ªåƒç´ ç‚¹ç”±8ä¸ªæ•°æ®ä½æ¥è¡¨ç¤º
+										0x01è¡¨ç¤ºç¬”è¿¹ï¼Œ0x00è¡¨ç¤ºç©ºç™½åŒº
+ * @param  in_width ï¼šåŸå§‹å­—ç¬¦å®½åº¦
+ * @param  in_heig ï¼šåŸå§‹å­—ç¬¦é«˜åº¦
+ * @param  out_width ï¼šç¼©æ”¾åçš„å­—ç¬¦å®½åº¦
+ * @param  out_heigï¼šç¼©æ”¾åçš„å­—ç¬¦é«˜åº¦
+ * @param  in_ptr ï¼šå­—åº“è¾“å…¥æŒ‡é’ˆ	æ³¨æ„ï¼š1pixel 1bit
+ * @param  out_ptr ï¼šç¼©æ”¾åçš„å­—ç¬¦è¾“å‡ºæŒ‡é’ˆ æ³¨æ„: 1pixel 8bit
+ *		out_ptrå®é™…ä¸Šæ²¡æœ‰æ­£å¸¸è¾“å‡ºï¼Œæ”¹æˆäº†ç›´æ¥è¾“å‡ºåˆ°å…¨å±€æŒ‡é’ˆzoomBuffä¸­
+ * @param  en_cn ï¼š0ä¸ºè‹±æ–‡ï¼Œ1ä¸ºä¸­æ–‡
+ * @retval æ— 
  */
-void ILI9341_zoomChar(uint16_t in_width,	//Ô­Ê¼×Ö·û¿í¶È
-									uint16_t in_heig,		//Ô­Ê¼×Ö·û¸ß¶È
-									uint16_t out_width,	//Ëõ·ÅºóµÄ×Ö·û¿í¶È
-									uint16_t out_heig,	//Ëõ·ÅºóµÄ×Ö·û¸ß¶È
-									uint8_t *in_ptr,	//×Ö¿âÊäÈëÖ¸Õë	×¢Òâ£º1pixel 1bit
-									uint8_t *out_ptr, //Ëõ·ÅºóµÄ×Ö·ûÊä³öÖ¸Õë ×¢Òâ: 1pixel 8bit
-									uint8_t en_cn)		//0ÎªÓ¢ÎÄ£¬1ÎªÖĞÎÄ	
+void ILI9341_zoomChar(uint16_t in_width,	//åŸå§‹å­—ç¬¦å®½åº¦
+									uint16_t in_heig,		//åŸå§‹å­—ç¬¦é«˜åº¦
+									uint16_t out_width,	//ç¼©æ”¾åçš„å­—ç¬¦å®½åº¦
+									uint16_t out_heig,	//ç¼©æ”¾åçš„å­—ç¬¦é«˜åº¦
+									uint8_t *in_ptr,	//å­—åº“è¾“å…¥æŒ‡é’ˆ	æ³¨æ„ï¼š1pixel 1bit
+									uint8_t *out_ptr, //ç¼©æ”¾åçš„å­—ç¬¦è¾“å‡ºæŒ‡é’ˆ æ³¨æ„: 1pixel 8bit
+									uint8_t en_cn)		//0ä¸ºè‹±æ–‡ï¼Œ1ä¸ºä¸­æ–‡	
 {
 	uint8_t *pts,*ots;
-	//¸ù¾İÔ´×ÖÄ£¼°Ä¿±ê×ÖÄ£´óĞ¡£¬Éè¶¨ÔËËã±ÈÀıÒò×Ó£¬×óÒÆ16ÊÇÎªÁË°Ñ¸¡µãÔËËã×ª³É¶¨µãÔËËã
+	//æ ¹æ®æºå­—æ¨¡åŠç›®æ ‡å­—æ¨¡å¤§å°ï¼Œè®¾å®šè¿ç®—æ¯”ä¾‹å› å­ï¼Œå·¦ç§»16æ˜¯ä¸ºäº†æŠŠæµ®ç‚¹è¿ç®—è½¬æˆå®šç‚¹è¿ç®—
 	unsigned int xrIntFloat_16=(in_width<<16)/out_width+1; 
   unsigned int yrIntFloat_16=(in_heig<<16)/out_heig+1;
 	
@@ -1363,103 +1363,103 @@ void ILI9341_zoomChar(uint16_t in_width,	//Ô­Ê¼×Ö·û¿í¶È
 	
 	uint16_t byteCount,bitCount;
 	
-	//¼ì²é²ÎÊıÊÇ·ñºÏ·¨
-	if(in_width >= 32) return;												//×Ö¿â²»ÔÊĞí³¬¹ı32ÏñËØ
+	//æ£€æŸ¥å‚æ•°æ˜¯å¦åˆæ³•
+	if(in_width >= 32) return;												//å­—åº“ä¸å…è®¸è¶…è¿‡32åƒç´ 
 	if(in_width * in_heig == 0) return;	
-	if(in_width * in_heig >= 1024 ) return; 					//ÏŞÖÆÊäÈë×î´ó 32*32
+	if(in_width * in_heig >= 1024 ) return; 					//é™åˆ¶è¾“å…¥æœ€å¤§ 32*32
 	
 	if(out_width * out_heig == 0) return;	
-	if(out_width * out_heig >= ZOOMMAXBUFF ) return; //ÏŞÖÆ×î´óËõ·Å 128*128
+	if(out_width * out_heig >= ZOOMMAXBUFF ) return; //é™åˆ¶æœ€å¤§ç¼©æ”¾ 128*128
 	pts = (uint8_t*)&zoomTempBuff;
 	
-	//Îª·½±ãÔËËã£¬×Ö¿âµÄÊı¾İÓÉ1 pixel/1bit Ó³Éäµ½1pixel/8bit
-	//0x01±íÊ¾±Ê¼££¬0x00±íÊ¾¿Õ°×Çø
-	if(en_cn == 0x00)//Ó¢ÎÄ
+	//ä¸ºæ–¹ä¾¿è¿ç®—ï¼Œå­—åº“çš„æ•°æ®ç”±1 pixel/1bit æ˜ å°„åˆ°1pixel/8bit
+	//0x01è¡¨ç¤ºç¬”è¿¹ï¼Œ0x00è¡¨ç¤ºç©ºç™½åŒº
+	if(en_cn == 0x00)//è‹±æ–‡
 	{
-		//Ó¢ÎÄºÍÖĞÎÄ×Ö¿âÉÏÏÂ±ß½ç²»¶Ô£¬¿ÉÔÚ´Ë´¦µ÷Õû¡£ĞèÒª×¢ÒâtempBuff·ÀÖ¹Òç³ö
+		//è‹±æ–‡å’Œä¸­æ–‡å­—åº“ä¸Šä¸‹è¾¹ç•Œä¸å¯¹ï¼Œå¯åœ¨æ­¤å¤„è°ƒæ•´ã€‚éœ€è¦æ³¨æ„tempBuffé˜²æ­¢æº¢å‡º
 			for(byteCount=0;byteCount<in_heig*in_width/8;byteCount++)	
 			{
 				for(bitCount=0;bitCount<8;bitCount++)
 					{						
-						//°ÑÔ´×ÖÄ£Êı¾İÓÉÎ»Ó³Éäµ½×Ö½Ú
-						//in_ptrÀïbitXÎª1£¬ÔòptsÀïÕû¸ö×Ö½ÚÖµÎª1
-						//in_ptrÀïbitXÎª0£¬ÔòptsÀïÕû¸ö×Ö½ÚÖµÎª0
+						//æŠŠæºå­—æ¨¡æ•°æ®ç”±ä½æ˜ å°„åˆ°å­—èŠ‚
+						//in_ptré‡ŒbitXä¸º1ï¼Œåˆ™ptsé‡Œæ•´ä¸ªå­—èŠ‚å€¼ä¸º1
+						//in_ptré‡ŒbitXä¸º0ï¼Œåˆ™ptsé‡Œæ•´ä¸ªå­—èŠ‚å€¼ä¸º0
 						*pts++ = (in_ptr[byteCount] & (0x80>>bitCount))?1:0; 
 					}
 			}				
 	}
-	else //ÖĞÎÄ
+	else //ä¸­æ–‡
 	{			
 			for(byteCount=0;byteCount<in_heig*in_width/8;byteCount++)	
 			{
 				for(bitCount=0;bitCount<8;bitCount++)
 					{						
-						//°ÑÔ´×ÖÄ£Êı¾İÓÉÎ»Ó³Éäµ½×Ö½Ú
-						//in_ptrÀïbitXÎª1£¬ÔòptsÀïÕû¸ö×Ö½ÚÖµÎª1
-						//in_ptrÀïbitXÎª0£¬ÔòptsÀïÕû¸ö×Ö½ÚÖµÎª0
+						//æŠŠæºå­—æ¨¡æ•°æ®ç”±ä½æ˜ å°„åˆ°å­—èŠ‚
+						//in_ptré‡ŒbitXä¸º1ï¼Œåˆ™ptsé‡Œæ•´ä¸ªå­—èŠ‚å€¼ä¸º1
+						//in_ptré‡ŒbitXä¸º0ï¼Œåˆ™ptsé‡Œæ•´ä¸ªå­—èŠ‚å€¼ä¸º0
 						*pts++ = (in_ptr[byteCount] & (0x80>>bitCount))?1:0; 
 					}
 			}		
 	}
 
-	//zoom¹ı³Ì
-	pts = (uint8_t*)&zoomTempBuff;	//Ó³ÉäºóµÄÔ´Êı¾İÖ¸Õë
-	ots = (uint8_t*)&zoomBuff;	//Êä³öÊı¾İµÄÖ¸Õë
-	for (y=0;y<out_heig;y++)	/*ĞĞ±éÀú*/
+	//zoomè¿‡ç¨‹
+	pts = (uint8_t*)&zoomTempBuff;	//æ˜ å°„åçš„æºæ•°æ®æŒ‡é’ˆ
+	ots = (uint8_t*)&zoomBuff;	//è¾“å‡ºæ•°æ®çš„æŒ‡é’ˆ
+	for (y=0;y<out_heig;y++)	/*è¡Œéå†*/
     {
 				unsigned int srcx_16=0;
         pSrcLine=pts+in_width*(srcy_16>>16);				
-        for (x=0;x<out_width;x++) /*ĞĞÄÚÏñËØ±éÀú*/
+        for (x=0;x<out_width;x++) /*è¡Œå†…åƒç´ éå†*/
         {
-            ots[x]=pSrcLine[srcx_16>>16]; //°ÑÔ´×ÖÄ£Êı¾İ¸´ÖÆµ½Ä¿±êÖ¸ÕëÖĞ
-            srcx_16+=xrIntFloat_16;			//°´±ÈÀıÆ«ÒÆÔ´ÏñËØµã
+            ots[x]=pSrcLine[srcx_16>>16]; //æŠŠæºå­—æ¨¡æ•°æ®å¤åˆ¶åˆ°ç›®æ ‡æŒ‡é’ˆä¸­
+            srcx_16+=xrIntFloat_16;			//æŒ‰æ¯”ä¾‹åç§»æºåƒç´ ç‚¹
         }
-        srcy_16+=yrIntFloat_16;				  //°´±ÈÀıÆ«ÒÆÔ´ÏñËØµã
+        srcy_16+=yrIntFloat_16;				  //æŒ‰æ¯”ä¾‹åç§»æºåƒç´ ç‚¹
         ots+=out_width;						
     }
-	/*£¡£¡£¡Ëõ·ÅºóµÄ×ÖÄ£Êı¾İÖ±½Ó´æ´¢µ½È«¾ÖÖ¸ÕëzoomBuffÀïÁË*/
-	out_ptr = (uint8_t*)&zoomBuff;	//out_ptrÃ»ÓĞÕıÈ·´«³ö£¬ºóÃæµ÷ÓÃÖ±½Ó¸Ä³ÉÁËÈ«¾Ö±äÁ¿Ö¸Õë£¡
+	/*ï¼ï¼ï¼ç¼©æ”¾åçš„å­—æ¨¡æ•°æ®ç›´æ¥å­˜å‚¨åˆ°å…¨å±€æŒ‡é’ˆzoomBuffé‡Œäº†*/
+	out_ptr = (uint8_t*)&zoomBuff;	//out_ptræ²¡æœ‰æ­£ç¡®ä¼ å‡ºï¼Œåé¢è°ƒç”¨ç›´æ¥æ”¹æˆäº†å…¨å±€å˜é‡æŒ‡é’ˆï¼
 	
-	/*Êµ¼ÊÖĞÈç¹ûÊ¹ÓÃout_ptr²»ĞèÒªÏÂÃæÕâÒ»¾ä£¡£¡£¡
-		Ö»ÊÇÒòÎªout_ptrÃ»ÓĞÊ¹ÓÃ£¬»áµ¼ÖÂwarning¡£Ç¿ÆÈÖ¢*/
+	/*å®é™…ä¸­å¦‚æœä½¿ç”¨out_pträ¸éœ€è¦ä¸‹é¢è¿™ä¸€å¥ï¼ï¼ï¼
+		åªæ˜¯å› ä¸ºout_ptræ²¡æœ‰ä½¿ç”¨ï¼Œä¼šå¯¼è‡´warningã€‚å¼ºè¿«ç—‡*/
 	out_ptr++; 
 }			
 
 
 /**
- * @brief  ÀûÓÃËõ·ÅºóµÄ×ÖÄ£ÏÔÊ¾×Ö·û
- * @param  Xpos £º×Ö·ûÏÔÊ¾Î»ÖÃx
- * @param  Ypos £º×Ö·ûÏÔÊ¾Î»ÖÃy
- * @param  Font_width £º×Ö·û¿í¶È
- * @param  Font_Heig£º×Ö·û¸ß¶È
- * @param  c £ºÒªÏÔÊ¾µÄ×ÖÄ£Êı¾İ
- * @param  DrawModel £ºÊÇ·ñ·´É«ÏÔÊ¾ 
- * @retval ÎŞ
+ * @brief  åˆ©ç”¨ç¼©æ”¾åçš„å­—æ¨¡æ˜¾ç¤ºå­—ç¬¦
+ * @param  Xpos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®x
+ * @param  Ypos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®y
+ * @param  Font_width ï¼šå­—ç¬¦å®½åº¦
+ * @param  Font_Heigï¼šå­—ç¬¦é«˜åº¦
+ * @param  c ï¼šè¦æ˜¾ç¤ºçš„å­—æ¨¡æ•°æ®
+ * @param  DrawModel ï¼šæ˜¯å¦åè‰²æ˜¾ç¤º 
+ * @retval æ— 
  */
-void ILI9341_DrawChar_Ex(uint16_t usX, //×Ö·ûÏÔÊ¾Î»ÖÃx
-												uint16_t usY, //×Ö·ûÏÔÊ¾Î»ÖÃy
-												uint16_t Font_width, //×Ö·û¿í¶È
-												uint16_t Font_Height,  //×Ö·û¸ß¶È 
-												uint8_t *c,						//×ÖÄ£Êı¾İ
-												uint16_t DrawModel)		//ÊÇ·ñ·´É«ÏÔÊ¾
+void ILI9341_DrawChar_Ex(uint16_t usX, //å­—ç¬¦æ˜¾ç¤ºä½ç½®x
+												uint16_t usY, //å­—ç¬¦æ˜¾ç¤ºä½ç½®y
+												uint16_t Font_width, //å­—ç¬¦å®½åº¦
+												uint16_t Font_Height,  //å­—ç¬¦é«˜åº¦ 
+												uint8_t *c,						//å­—æ¨¡æ•°æ®
+												uint16_t DrawModel)		//æ˜¯å¦åè‰²æ˜¾ç¤º
 {
   uint32_t index = 0, counter = 0;
 
-	//ÉèÖÃÏÔÊ¾´°¿Ú
+	//è®¾ç½®æ˜¾ç¤ºçª—å£
 	ILI9341_OpenWindow ( usX, usY, Font_width, Font_Height);
 	
 	ILI9341_Write_Cmd ( CMD_SetPixel );		
 	
-	//°´×Ö½Ú¶ÁÈ¡×ÖÄ£Êı¾İ
-	//ÓÉÓÚÇ°ÃæÖ±½ÓÉèÖÃÁËÏÔÊ¾´°¿Ú£¬ÏÔÊ¾Êı¾İ»á×Ô¶¯»»ĞĞ
+	//æŒ‰å­—èŠ‚è¯»å–å­—æ¨¡æ•°æ®
+	//ç”±äºå‰é¢ç›´æ¥è®¾ç½®äº†æ˜¾ç¤ºçª—å£ï¼Œæ˜¾ç¤ºæ•°æ®ä¼šè‡ªåŠ¨æ¢è¡Œ
 	for ( index = 0; index < Font_Height; index++ )
 	{
-			//Ò»Î»Ò»Î»´¦ÀíÒªÏÔÊ¾µÄÑÕÉ«
+			//ä¸€ä½ä¸€ä½å¤„ç†è¦æ˜¾ç¤ºçš„é¢œè‰²
 			for ( counter = 0; counter < Font_width; counter++ )
 			{
-					//Ëõ·ÅºóµÄ×ÖÄ£Êı¾İ£¬ÒÔÒ»¸ö×Ö½Ú±íÊ¾Ò»¸öÏñËØÎ»
-					//Õû¸ö×Ö½ÚÖµÎª1±íÊ¾¸ÃÏñËØÎª±Ê¼£
-					//Õû¸ö×Ö½ÚÖµÎª0±íÊ¾¸ÃÏñËØÎª±³¾°
+					//ç¼©æ”¾åçš„å­—æ¨¡æ•°æ®ï¼Œä»¥ä¸€ä¸ªå­—èŠ‚è¡¨ç¤ºä¸€ä¸ªåƒç´ ä½
+					//æ•´ä¸ªå­—èŠ‚å€¼ä¸º1è¡¨ç¤ºè¯¥åƒç´ ä¸ºç¬”è¿¹
+					//æ•´ä¸ªå­—èŠ‚å€¼ä¸º0è¡¨ç¤ºè¯¥åƒç´ ä¸ºèƒŒæ™¯
 					if ( *c++ == DrawModel )
 						ILI9341_Write_Data ( CurrentBackColor );			
 					else
@@ -1470,34 +1470,34 @@ void ILI9341_DrawChar_Ex(uint16_t usX, //×Ö·ûÏÔÊ¾Î»ÖÃx
 
 
 /**
- * @brief  ÀûÓÃËõ·ÅºóµÄ×ÖÄ£ÏÔÊ¾×Ö·û´®
- * @param  Xpos £º×Ö·ûÏÔÊ¾Î»ÖÃx
- * @param  Ypos £º×Ö·ûÏÔÊ¾Î»ÖÃy
- * @param  Font_width £º×Ö·û¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
- * @param  Font_Heig£º×Ö·û¸ß¶È£¬×¢ÒâÎªÅ¼Êı
- * @param  c £ºÒªÏÔÊ¾µÄ×Ö·û´®
- * @param  DrawModel £ºÊÇ·ñ·´É«ÏÔÊ¾ 
- * @retval ÎŞ
+ * @brief  åˆ©ç”¨ç¼©æ”¾åçš„å­—æ¨¡æ˜¾ç¤ºå­—ç¬¦ä¸²
+ * @param  Xpos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®x
+ * @param  Ypos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®y
+ * @param  Font_width ï¼šå­—ç¬¦å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+ * @param  Font_Heigï¼šå­—ç¬¦é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+ * @param  c ï¼šè¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
+ * @param  DrawModel ï¼šæ˜¯å¦åè‰²æ˜¾ç¤º 
+ * @retval æ— 
  */
-void ILI9341_DisplayStringEx(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
-														 uint16_t y, 				//×Ö·ûÏÔÊ¾Î»ÖÃy
-														 uint16_t Font_width,	//ÒªÏÔÊ¾µÄ×ÖÌå¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
-														 uint16_t Font_Height,	//ÒªÏÔÊ¾µÄ×ÖÌå¸ß¶È£¬×¢ÒâÎªÅ¼Êı
-														 uint8_t *ptr,					//ÏÔÊ¾µÄ×Ö·ûÄÚÈİ
-														 uint16_t DrawModel)  //ÊÇ·ñ·´É«ÏÔÊ¾
+void ILI9341_DisplayStringEx(uint16_t x, 		//å­—ç¬¦æ˜¾ç¤ºä½ç½®x
+														 uint16_t y, 				//å­—ç¬¦æ˜¾ç¤ºä½ç½®y
+														 uint16_t Font_width,	//è¦æ˜¾ç¤ºçš„å­—ä½“å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+														 uint16_t Font_Height,	//è¦æ˜¾ç¤ºçš„å­—ä½“é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+														 uint8_t *ptr,					//æ˜¾ç¤ºçš„å­—ç¬¦å†…å®¹
+														 uint16_t DrawModel)  //æ˜¯å¦åè‰²æ˜¾ç¤º
 
 
 
 {
-	uint16_t Charwidth = Font_width; //Ä¬ÈÏÎªFont_width£¬Ó¢ÎÄ¿í¶ÈÎªÖĞÎÄ¿í¶ÈµÄÒ»°ë
+	uint16_t Charwidth = Font_width; //é»˜è®¤ä¸ºFont_widthï¼Œè‹±æ–‡å®½åº¦ä¸ºä¸­æ–‡å®½åº¦çš„ä¸€åŠ
 	uint8_t *psr;
-	uint8_t Ascii;	//Ó¢ÎÄ
-	uint16_t usCh;  //ÖĞÎÄ
+	uint8_t Ascii;	//è‹±æ–‡
+	uint16_t usCh;  //ä¸­æ–‡
 	uint8_t ucBuffer [ WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8 ];	
 	
 	while ( *ptr != '\0')
 	{
-			/****´¦Àí»»ĞĞ*****/
+			/****å¤„ç†æ¢è¡Œ*****/
 			if ( ( x - ILI9341_DispWindow_X_Star + Charwidth ) > LCD_X_LENGTH )
 			{
 				x = ILI9341_DispWindow_X_Star;
@@ -1510,15 +1510,15 @@ void ILI9341_DisplayStringEx(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 				y = ILI9341_DispWindow_Y_Star;
 			}	
 			
-		if(*ptr > 0x80) //Èç¹ûÊÇÖĞÎÄ
+		if(*ptr > 0x80) //å¦‚æœæ˜¯ä¸­æ–‡
 		{			
 			Charwidth = Font_width;
 			usCh = * ( uint16_t * ) ptr;				
 			usCh = ( usCh << 8 ) + ( usCh >> 8 );
-			GetGBKCode ( ucBuffer, usCh );	//È¡×ÖÄ£Êı¾İ
-			//Ëõ·Å×ÖÄ£Êı¾İ£¬Ô´×ÖÄ£Îª16*16
+			GetGBKCode ( ucBuffer, usCh );	//å–å­—æ¨¡æ•°æ®
+			//ç¼©æ”¾å­—æ¨¡æ•°æ®ï¼Œæºå­—æ¨¡ä¸º16*16
 			ILI9341_zoomChar(WIDTH_CH_CHAR,HEIGHT_CH_CHAR,Charwidth,Font_Height,(uint8_t *)&ucBuffer,psr,1); 
-			//ÏÔÊ¾µ¥¸ö×Ö·û
+			//æ˜¾ç¤ºå•ä¸ªå­—ç¬¦
 			ILI9341_DrawChar_Ex(x,y,Charwidth,Font_Height,(uint8_t*)&zoomBuff,DrawModel);
 			x+=Charwidth;
 			ptr+=2;
@@ -1527,9 +1527,9 @@ void ILI9341_DisplayStringEx(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 		{
 				Charwidth = Font_width / 2;
 				Ascii = *ptr - 32;
-				//Ê¹ÓÃ16*24×ÖÌåËõ·Å×ÖÄ£Êı¾İ
+				//ä½¿ç”¨16*24å­—ä½“ç¼©æ”¾å­—æ¨¡æ•°æ®
 				ILI9341_zoomChar(16,24,Charwidth,Font_Height,(uint8_t *)&Font16x24.table[Ascii * Font16x24.Height*Font16x24.Width/8],psr,0);
-			  //ÏÔÊ¾µ¥¸ö×Ö·û
+			  //æ˜¾ç¤ºå•ä¸ªå­—ç¬¦
 				ILI9341_DrawChar_Ex(x,y,Charwidth,Font_Height,(uint8_t*)&zoomBuff,DrawModel);
 				x+=Charwidth;
 				ptr++;
@@ -1539,31 +1539,31 @@ void ILI9341_DisplayStringEx(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 
 
 /**
- * @brief  ÀûÓÃËõ·ÅºóµÄ×ÖÄ£ÏÔÊ¾×Ö·û´®(ÑØYÖá·½Ïò)
- * @param  Xpos £º×Ö·ûÏÔÊ¾Î»ÖÃx
- * @param  Ypos £º×Ö·ûÏÔÊ¾Î»ÖÃy
- * @param  Font_width £º×Ö·û¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
- * @param  Font_Heig£º×Ö·û¸ß¶È£¬×¢ÒâÎªÅ¼Êı
- * @param  c £ºÒªÏÔÊ¾µÄ×Ö·û´®
- * @param  DrawModel £ºÊÇ·ñ·´É«ÏÔÊ¾ 
- * @retval ÎŞ
+ * @brief  åˆ©ç”¨ç¼©æ”¾åçš„å­—æ¨¡æ˜¾ç¤ºå­—ç¬¦ä¸²(æ²¿Yè½´æ–¹å‘)
+ * @param  Xpos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®x
+ * @param  Ypos ï¼šå­—ç¬¦æ˜¾ç¤ºä½ç½®y
+ * @param  Font_width ï¼šå­—ç¬¦å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+ * @param  Font_Heigï¼šå­—ç¬¦é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+ * @param  c ï¼šè¦æ˜¾ç¤ºçš„å­—ç¬¦ä¸²
+ * @param  DrawModel ï¼šæ˜¯å¦åè‰²æ˜¾ç¤º 
+ * @retval æ— 
  */
-void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
-																		 uint16_t y, 				//×Ö·ûÏÔÊ¾Î»ÖÃy
-																		 uint16_t Font_width,	//ÒªÏÔÊ¾µÄ×ÖÌå¿í¶È£¬Ó¢ÎÄ×Ö·ûÔÚ´Ë»ù´¡ÉÏ/2¡£×¢ÒâÎªÅ¼Êı
-																		 uint16_t Font_Height,	//ÒªÏÔÊ¾µÄ×ÖÌå¸ß¶È£¬×¢ÒâÎªÅ¼Êı
-																		 uint8_t *ptr,					//ÏÔÊ¾µÄ×Ö·ûÄÚÈİ
-																		 uint16_t DrawModel)  //ÊÇ·ñ·´É«ÏÔÊ¾
+void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//å­—ç¬¦æ˜¾ç¤ºä½ç½®x
+																		 uint16_t y, 				//å­—ç¬¦æ˜¾ç¤ºä½ç½®y
+																		 uint16_t Font_width,	//è¦æ˜¾ç¤ºçš„å­—ä½“å®½åº¦ï¼Œè‹±æ–‡å­—ç¬¦åœ¨æ­¤åŸºç¡€ä¸Š/2ã€‚æ³¨æ„ä¸ºå¶æ•°
+																		 uint16_t Font_Height,	//è¦æ˜¾ç¤ºçš„å­—ä½“é«˜åº¦ï¼Œæ³¨æ„ä¸ºå¶æ•°
+																		 uint8_t *ptr,					//æ˜¾ç¤ºçš„å­—ç¬¦å†…å®¹
+																		 uint16_t DrawModel)  //æ˜¯å¦åè‰²æ˜¾ç¤º
 {
-	uint16_t Charwidth = Font_width; //Ä¬ÈÏÎªFont_width£¬Ó¢ÎÄ¿í¶ÈÎªÖĞÎÄ¿í¶ÈµÄÒ»°ë
+	uint16_t Charwidth = Font_width; //é»˜è®¤ä¸ºFont_widthï¼Œè‹±æ–‡å®½åº¦ä¸ºä¸­æ–‡å®½åº¦çš„ä¸€åŠ
 	uint8_t *psr;
-	uint8_t Ascii;	//Ó¢ÎÄ
-	uint16_t usCh;  //ÖĞÎÄ
+	uint8_t Ascii;	//è‹±æ–‡
+	uint16_t usCh;  //ä¸­æ–‡
 	uint8_t ucBuffer [ WIDTH_CH_CHAR*HEIGHT_CH_CHAR/8 ];	
 	
 	while ( *ptr != '\0')
 	{			
-			//Í³Ò»Ê¹ÓÃºº×ÖµÄ¿í¸ßÀ´¼ÆËã»»ĞĞ
+			//ç»Ÿä¸€ä½¿ç”¨æ±‰å­—çš„å®½é«˜æ¥è®¡ç®—æ¢è¡Œ
 			if ( ( y - ILI9341_DispWindow_X_Star + Font_width ) > LCD_X_LENGTH )
 			{
 				y = ILI9341_DispWindow_X_Star;
@@ -1576,15 +1576,15 @@ void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 				x = ILI9341_DispWindow_Y_Star;
 			}	
 			
-		if(*ptr > 0x80) //Èç¹ûÊÇÖĞÎÄ
+		if(*ptr > 0x80) //å¦‚æœæ˜¯ä¸­æ–‡
 		{			
 			Charwidth = Font_width;
 			usCh = * ( uint16_t * ) ptr;				
 			usCh = ( usCh << 8 ) + ( usCh >> 8 );
-			GetGBKCode ( ucBuffer, usCh );	//È¡×ÖÄ£Êı¾İ
-			//Ëõ·Å×ÖÄ£Êı¾İ£¬Ô´×ÖÄ£Îª16*16
+			GetGBKCode ( ucBuffer, usCh );	//å–å­—æ¨¡æ•°æ®
+			//ç¼©æ”¾å­—æ¨¡æ•°æ®ï¼Œæºå­—æ¨¡ä¸º16*16
 			ILI9341_zoomChar(WIDTH_CH_CHAR,HEIGHT_CH_CHAR,Charwidth,Font_Height,(uint8_t *)&ucBuffer,psr,1); 
-			//ÏÔÊ¾µ¥¸ö×Ö·û
+			//æ˜¾ç¤ºå•ä¸ªå­—ç¬¦
 			ILI9341_DrawChar_Ex(x,y,Charwidth,Font_Height,(uint8_t*)&zoomBuff,DrawModel);
 			y+=Font_Height;
 			ptr+=2;
@@ -1593,9 +1593,9 @@ void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 		{
 				Charwidth = Font_width / 2;
 				Ascii = *ptr - 32;
-				//Ê¹ÓÃ16*24×ÖÌåËõ·Å×ÖÄ£Êı¾İ
+				//ä½¿ç”¨16*24å­—ä½“ç¼©æ”¾å­—æ¨¡æ•°æ®
 				ILI9341_zoomChar(16,24,Charwidth,Font_Height,(uint8_t *)&Font16x24.table[Ascii * Font16x24.Height*Font16x24.Width/8],psr,0);
-			  //ÏÔÊ¾µ¥¸ö×Ö·û
+			  //æ˜¾ç¤ºå•ä¸ªå­—ç¬¦
 				ILI9341_DrawChar_Ex(x,y,Charwidth,Font_Height,(uint8_t*)&zoomBuff,DrawModel);
 				y+=Font_Height;
 				ptr++;
@@ -1605,12 +1605,12 @@ void ILI9341_DisplayStringEx_YDir(uint16_t x, 		//×Ö·ûÏÔÊ¾Î»ÖÃx
 
 
 /**
-  * @brief  ÉèÖÃÓ¢ÎÄ×ÖÌåÀàĞÍ
-  * @param  fonts: Ö¸¶¨ÒªÑ¡ÔñµÄ×ÖÌå
-	*		²ÎÊıÎªÒÔÏÂÖµÖ®Ò»
-  * 	@arg£ºFont24x32;
-  * 	@arg£ºFont16x24;
-  * 	@arg£ºFont8x16;
+  * @brief  è®¾ç½®è‹±æ–‡å­—ä½“ç±»å‹
+  * @param  fonts: æŒ‡å®šè¦é€‰æ‹©çš„å­—ä½“
+	*		å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€
+  * 	@argï¼šFont24x32;
+  * 	@argï¼šFont16x24;
+  * 	@argï¼šFont8x16;
   * @retval None
   */
 void LCD_SetFont(sFONT *fonts)
@@ -1619,9 +1619,9 @@ void LCD_SetFont(sFONT *fonts)
 }
 
 /**
-  * @brief  »ñÈ¡µ±Ç°×ÖÌåÀàĞÍ
+  * @brief  è·å–å½“å‰å­—ä½“ç±»å‹
   * @param  None.
-  * @retval ·µ»Øµ±Ç°×ÖÌåÀàĞÍ
+  * @retval è¿”å›å½“å‰å­—ä½“ç±»å‹
   */
 sFONT *LCD_GetFont(void)
 {
@@ -1630,9 +1630,9 @@ sFONT *LCD_GetFont(void)
 
 
 /**
-  * @brief  ÉèÖÃLCDµÄÇ°¾°(×ÖÌå)¼°±³¾°ÑÕÉ«,RGB565
-  * @param  TextColor: Ö¸¶¨Ç°¾°(×ÖÌå)ÑÕÉ«
-  * @param  BackColor: Ö¸¶¨±³¾°ÑÕÉ«
+  * @brief  è®¾ç½®LCDçš„å‰æ™¯(å­—ä½“)åŠèƒŒæ™¯é¢œè‰²,RGB565
+  * @param  TextColor: æŒ‡å®šå‰æ™¯(å­—ä½“)é¢œè‰²
+  * @param  BackColor: æŒ‡å®šèƒŒæ™¯é¢œè‰²
   * @retval None
   */
 void LCD_SetColors(uint16_t TextColor, uint16_t BackColor) 
@@ -1642,9 +1642,9 @@ void LCD_SetColors(uint16_t TextColor, uint16_t BackColor)
 }
 
 /**
-  * @brief  »ñÈ¡LCDµÄÇ°¾°(×ÖÌå)¼°±³¾°ÑÕÉ«,RGB565
-  * @param  TextColor: ÓÃÀ´´æ´¢Ç°¾°(×ÖÌå)ÑÕÉ«µÄÖ¸Õë±äÁ¿
-  * @param  BackColor: ÓÃÀ´´æ´¢±³¾°ÑÕÉ«µÄÖ¸Õë±äÁ¿
+  * @brief  è·å–LCDçš„å‰æ™¯(å­—ä½“)åŠèƒŒæ™¯é¢œè‰²,RGB565
+  * @param  TextColor: ç”¨æ¥å­˜å‚¨å‰æ™¯(å­—ä½“)é¢œè‰²çš„æŒ‡é’ˆå˜é‡
+  * @param  BackColor: ç”¨æ¥å­˜å‚¨èƒŒæ™¯é¢œè‰²çš„æŒ‡é’ˆå˜é‡
   * @retval None
   */
 void LCD_GetColors(uint16_t *TextColor, uint16_t *BackColor)
@@ -1654,8 +1654,8 @@ void LCD_GetColors(uint16_t *TextColor, uint16_t *BackColor)
 }
 
 /**
-  * @brief  ÉèÖÃLCDµÄÇ°¾°(×ÖÌå)ÑÕÉ«,RGB565
-  * @param  Color: Ö¸¶¨Ç°¾°(×ÖÌå)ÑÕÉ« 
+  * @brief  è®¾ç½®LCDçš„å‰æ™¯(å­—ä½“)é¢œè‰²,RGB565
+  * @param  Color: æŒ‡å®šå‰æ™¯(å­—ä½“)é¢œè‰² 
   * @retval None
   */
 void LCD_SetTextColor(uint16_t Color)
@@ -1664,8 +1664,8 @@ void LCD_SetTextColor(uint16_t Color)
 }
 
 /**
-  * @brief  ÉèÖÃLCDµÄ±³¾°ÑÕÉ«,RGB565
-  * @param  Color: Ö¸¶¨±³¾°ÑÕÉ« 
+  * @brief  è®¾ç½®LCDçš„èƒŒæ™¯é¢œè‰²,RGB565
+  * @param  Color: æŒ‡å®šèƒŒæ™¯é¢œè‰² 
   * @retval None
   */
 void LCD_SetBackColor(uint16_t Color)
@@ -1674,15 +1674,15 @@ void LCD_SetBackColor(uint16_t Color)
 }
 
 /**
-  * @brief  Çå³ıÄ³ĞĞÎÄ×Ö
-  * @param  Line: Ö¸¶¨ÒªÉ¾³ıµÄĞĞ
-  *   ±¾²ÎÊı¿ÉÊ¹ÓÃºêLINE(0)¡¢LINE(1)µÈ·½Ê½Ö¸¶¨ÒªÉ¾³ıµÄĞĞ£¬
-  *   ºêLINE(x)»á¸ù¾İµ±Ç°Ñ¡ÔñµÄ×ÖÌåÀ´¼ÆËãY×ø±êÖµ£¬²¢É¾³ıµ±Ç°×ÖÌå¸ß¶ÈµÄµÚxĞĞ¡£
+  * @brief  æ¸…é™¤æŸè¡Œæ–‡å­—
+  * @param  Line: æŒ‡å®šè¦åˆ é™¤çš„è¡Œ
+  *   æœ¬å‚æ•°å¯ä½¿ç”¨å®LINE(0)ã€LINE(1)ç­‰æ–¹å¼æŒ‡å®šè¦åˆ é™¤çš„è¡Œï¼Œ
+  *   å®LINE(x)ä¼šæ ¹æ®å½“å‰é€‰æ‹©çš„å­—ä½“æ¥è®¡ç®—Yåæ ‡å€¼ï¼Œå¹¶åˆ é™¤å½“å‰å­—ä½“é«˜åº¦çš„ç¬¬xè¡Œã€‚
   * @retval None
   */
 void LCD_ClearLine(uint16_t Line)
 {
-  ILI9341_Clear(0,Line,LCD_X_LENGTH,((sFONT *)LCD_GetFont())->Height);	/* ÇåÆÁ£¬ÏÔÊ¾È«ºÚ */
+  ILI9341_Clear(0,Line,LCD_X_LENGTH,((sFONT *)LCD_GetFont())->Height);	/* æ¸…å±ï¼Œæ˜¾ç¤ºå…¨é»‘ */
 
 }
 /*********************end of file*************************/

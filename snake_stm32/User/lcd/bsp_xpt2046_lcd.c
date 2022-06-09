@@ -3,13 +3,13 @@
   * @file    bsp_ili9341_lcd.c
   * @version V1.0
   * @date    2013-xx-xx
-  * @brief   ´¥ÃşÆÁÇı¶¯
+  * @brief   è§¦æ‘¸å±é©±åŠ¨
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ F103-Ö¸ÄÏÕß STM32 ¿ª·¢°å 
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç« F103-æŒ‡å—è€… STM32 å¼€å‘æ¿ 
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */ 
@@ -23,7 +23,7 @@
 #include <stdio.h> 
 #include <string.h>
 
-/******************************* ÉùÃ÷ XPT2046 Ïà¹ØµÄ¾²Ì¬º¯Êı ***************************/
+/******************************* å£°æ˜ XPT2046 ç›¸å…³çš„é™æ€å‡½æ•° ***************************/
 static void                   XPT2046_DelayUS                       ( __IO uint32_t ulCount );
 static void                   XPT2046_WriteCMD                      ( uint8_t ucCmd );
 static uint16_t               XPT2046_ReadCMD                       ( void );
@@ -35,17 +35,17 @@ static void                   ILI9341_DrawCross                     ( uint16_t u
 
 
 
-/******************************* ¶¨Òå XPT2046 È«¾Ö±äÁ¿ ***************************/
-//Ä¬ÈÏ´¥Ãş²ÎÊı£¬²»Í¬µÄÆÁÄ»ÉÔÓĞ²îÒì£¬¿ÉÖØĞÂµ÷ÓÃ´¥ÃşĞ£×¼º¯Êı»ñÈ¡
+/******************************* å®šä¹‰ XPT2046 å…¨å±€å˜é‡ ***************************/
+//é»˜è®¤è§¦æ‘¸å‚æ•°ï¼Œä¸åŒçš„å±å¹•ç¨æœ‰å·®å¼‚ï¼Œå¯é‡æ–°è°ƒç”¨è§¦æ‘¸æ ¡å‡†å‡½æ•°è·å–
 strType_XPT2046_TouchPara strXPT2046_TouchPara[] = { 	
- -0.006464,   -0.073259,  280.358032,    0.074878,    0.002052,   -6.545977,//É¨Ãè·½Ê½0
-	0.086314,    0.001891,  -12.836658,   -0.003722,   -0.065799,  254.715714,//É¨Ãè·½Ê½1
-	0.002782,    0.061522,  -11.595689,    0.083393,    0.005159,  -15.650089,//É¨Ãè·½Ê½2
-	0.089743,   -0.000289,  -20.612209,   -0.001374,    0.064451,  -16.054003,//É¨Ãè·½Ê½3
-	0.000767,   -0.068258,  250.891769,   -0.085559,   -0.000195,  334.747650,//É¨Ãè·½Ê½4
- -0.084744,    0.000047,  323.163147,   -0.002109,   -0.066371,  260.985809,//É¨Ãè·½Ê½5
- -0.001848,    0.066984,  -12.807136,   -0.084858,   -0.000805,  333.395386,//É¨Ãè·½Ê½6
- -0.085470,   -0.000876,  334.023163,   -0.003390,    0.064725,   -6.211169,//É¨Ãè·½Ê½7
+ -0.006464,   -0.073259,  280.358032,    0.074878,    0.002052,   -6.545977,//æ‰«ææ–¹å¼0
+	0.086314,    0.001891,  -12.836658,   -0.003722,   -0.065799,  254.715714,//æ‰«ææ–¹å¼1
+	0.002782,    0.061522,  -11.595689,    0.083393,    0.005159,  -15.650089,//æ‰«ææ–¹å¼2
+	0.089743,   -0.000289,  -20.612209,   -0.001374,    0.064451,  -16.054003,//æ‰«ææ–¹å¼3
+	0.000767,   -0.068258,  250.891769,   -0.085559,   -0.000195,  334.747650,//æ‰«ææ–¹å¼4
+ -0.084744,    0.000047,  323.163147,   -0.002109,   -0.066371,  260.985809,//æ‰«ææ–¹å¼5
+ -0.001848,    0.066984,  -12.807136,   -0.084858,   -0.000805,  333.395386,//æ‰«ææ–¹å¼6
+ -0.085470,   -0.000876,  334.023163,   -0.003390,    0.064725,   -6.211169,//æ‰«ææ–¹å¼7
 };
 
 volatile uint8_t ucXPT2046_TouchFlag = 0;
@@ -53,9 +53,9 @@ volatile uint8_t ucXPT2046_TouchFlag = 0;
 
 
 /**
-  * @brief  XPT2046 ³õÊ¼»¯º¯Êı
-  * @param  ÎŞ
-  * @retval ÎŞ
+  * @brief  XPT2046 åˆå§‹åŒ–å‡½æ•°
+  * @param  æ— 
+  * @retval æ— 
   */	
 void XPT2046_Init ( void )
 {
@@ -63,10 +63,10 @@ void XPT2046_Init ( void )
   GPIO_InitTypeDef  GPIO_InitStructure;
 	
 
-  /* ¿ªÆôGPIOÊ±ÖÓ */
+  /* å¼€å¯GPIOæ—¶é’Ÿ */
   RCC_APB2PeriphClockCmd ( XPT2046_SPI_GPIO_CLK|XPT2046_PENIRQ_GPIO_CLK, ENABLE );
 
-  /* Ä£ÄâSPI GPIO³õÊ¼»¯ */          
+  /* æ¨¡æ‹ŸSPI GPIOåˆå§‹åŒ– */          
   GPIO_InitStructure.GPIO_Pin=XPT2046_SPI_CLK_PIN;
   GPIO_InitStructure.GPIO_Speed=GPIO_Speed_10MHz ;	  
   GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
@@ -85,12 +85,12 @@ void XPT2046_Init ( void )
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;      
   GPIO_Init(XPT2046_SPI_CS_PORT, &GPIO_InitStructure); 
    
-  /* À­µÍÆ¬Ñ¡£¬Ñ¡ÔñXPT2046 */
+  /* æ‹‰ä½ç‰‡é€‰ï¼Œé€‰æ‹©XPT2046 */
   XPT2046_CS_DISABLE();		
 								
-	//´¥ÃşÆÁ´¥ÃşĞÅºÅÖ¸Ê¾Òı½Å£¬²»Ê¹ÓÃÖĞ¶Ï
+	//è§¦æ‘¸å±è§¦æ‘¸ä¿¡å·æŒ‡ç¤ºå¼•è„šï¼Œä¸ä½¿ç”¨ä¸­æ–­
   GPIO_InitStructure.GPIO_Pin = XPT2046_PENIRQ_GPIO_PIN;       
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	 // ÉÏÀ­ÊäÈë
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;	 // ä¸Šæ‹‰è¾“å…¥
   GPIO_Init(XPT2046_PENIRQ_GPIO_PORT, &GPIO_InitStructure);
 
 		
@@ -99,9 +99,9 @@ void XPT2046_Init ( void )
 
 
 /**
-  * @brief  ÓÃÓÚ XPT2046 µÄ¼òµ¥Î¢Ãë¼¶ÑÓÊ±º¯Êı
-  * @param  nCount £ºÑÓÊ±¼ÆÊıÖµ£¬µ¥Î»ÎªÎ¢Ãî
-  * @retval ÎŞ
+  * @brief  ç”¨äº XPT2046 çš„ç®€å•å¾®ç§’çº§å»¶æ—¶å‡½æ•°
+  * @param  nCount ï¼šå»¶æ—¶è®¡æ•°å€¼ï¼Œå•ä½ä¸ºå¾®å¦™
+  * @retval æ— 
   */	
 static void XPT2046_DelayUS ( __IO uint32_t ulCount )
 {
@@ -110,9 +110,9 @@ static void XPT2046_DelayUS ( __IO uint32_t ulCount )
 
 	for ( i = 0; i < ulCount; i ++ )
 	{
-		uint8_t uc = 12;     //ÉèÖÃÖµÎª12£¬´óÔ¼ÑÓ1Î¢Ãë  
+		uint8_t uc = 12;     //è®¾ç½®å€¼ä¸º12ï¼Œå¤§çº¦å»¶1å¾®ç§’  
 	      
-		while ( uc -- );     //ÑÓ1Î¢Ãë	
+		while ( uc -- );     //å»¶1å¾®ç§’	
 
 	}
 	
@@ -121,12 +121,12 @@ static void XPT2046_DelayUS ( __IO uint32_t ulCount )
 
 
 /**
-  * @brief  XPT2046 µÄĞ´ÈëÃüÁî
-  * @param  ucCmd £ºÃüÁî
-  *   ¸Ã²ÎÊıÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 0x90 :Í¨µÀY+µÄÑ¡Ôñ¿ØÖÆ×Ö
-  *     @arg 0xd0 :Í¨µÀX+µÄÑ¡Ôñ¿ØÖÆ×Ö
-  * @retval ÎŞ
+  * @brief  XPT2046 çš„å†™å…¥å‘½ä»¤
+  * @param  ucCmd ï¼šå‘½ä»¤
+  *   è¯¥å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 0x90 :é€šé“Y+çš„é€‰æ‹©æ§åˆ¶å­—
+  *     @arg 0xd0 :é€šé“X+çš„é€‰æ‹©æ§åˆ¶å­—
+  * @retval æ— 
   */
 static void XPT2046_WriteCMD ( uint8_t ucCmd ) 
 {
@@ -154,9 +154,9 @@ static void XPT2046_WriteCMD ( uint8_t ucCmd )
 
 
 /**
-  * @brief  XPT2046 µÄ¶ÁÈ¡ÃüÁî
-  * @param  ÎŞ
-  * @retval ¶ÁÈ¡µ½µÄÊı¾İ
+  * @brief  XPT2046 çš„è¯»å–å‘½ä»¤
+  * @param  æ— 
+  * @retval è¯»å–åˆ°çš„æ•°æ®
   */
 static uint16_t XPT2046_ReadCMD ( void ) 
 {
@@ -187,12 +187,12 @@ static uint16_t XPT2046_ReadCMD ( void )
 
 
 /**
-  * @brief  ¶Ô XPT2046 Ñ¡ÔñÒ»¸öÄ£ÄâÍ¨µÀºó£¬Æô¶¯ADC£¬²¢·µ»ØADC²ÉÑù½á¹û
+  * @brief  å¯¹ XPT2046 é€‰æ‹©ä¸€ä¸ªæ¨¡æ‹Ÿé€šé“åï¼Œå¯åŠ¨ADCï¼Œå¹¶è¿”å›ADCé‡‡æ ·ç»“æœ
   * @param  ucChannel
-  *   ¸Ã²ÎÊıÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 0x90 :Í¨µÀY+µÄÑ¡Ôñ¿ØÖÆ×Ö
-  *     @arg 0xd0 :Í¨µÀX+µÄÑ¡Ôñ¿ØÖÆ×Ö
-  * @retval ¸ÃÍ¨µÀµÄADC²ÉÑù½á¹û
+  *   è¯¥å‚æ•°ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 0x90 :é€šé“Y+çš„é€‰æ‹©æ§åˆ¶å­—
+  *     @arg 0xd0 :é€šé“X+çš„é€‰æ‹©æ§åˆ¶å­—
+  * @retval è¯¥é€šé“çš„ADCé‡‡æ ·ç»“æœ
   */
 static uint16_t XPT2046_ReadAdc ( uint8_t ucChannel )
 {
@@ -204,10 +204,10 @@ static uint16_t XPT2046_ReadAdc ( uint8_t ucChannel )
 
 
 /**
-  * @brief  ¶ÁÈ¡ XPT2046 µÄXÍ¨µÀºÍYÍ¨µÀµÄADÖµ£¨12 bit£¬×î´óÊÇ4096£©
-  * @param  sX_Ad £º´æ·ÅXÍ¨µÀADÖµµÄµØÖ·
-  * @param  sY_Ad £º´æ·ÅYÍ¨µÀADÖµµÄµØÖ·
-  * @retval ÎŞ
+  * @brief  è¯»å– XPT2046 çš„Xé€šé“å’ŒYé€šé“çš„ADå€¼ï¼ˆ12 bitï¼Œæœ€å¤§æ˜¯4096ï¼‰
+  * @param  sX_Ad ï¼šå­˜æ”¾Xé€šé“ADå€¼çš„åœ°å€
+  * @param  sY_Ad ï¼šå­˜æ”¾Yé€šé“ADå€¼çš„åœ°å€
+  * @retval æ— 
   */
 static void XPT2046_ReadAdc_XY ( int16_t * sX_Ad, int16_t * sY_Ad )  
 { 
@@ -228,17 +228,17 @@ static void XPT2046_ReadAdc_XY ( int16_t * sX_Ad, int16_t * sY_Ad )
 
  
 /**
-  * @brief  ÔÚ´¥Ãş XPT2046 ÆÁÄ»Ê±»ñÈ¡Ò»×é×ø±êµÄADÖµ£¬²¢¶Ô¸Ã×ø±ê½øĞĞÂË²¨
-  * @param  ÎŞ
-  * @retval ÂË²¨Ö®ºóµÄ×ø±êADÖµ
+  * @brief  åœ¨è§¦æ‘¸ XPT2046 å±å¹•æ—¶è·å–ä¸€ç»„åæ ‡çš„ADå€¼ï¼Œå¹¶å¯¹è¯¥åæ ‡è¿›è¡Œæ»¤æ³¢
+  * @param  æ— 
+  * @retval æ»¤æ³¢ä¹‹åçš„åæ ‡ADå€¼
   */
-#if   0                 //×¢Òâ£ºĞ£Õı½Ï¾«×¼£¬µ«ÊÇÏà¶Ô¸´ÔÓ£¬ËÙ¶È½ÏÂı
+#if   0                 //æ³¨æ„ï¼šæ ¡æ­£è¾ƒç²¾å‡†ï¼Œä½†æ˜¯ç›¸å¯¹å¤æ‚ï¼Œé€Ÿåº¦è¾ƒæ…¢
 static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenCoordinate )
 {
 	uint8_t ucCount = 0;
 	
 	int16_t sAD_X, sAD_Y;
-	int16_t sBufferArray [ 2 ] [ 9 ] = { { 0 }, { 0 } };  //×ø±êXºÍY½øĞĞ9´Î²ÉÑù
+	int16_t sBufferArray [ 2 ] [ 9 ] = { { 0 }, { 0 } };  //åæ ‡Xå’ŒYè¿›è¡Œ9æ¬¡é‡‡æ ·
 
 	int32_t lAverage  [ 3 ], lDifference [ 3 ];
 	
@@ -252,39 +252,39 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 		
 		ucCount ++; 
 			 
-	} while ( ( XPT2046_EXTI_Read() == XPT2046_EXTI_ActiveLevel ) && ( ucCount < 9 ) ); 	//ÓÃ»§µã»÷´¥ÃşÆÁÊ±¼´TP_INT_INĞÅºÅÎªµÍ ²¢ÇÒ ucCount<9*/
+	} while ( ( XPT2046_EXTI_Read() == XPT2046_EXTI_ActiveLevel ) && ( ucCount < 9 ) ); 	//ç”¨æˆ·ç‚¹å‡»è§¦æ‘¸å±æ—¶å³TP_INT_INä¿¡å·ä¸ºä½ å¹¶ä¸” ucCount<9*/
 	 
 	
-	/*Èç¹û´¥±Êµ¯Æğ*/
+	/*å¦‚æœè§¦ç¬”å¼¹èµ·*/
 	if ( XPT2046_EXTI_Read() != XPT2046_EXTI_ActiveLevel )
-		ucXPT2046_TouchFlag = 0;			//´¥ÃşÖĞ¶Ï±êÖ¾¸´Î»		
+		ucXPT2046_TouchFlag = 0;			//è§¦æ‘¸ä¸­æ–­æ ‡å¿—å¤ä½		
 
 	
-	/* Èç¹û³É¹¦²ÉÑù9´Î,½øĞĞÂË²¨ */ 
+	/* å¦‚æœæˆåŠŸé‡‡æ ·9æ¬¡,è¿›è¡Œæ»¤æ³¢ */ 
 	if ( ucCount == 9 )   								
 	{  
-		/* Îª¼õÉÙÔËËãÁ¿,·Ö±ğ·Ö3×éÈ¡Æ½¾ùÖµ */
+		/* ä¸ºå‡å°‘è¿ç®—é‡,åˆ†åˆ«åˆ†3ç»„å–å¹³å‡å€¼ */
 		lAverage  [ 0 ] = ( sBufferArray [ 0 ] [ 0 ] + sBufferArray [ 0 ] [ 1 ] + sBufferArray [ 0 ] [ 2 ] ) / 3;
 		lAverage  [ 1 ] = ( sBufferArray [ 0 ] [ 3 ] + sBufferArray [ 0 ] [ 4 ] + sBufferArray [ 0 ] [ 5 ] ) / 3;
 		lAverage  [ 2 ] = ( sBufferArray [ 0 ] [ 6 ] + sBufferArray [ 0 ] [ 7 ] + sBufferArray [ 0 ] [ 8 ] ) / 3;
 		
-		/* ¼ÆËã3×éÊı¾İµÄ²îÖµ */
+		/* è®¡ç®—3ç»„æ•°æ®çš„å·®å€¼ */
 		lDifference [ 0 ] = lAverage  [ 0 ]-lAverage  [ 1 ];
 		lDifference [ 1 ] = lAverage  [ 1 ]-lAverage  [ 2 ];
 		lDifference [ 2 ] = lAverage  [ 2 ]-lAverage  [ 0 ];
 		
-		/* ¶ÔÉÏÊö²îÖµÈ¡¾ø¶ÔÖµ */
+		/* å¯¹ä¸Šè¿°å·®å€¼å–ç»å¯¹å€¼ */
 		lDifference [ 0 ] = lDifference [ 0 ]>0?lDifference [ 0 ]: ( -lDifference [ 0 ] );
 		lDifference [ 1 ] = lDifference [ 1 ]>0?lDifference [ 1 ]: ( -lDifference [ 1 ] );
 		lDifference [ 2 ] = lDifference [ 2 ]>0?lDifference [ 2 ]: ( -lDifference [ 2 ] );
 		
 		
-		/* ÅĞ¶Ï¾ø¶Ô²îÖµÊÇ·ñ¶¼³¬¹ı²îÖµÃÅÏŞ£¬Èç¹ûÕâ3¸ö¾ø¶Ô²îÖµ¶¼³¬¹ıÃÅÏŞÖµ£¬ÔòÅĞ¶¨Õâ´Î²ÉÑùµãÎªÒ°µã,Å×Æú²ÉÑùµã£¬²îÖµÃÅÏŞÈ¡Îª2 */
+		/* åˆ¤æ–­ç»å¯¹å·®å€¼æ˜¯å¦éƒ½è¶…è¿‡å·®å€¼é—¨é™ï¼Œå¦‚æœè¿™3ä¸ªç»å¯¹å·®å€¼éƒ½è¶…è¿‡é—¨é™å€¼ï¼Œåˆ™åˆ¤å®šè¿™æ¬¡é‡‡æ ·ç‚¹ä¸ºé‡ç‚¹,æŠ›å¼ƒé‡‡æ ·ç‚¹ï¼Œå·®å€¼é—¨é™å–ä¸º2 */
 		if (  lDifference [ 0 ] > XPT2046_THRESHOLD_CalDiff  &&  lDifference [ 1 ] > XPT2046_THRESHOLD_CalDiff  &&  lDifference [ 2 ] > XPT2046_THRESHOLD_CalDiff  ) 
 			return 0;
 		
 		
-		/* ¼ÆËãËüÃÇµÄÆ½¾ùÖµ£¬Í¬Ê±¸³Öµ¸østrScreenCoordinate */ 
+		/* è®¡ç®—å®ƒä»¬çš„å¹³å‡å€¼ï¼ŒåŒæ—¶èµ‹å€¼ç»™strScreenCoordinate */ 
 		if ( lDifference [ 0 ] < lDifference [ 1 ] )
 		{
 			if ( lDifference [ 2 ] < lDifference [ 0 ] ) 
@@ -300,7 +300,7 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 			pScreenCoordinate ->x = ( lAverage  [ 1 ] + lAverage  [ 2 ] ) / 2;
 		
 		
-		/* Í¬ÉÏ£¬¼ÆËãYµÄÆ½¾ùÖµ */
+		/* åŒä¸Šï¼Œè®¡ç®—Yçš„å¹³å‡å€¼ */
 		lAverage  [ 0 ] = ( sBufferArray [ 1 ] [ 0 ] + sBufferArray [ 1 ] [ 1 ] + sBufferArray [ 1 ] [ 2 ] ) / 3;
 		lAverage  [ 1 ] = ( sBufferArray [ 1 ] [ 3 ] + sBufferArray [ 1 ] [ 4 ] + sBufferArray [ 1 ] [ 5 ] ) / 3;
 		lAverage  [ 2 ] = ( sBufferArray [ 1 ] [ 6 ] + sBufferArray [ 1 ] [ 7 ] + sBufferArray [ 1 ] [ 8 ] ) / 3;
@@ -309,7 +309,7 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 		lDifference [ 1 ] = lAverage  [ 1 ] - lAverage  [ 2 ];
 		lDifference [ 2 ] = lAverage  [ 2 ] - lAverage  [ 0 ];
 		
-		/* È¡¾ø¶ÔÖµ */
+		/* å–ç»å¯¹å€¼ */
 		lDifference [ 0 ] = lDifference [ 0 ] > 0 ? lDifference [ 0 ] : ( - lDifference [ 0 ] );
 		lDifference [ 1 ] = lDifference [ 1 ] > 0 ? lDifference [ 1 ] : ( - lDifference [ 1 ] );
 		lDifference [ 2 ] = lDifference [ 2 ] > 0 ? lDifference [ 2 ] : ( - lDifference [ 2 ] );
@@ -343,19 +343,19 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 }
 
 
-#else     //×¢Òâ£º»­°åÓ¦ÓÃÊµÀı×¨ÓÃ,²»ÊÇºÜ¾«×¼£¬µ«ÊÇ¼òµ¥£¬ËÙ¶È±È½Ï¿ì   
+#else     //æ³¨æ„ï¼šç”»æ¿åº”ç”¨å®ä¾‹ä¸“ç”¨,ä¸æ˜¯å¾ˆç²¾å‡†ï¼Œä½†æ˜¯ç®€å•ï¼Œé€Ÿåº¦æ¯”è¾ƒå¿«   
 static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenCoordinate )
 {
 	uint8_t ucCount = 0, i;
 	
 	int16_t sAD_X, sAD_Y;
-	int16_t sBufferArray [ 2 ] [ 10 ] = { { 0 },{ 0 } };  //×ø±êXºÍY½øĞĞ¶à´Î²ÉÑù
+	int16_t sBufferArray [ 2 ] [ 10 ] = { { 0 },{ 0 } };  //åæ ‡Xå’ŒYè¿›è¡Œå¤šæ¬¡é‡‡æ ·
 	
-	//´æ´¢²ÉÑùÖĞµÄ×îĞ¡Öµ¡¢×î´óÖµ
+	//å­˜å‚¨é‡‡æ ·ä¸­çš„æœ€å°å€¼ã€æœ€å¤§å€¼
 	int32_t lX_Min, lX_Max, lY_Min, lY_Max;
 
 
-	/* Ñ­»·²ÉÑù10´Î */ 
+	/* å¾ªç¯é‡‡æ ·10æ¬¡ */ 
 	do					       				
 	{		  
 		XPT2046_ReadAdc_XY ( & sAD_X, & sAD_Y );  
@@ -365,15 +365,15 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 		
 		ucCount ++;  
 		
-	}	while ( ( XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel ) && ( ucCount < 10 ) );//ÓÃ»§µã»÷´¥ÃşÆÁÊ±¼´TP_INT_INĞÅºÅÎªµÍ ²¢ÇÒ ucCount<10
+	}	while ( ( XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel ) && ( ucCount < 10 ) );//ç”¨æˆ·ç‚¹å‡»è§¦æ‘¸å±æ—¶å³TP_INT_INä¿¡å·ä¸ºä½ å¹¶ä¸” ucCount<10
 	
 	
-	/*Èç¹û´¥±Êµ¯Æğ*/
+	/*å¦‚æœè§¦ç¬”å¼¹èµ·*/
 	if ( XPT2046_PENIRQ_Read() != XPT2046_PENIRQ_ActiveLevel )
-		ucXPT2046_TouchFlag = 0;			//ÖĞ¶Ï±êÖ¾¸´Î»
+		ucXPT2046_TouchFlag = 0;			//ä¸­æ–­æ ‡å¿—å¤ä½
 
 	
-	/*Èç¹û³É¹¦²ÉÑù10¸öÑù±¾*/
+	/*å¦‚æœæˆåŠŸé‡‡æ ·10ä¸ªæ ·æœ¬*/
 	if ( ucCount ==10 )		 					
 	{
 		lX_Max = lX_Min = sBufferArray [ 0 ] [ 0 ];
@@ -400,7 +400,7 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 		}
 		
 		
-		/*È¥³ı×îĞ¡ÖµºÍ×î´óÖµÖ®ºóÇóÆ½¾ùÖµ*/
+		/*å»é™¤æœ€å°å€¼å’Œæœ€å¤§å€¼ä¹‹åæ±‚å¹³å‡å€¼*/
 		pScreenCoordinate ->x =  ( sBufferArray [ 0 ] [ 0 ] + sBufferArray [ 0 ] [ 1 ] + sBufferArray [ 0 ] [ 2 ] + sBufferArray [ 0 ] [ 3 ] + sBufferArray [ 0 ] [ 4 ] + 
 		                           sBufferArray [ 0 ] [ 5 ] + sBufferArray [ 0 ] [ 6 ] + sBufferArray [ 0 ] [ 7 ] + sBufferArray [ 0 ] [ 8 ] + sBufferArray [ 0 ] [ 9 ] - lX_Min-lX_Max ) >> 3;
 		
@@ -419,21 +419,21 @@ static uint8_t XPT2046_ReadAdc_Smooth_XY ( strType_XPT2046_Coordinate * pScreenC
 
 
 /**
-  * @brief  ¼ÆËã XPT2046 ´¥Ãş×ø±êĞ£ÕıÏµÊı£¨×¢Òâ£ºÖ»ÓĞÔÚLCDºÍ´¥ÃşÆÁ¼äµÄÎó²î½Ç¶È·Ç³£Ğ¡Ê±,²ÅÄÜÔËÓÃÏÂÃæ¹«Ê½£©
-  * @param  pDisplayCoordinate £ºÆÁÄ»ÈËÎªÏÔÊ¾µÄÒÑÖª×ø±ê
-  * @param  pstrScreenSample £º¶ÔÒÑÖª×ø±êµã´¥ÃşÊ± XPT2046 ²úÉúµÄ×ø±ê
-  * @param  pCalibrationFactor £º¸ù¾İÈËÎªÉè¶¨×ø±êºÍ²ÉÑù»ØÀ´µÄ×ø±ê¼ÆËã³öÀ´µÄÆÁÄ»´¥ÃşĞ£ÕıÏµÊı
-  * @retval ¼ÆËã×´Ì¬
-	*   ¸Ã·µ»ØÖµÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 1 :¼ÆËã³É¹¦
-  *     @arg 0 :¼ÆËãÊ§°Ü
+  * @brief  è®¡ç®— XPT2046 è§¦æ‘¸åæ ‡æ ¡æ­£ç³»æ•°ï¼ˆæ³¨æ„ï¼šåªæœ‰åœ¨LCDå’Œè§¦æ‘¸å±é—´çš„è¯¯å·®è§’åº¦éå¸¸å°æ—¶,æ‰èƒ½è¿ç”¨ä¸‹é¢å…¬å¼ï¼‰
+  * @param  pDisplayCoordinate ï¼šå±å¹•äººä¸ºæ˜¾ç¤ºçš„å·²çŸ¥åæ ‡
+  * @param  pstrScreenSample ï¼šå¯¹å·²çŸ¥åæ ‡ç‚¹è§¦æ‘¸æ—¶ XPT2046 äº§ç”Ÿçš„åæ ‡
+  * @param  pCalibrationFactor ï¼šæ ¹æ®äººä¸ºè®¾å®šåæ ‡å’Œé‡‡æ ·å›æ¥çš„åæ ‡è®¡ç®—å‡ºæ¥çš„å±å¹•è§¦æ‘¸æ ¡æ­£ç³»æ•°
+  * @retval è®¡ç®—çŠ¶æ€
+	*   è¯¥è¿”å›å€¼ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 1 :è®¡ç®—æˆåŠŸ
+  *     @arg 0 :è®¡ç®—å¤±è´¥
   */
 static uint8_t XPT2046_Calculate_CalibrationFactor ( strType_XPT2046_Coordinate * pDisplayCoordinate, strType_XPT2046_Coordinate * pScreenSample, strType_XPT2046_Calibration * pCalibrationFactor )
 {
 	uint8_t ucRet = 1;
 
 	
-	/* K£½ ( X0£­X2 )  ( Y1£­Y2 )£­ ( X1£­X2 )  ( Y0£­Y2 ) */
+	/* Kï¼ ( X0ï¼X2 )  ( Y1ï¼Y2 )ï¼ ( X1ï¼X2 )  ( Y0ï¼Y2 ) */
 	pCalibrationFactor -> Divider =  ( ( pScreenSample [ 0 ] .x - pScreenSample [ 2 ] .x ) *  ( pScreenSample [ 1 ] .y - pScreenSample [ 2 ] .y ) ) - 
 									                 ( ( pScreenSample [ 1 ] .x - pScreenSample [ 2 ] .x ) *  ( pScreenSample [ 0 ] .y - pScreenSample [ 2 ] .y ) ) ;
 	
@@ -443,29 +443,29 @@ static uint8_t XPT2046_Calculate_CalibrationFactor ( strType_XPT2046_Coordinate 
 
 	else
 	{
-		/* A£½ (  ( XD0£­XD2 )  ( Y1£­Y2 )£­ ( XD1£­XD2 )  ( Y0£­Y2 ) )£¯K	*/
+		/* Aï¼ (  ( XD0ï¼XD2 )  ( Y1ï¼Y2 )ï¼ ( XD1ï¼XD2 )  ( Y0ï¼Y2 ) )ï¼K	*/
 		pCalibrationFactor -> An =  ( ( pDisplayCoordinate [ 0 ] .x - pDisplayCoordinate [ 2 ] .x ) *  ( pScreenSample [ 1 ] .y - pScreenSample [ 2 ] .y ) ) - 
 								                ( ( pDisplayCoordinate [ 1 ] .x - pDisplayCoordinate [ 2 ] .x ) *  ( pScreenSample [ 0 ] .y - pScreenSample [ 2 ] .y ) );
 		
-		/* B£½ (  ( X0£­X2 )  ( XD1£­XD2 )£­ ( XD0£­XD2 )  ( X1£­X2 ) )£¯K	*/
+		/* Bï¼ (  ( X0ï¼X2 )  ( XD1ï¼XD2 )ï¼ ( XD0ï¼XD2 )  ( X1ï¼X2 ) )ï¼K	*/
 		pCalibrationFactor -> Bn =  ( ( pScreenSample [ 0 ] .x - pScreenSample [ 2 ] .x ) *  ( pDisplayCoordinate [ 1 ] .x - pDisplayCoordinate [ 2 ] .x ) ) - 
 								                ( ( pDisplayCoordinate [ 0 ] .x - pDisplayCoordinate [ 2 ] .x ) *  ( pScreenSample [ 1 ] .x - pScreenSample [ 2 ] .x ) );
 		
-		/* C£½ ( Y0 ( X2XD1£­X1XD2 )+Y1 ( X0XD2£­X2XD0 )+Y2 ( X1XD0£­X0XD1 ) )£¯K */
+		/* Cï¼ ( Y0 ( X2XD1ï¼X1XD2 )+Y1 ( X0XD2ï¼X2XD0 )+Y2 ( X1XD0ï¼X0XD1 ) )ï¼K */
 		pCalibrationFactor -> Cn =  ( pScreenSample [ 2 ] .x * pDisplayCoordinate [ 1 ] .x - pScreenSample [ 1 ] .x * pDisplayCoordinate [ 2 ] .x ) * pScreenSample [ 0 ] .y +
 								                ( pScreenSample [ 0 ] .x * pDisplayCoordinate [ 2 ] .x - pScreenSample [ 2 ] .x * pDisplayCoordinate [ 0 ] .x ) * pScreenSample [ 1 ] .y +
 								                ( pScreenSample [ 1 ] .x * pDisplayCoordinate [ 0 ] .x - pScreenSample [ 0 ] .x * pDisplayCoordinate [ 1 ] .x ) * pScreenSample [ 2 ] .y ;
 		
-		/* D£½ (  ( YD0£­YD2 )  ( Y1£­Y2 )£­ ( YD1£­YD2 )  ( Y0£­Y2 ) )£¯K	*/
+		/* Dï¼ (  ( YD0ï¼YD2 )  ( Y1ï¼Y2 )ï¼ ( YD1ï¼YD2 )  ( Y0ï¼Y2 ) )ï¼K	*/
 		pCalibrationFactor -> Dn =  ( ( pDisplayCoordinate [ 0 ] .y - pDisplayCoordinate [ 2 ] .y ) *  ( pScreenSample [ 1 ] .y - pScreenSample [ 2 ] .y ) ) - 
 								                ( ( pDisplayCoordinate [ 1 ] .y - pDisplayCoordinate [ 2 ] .y ) *  ( pScreenSample [ 0 ] .y - pScreenSample [ 2 ] .y ) ) ;
 		
-		/* E£½ (  ( X0£­X2 )  ( YD1£­YD2 )£­ ( YD0£­YD2 )  ( X1£­X2 ) )£¯K	*/
+		/* Eï¼ (  ( X0ï¼X2 )  ( YD1ï¼YD2 )ï¼ ( YD0ï¼YD2 )  ( X1ï¼X2 ) )ï¼K	*/
 		pCalibrationFactor -> En =  ( ( pScreenSample [ 0 ] .x - pScreenSample [ 2 ] .x ) *  ( pDisplayCoordinate [ 1 ] .y - pDisplayCoordinate [ 2 ] .y ) ) - 
 								                ( ( pDisplayCoordinate [ 0 ] .y - pDisplayCoordinate [ 2 ] .y ) *  ( pScreenSample [ 1 ] .x - pScreenSample [ 2 ] .x ) ) ;
 		
 		
-		/* F£½ ( Y0 ( X2YD1£­X1YD2 )+Y1 ( X0YD2£­X2YD0 )+Y2 ( X1YD0£­X0YD1 ) )£¯K */
+		/* Fï¼ ( Y0 ( X2YD1ï¼X1YD2 )+Y1 ( X0YD2ï¼X2YD0 )+Y2 ( X1YD0ï¼X0YD1 ) )ï¼K */
 		pCalibrationFactor -> Fn =  ( pScreenSample [ 2 ] .x * pDisplayCoordinate [ 1 ] .y - pScreenSample [ 1 ] .x * pDisplayCoordinate [ 2 ] .y ) * pScreenSample [ 0 ] .y +
 								                ( pScreenSample [ 0 ] .x * pDisplayCoordinate [ 2 ] .y - pScreenSample [ 2 ] .x * pDisplayCoordinate [ 0 ] .y ) * pScreenSample [ 1 ] .y +
 								                ( pScreenSample [ 1 ] .x * pDisplayCoordinate [ 0 ] .y - pScreenSample [ 0 ] .x * pDisplayCoordinate [ 1 ] .y ) * pScreenSample [ 2 ] .y;
@@ -480,10 +480,10 @@ static uint8_t XPT2046_Calculate_CalibrationFactor ( strType_XPT2046_Coordinate 
 
 
 /**
-  * @brief  ÔÚ ILI9341 ÉÏÏÔÊ¾Ğ£Õı´¥ÃşÊ±ĞèÒªµÄÊ®×Ö
-  * @param  usX £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÊ®×Ö½»²æµãµÄX×ø±ê
-  * @param  usY £ºÔÚÌØ¶¨É¨Ãè·½ÏòÏÂÊ®×Ö½»²æµãµÄY×ø±ê
-  * @retval ÎŞ
+  * @brief  åœ¨ ILI9341 ä¸Šæ˜¾ç¤ºæ ¡æ­£è§¦æ‘¸æ—¶éœ€è¦çš„åå­—
+  * @param  usX ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹åå­—äº¤å‰ç‚¹çš„Xåæ ‡
+  * @param  usY ï¼šåœ¨ç‰¹å®šæ‰«ææ–¹å‘ä¸‹åå­—äº¤å‰ç‚¹çš„Yåæ ‡
+  * @retval æ— 
   */
 static void ILI9341_DrawCross ( uint16_t usX, uint16_t usY )
 {
@@ -493,13 +493,13 @@ static void ILI9341_DrawCross ( uint16_t usX, uint16_t usY )
 
 
 /**
-  * @brief  XPT2046 ´¥ÃşÆÁĞ£×¼
-	* @param	LCD_Mode£ºÖ¸¶¨ÒªĞ£ÕıÄÄÖÖÒº¾§É¨ÃèÄ£Ê½µÄ²ÎÊı
-  * @note  ±¾º¯Êıµ÷ÓÃºó»á°ÑÒº¾§Ä£Ê½ÉèÖÃÎªLCD_Mode
-  * @retval Ğ£×¼½á¹û
-	*   ¸Ã·µ»ØÖµÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 1 :Ğ£×¼³É¹¦
-  *     @arg 0 :Ğ£×¼Ê§°Ü
+  * @brief  XPT2046 è§¦æ‘¸å±æ ¡å‡†
+	* @param	LCD_Modeï¼šæŒ‡å®šè¦æ ¡æ­£å“ªç§æ¶²æ™¶æ‰«ææ¨¡å¼çš„å‚æ•°
+  * @note  æœ¬å‡½æ•°è°ƒç”¨åä¼šæŠŠæ¶²æ™¶æ¨¡å¼è®¾ç½®ä¸ºLCD_Mode
+  * @retval æ ¡å‡†ç»“æœ
+	*   è¯¥è¿”å›å€¼ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 1 :æ ¡å‡†æˆåŠŸ
+  *     @arg 0 :æ ¡å‡†å¤±è´¥
   */
 uint8_t XPT2046_Touch_Calibrate ( uint8_t LCD_Mode ) 
 {
@@ -519,11 +519,11 @@ uint8_t XPT2046_Touch_Calibrate ( uint8_t LCD_Mode )
 		LCD_SetFont(&Font8x16);
 		LCD_SetColors(BLUE,BLACK);
 	
-		//ÉèÖÃÉ¨Ãè·½Ïò£¬ºáÆÁ
+		//è®¾ç½®æ‰«ææ–¹å‘ï¼Œæ¨ªå±
 		ILI9341_GramScan ( LCD_Mode );
 		
 		
-		/* Éè¶¨¡°Ê®¡±×Ö½»²æµãµÄ×ø±ê */ 
+		/* è®¾å®šâ€œåâ€å­—äº¤å‰ç‚¹çš„åæ ‡ */ 
 		strCrossCoordinate [0].x = LCD_X_LENGTH >> 2;
 		strCrossCoordinate[0].y = LCD_Y_LENGTH >> 2;
 		
@@ -542,38 +542,38 @@ uint8_t XPT2046_Touch_Calibrate ( uint8_t LCD_Mode )
 			ILI9341_Clear ( 0, 0, LCD_X_LENGTH, LCD_Y_LENGTH );       
 			
 			pStr = "Touch Calibrate ......";		
-			//²åÈë¿Õ¸ñ£¬¾ÓÖĞÏÔÊ¾
+			//æ’å…¥ç©ºæ ¼ï¼Œå±…ä¸­æ˜¾ç¤º
 			sprintf(cStr,"%*c%s",((LCD_X_LENGTH/(((sFONT *)LCD_GetFont())->Width))-strlen(pStr))/2,' ',pStr)	;	
       ILI9341_DispStringLine_EN (LCD_Y_LENGTH >> 1, cStr );			
 		
-			//²åÈë¿Õ¸ñ£¬¾ÓÖĞÏÔÊ¾
+			//æ’å…¥ç©ºæ ¼ï¼Œå±…ä¸­æ˜¾ç¤º
 			sprintf ( cStr, "%*c%d",((LCD_X_LENGTH/(((sFONT *)LCD_GetFont())->Width)) -1)/2,' ',i + 1 );
 			ILI9341_DispStringLine_EN (( LCD_Y_LENGTH >> 1 ) - (((sFONT *)LCD_GetFont())->Height), cStr ); 
 		
-			XPT2046_DelayUS ( 300000 );		                     //ÊÊµ±µÄÑÓÊ±ºÜÓĞ±ØÒª
+			XPT2046_DelayUS ( 300000 );		                     //é€‚å½“çš„å»¶æ—¶å¾ˆæœ‰å¿…è¦
 			
-			ILI9341_DrawCross ( strCrossCoordinate[i] .x, strCrossCoordinate[i].y );  //ÏÔÊ¾Ğ£ÕıÓÃµÄ¡°Ê®¡±×Ö
+			ILI9341_DrawCross ( strCrossCoordinate[i] .x, strCrossCoordinate[i].y );  //æ˜¾ç¤ºæ ¡æ­£ç”¨çš„â€œåâ€å­—
 
-			while ( ! XPT2046_ReadAdc_Smooth_XY ( & strScreenSample [i] ) );               //¶ÁÈ¡XPT2046Êı¾İµ½±äÁ¿pCoordinate£¬µ±ptrÎª¿ÕÊ±±íÊ¾Ã»ÓĞ´¥µã±»°´ÏÂ
+			while ( ! XPT2046_ReadAdc_Smooth_XY ( & strScreenSample [i] ) );               //è¯»å–XPT2046æ•°æ®åˆ°å˜é‡pCoordinateï¼Œå½“pträ¸ºç©ºæ—¶è¡¨ç¤ºæ²¡æœ‰è§¦ç‚¹è¢«æŒ‰ä¸‹
 
 		}
 		
 		
-		XPT2046_Calculate_CalibrationFactor ( strCrossCoordinate, strScreenSample, & CalibrationFactor ) ;  	 //ÓÃÔ­Ê¼²ÎÊı¼ÆËã³ö Ô­Ê¼²ÎÊıÓë×ø±êµÄ×ª»»ÏµÊı
+		XPT2046_Calculate_CalibrationFactor ( strCrossCoordinate, strScreenSample, & CalibrationFactor ) ;  	 //ç”¨åŸå§‹å‚æ•°è®¡ç®—å‡º åŸå§‹å‚æ•°ä¸åæ ‡çš„è½¬æ¢ç³»æ•°
 		
 		if ( CalibrationFactor.Divider == 0 ) goto Failure;
 		
 			
-		usTest_x = ( ( CalibrationFactor.An * strScreenSample[3].x ) + ( CalibrationFactor.Bn * strScreenSample[3].y ) + CalibrationFactor.Cn ) / CalibrationFactor.Divider;		//È¡Ò»¸öµã¼ÆËãXÖµ	 
-		usTest_y = ( ( CalibrationFactor.Dn * strScreenSample[3].x ) + ( CalibrationFactor.En * strScreenSample[3].y ) + CalibrationFactor.Fn ) / CalibrationFactor.Divider;    //È¡Ò»¸öµã¼ÆËãYÖµ
+		usTest_x = ( ( CalibrationFactor.An * strScreenSample[3].x ) + ( CalibrationFactor.Bn * strScreenSample[3].y ) + CalibrationFactor.Cn ) / CalibrationFactor.Divider;		//å–ä¸€ä¸ªç‚¹è®¡ç®—Xå€¼	 
+		usTest_y = ( ( CalibrationFactor.Dn * strScreenSample[3].x ) + ( CalibrationFactor.En * strScreenSample[3].y ) + CalibrationFactor.Fn ) / CalibrationFactor.Divider;    //å–ä¸€ä¸ªç‚¹è®¡ç®—Yå€¼
 		
-		usGap_x = ( usTest_x > strCrossCoordinate[3].x ) ? ( usTest_x - strCrossCoordinate[3].x ) : ( strCrossCoordinate[3].x - usTest_x );   //Êµ¼ÊX×ø±êÓë¼ÆËã×ø±êµÄ¾ø¶Ô²î
-		usGap_y = ( usTest_y > strCrossCoordinate[3].y ) ? ( usTest_y - strCrossCoordinate[3].y ) : ( strCrossCoordinate[3].y - usTest_y );   //Êµ¼ÊY×ø±êÓë¼ÆËã×ø±êµÄ¾ø¶Ô²î
+		usGap_x = ( usTest_x > strCrossCoordinate[3].x ) ? ( usTest_x - strCrossCoordinate[3].x ) : ( strCrossCoordinate[3].x - usTest_x );   //å®é™…Xåæ ‡ä¸è®¡ç®—åæ ‡çš„ç»å¯¹å·®
+		usGap_y = ( usTest_y > strCrossCoordinate[3].y ) ? ( usTest_y - strCrossCoordinate[3].y ) : ( strCrossCoordinate[3].y - usTest_y );   //å®é™…Yåæ ‡ä¸è®¡ç®—åæ ‡çš„ç»å¯¹å·®
 		
-    if ( ( usGap_x > 15 ) || ( usGap_y > 15 ) ) goto Failure;       //¿ÉÒÔÍ¨¹ıĞŞ¸ÄÕâÁ½¸öÖµµÄ´óĞ¡À´µ÷Õû¾«¶È    
+    if ( ( usGap_x > 15 ) || ( usGap_y > 15 ) ) goto Failure;       //å¯ä»¥é€šè¿‡ä¿®æ”¹è¿™ä¸¤ä¸ªå€¼çš„å¤§å°æ¥è°ƒæ•´ç²¾åº¦    
 		
 
-    /* Ğ£×¼ÏµÊıÎªÈ«¾Ö±äÁ¿ */ 
+    /* æ ¡å‡†ç³»æ•°ä¸ºå…¨å±€å˜é‡ */ 
 		strXPT2046_TouchPara[LCD_Mode].dX_X = ( CalibrationFactor.An * 1.0 ) / CalibrationFactor.Divider;
 		strXPT2046_TouchPara[LCD_Mode].dX_Y = ( CalibrationFactor.Bn * 1.0 ) / CalibrationFactor.Divider;
 		strXPT2046_TouchPara[LCD_Mode].dX   = ( CalibrationFactor.Cn * 1.0 ) / CalibrationFactor.Divider;
@@ -582,11 +582,11 @@ uint8_t XPT2046_Touch_Calibrate ( uint8_t LCD_Mode )
 		strXPT2046_TouchPara[LCD_Mode].dY_Y = ( CalibrationFactor.En * 1.0 ) / CalibrationFactor.Divider;
 		strXPT2046_TouchPara[LCD_Mode].dY   = ( CalibrationFactor.Fn * 1.0 ) / CalibrationFactor.Divider;
 
-		#if 0  //Êä³öµ÷ÊÔĞÅÏ¢£¬×¢ÒâÒªÏÈ³õÊ¼»¯´®¿Ú
+		#if 0  //è¾“å‡ºè°ƒè¯•ä¿¡æ¯ï¼Œæ³¨æ„è¦å…ˆåˆå§‹åŒ–ä¸²å£
 			{
 						float * ulHeadAddres ;
-				/* ´òÓ¡Ğ£Ğ£×¼ÏµÊı */ 
-				XPT2046_INFO ( "ÏÔÊ¾Ä£Ê½¡¾%d¡¿Ğ£×¼ÏµÊıÈçÏÂ£º", LCD_Mode);
+				/* æ‰“å°æ ¡æ ¡å‡†ç³»æ•° */ 
+				XPT2046_INFO ( "æ˜¾ç¤ºæ¨¡å¼ã€%dã€‘æ ¡å‡†ç³»æ•°å¦‚ä¸‹ï¼š", LCD_Mode);
 				
 				ulHeadAddres = ( float* ) ( & strXPT2046_TouchPara[LCD_Mode] );
 				
@@ -603,7 +603,7 @@ uint8_t XPT2046_Touch_Calibrate ( uint8_t LCD_Mode )
 	LCD_SetTextColor(GREEN);
 	
 	pStr = "Calibrate Succed";
-	//²åÈë¿Õ¸ñ£¬¾ÓÖĞÏÔÊ¾	
+	//æ’å…¥ç©ºæ ¼ï¼Œå±…ä¸­æ˜¾ç¤º	
 	sprintf(cStr,"%*c%s",((LCD_X_LENGTH/(((sFONT *)LCD_GetFont())->Width))-strlen(pStr))/2,' ',pStr)	;	
   ILI9341_DispStringLine_EN (LCD_Y_LENGTH >> 1, cStr );	
 
@@ -619,12 +619,12 @@ Failure:
 	LCD_SetTextColor(RED);
 	
 	pStr = "Calibrate fail";	
-	//²åÈë¿Õ¸ñ£¬¾ÓÖĞÏÔÊ¾	
+	//æ’å…¥ç©ºæ ¼ï¼Œå±…ä¸­æ˜¾ç¤º	
 	sprintf(cStr,"%*c%s",((LCD_X_LENGTH/(((sFONT *)LCD_GetFont())->Width))-strlen(pStr))/2,' ',pStr)	;	
   ILI9341_DispStringLine_EN (LCD_Y_LENGTH >> 1, cStr );	
 
 	pStr = "try again";
-	//²åÈë¿Õ¸ñ£¬¾ÓÖĞÏÔÊ¾		
+	//æ’å…¥ç©ºæ ¼ï¼Œå±…ä¸­æ˜¾ç¤º		
 	sprintf(cStr,"%*c%s",((LCD_X_LENGTH/(((sFONT *)LCD_GetFont())->Width))-strlen(pStr))/2,' ',pStr)	;	
 	ILI9341_DispStringLine_EN ( ( LCD_Y_LENGTH >> 1 ) + (((sFONT *)LCD_GetFont())->Height), cStr );				
 
@@ -638,68 +638,68 @@ Failure:
 
 
 /**
-  * @brief  ´ÓFLASHÖĞ»ñÈ¡ »ò ÖØĞÂĞ£Õı´¥Ãş²ÎÊı£¨Ğ£Õıºó»áĞ´Èëµ½SPI FLASHÖĞ£©
-  * @note		ÈôFLASHÖĞ´ÓÎ´Ğ´Èë¹ı´¥Ãş²ÎÊı£¬
-	*						»á´¥·¢Ğ£Õı³ÌĞòĞ£ÕıLCD_ModeÖ¸¶¨Ä£Ê½µÄ´¥Ãş²ÎÊı£¬´ËÊ±ÆäËüÄ£Ê½Ğ´ÈëÄ¬ÈÏÖµ
+  * @brief  ä»FLASHä¸­è·å– æˆ– é‡æ–°æ ¡æ­£è§¦æ‘¸å‚æ•°ï¼ˆæ ¡æ­£åä¼šå†™å…¥åˆ°SPI FLASHä¸­ï¼‰
+  * @note		è‹¥FLASHä¸­ä»æœªå†™å…¥è¿‡è§¦æ‘¸å‚æ•°ï¼Œ
+	*						ä¼šè§¦å‘æ ¡æ­£ç¨‹åºæ ¡æ­£LCD_ModeæŒ‡å®šæ¨¡å¼çš„è§¦æ‘¸å‚æ•°ï¼Œæ­¤æ—¶å…¶å®ƒæ¨¡å¼å†™å…¥é»˜è®¤å€¼
   *
-	*					ÈôFLASHÖĞÒÑÓĞ´¥Ãş²ÎÊı£¬ÇÒ²»Ç¿ÖÆÖØĞÂĞ£Õı
-	*						»áÖ±½ÓÊ¹ÓÃFLASHÀïµÄ´¥Ãş²ÎÊıÖµ
+	*					è‹¥FLASHä¸­å·²æœ‰è§¦æ‘¸å‚æ•°ï¼Œä¸”ä¸å¼ºåˆ¶é‡æ–°æ ¡æ­£
+	*						ä¼šç›´æ¥ä½¿ç”¨FLASHé‡Œçš„è§¦æ‘¸å‚æ•°å€¼
   *
-	*					Ã¿´ÎĞ£ÕıÊ±Ö»»á¸üĞÂÖ¸¶¨µÄLCD_ModeÄ£Ê½µÄ´¥Ãş²ÎÊı£¬ÆäËüÄ£Ê½µÄ²»±ä
-  * @note  ±¾º¯Êıµ÷ÓÃºó»á°ÑÒº¾§Ä£Ê½ÉèÖÃÎªLCD_Mode
+	*					æ¯æ¬¡æ ¡æ­£æ—¶åªä¼šæ›´æ–°æŒ‡å®šçš„LCD_Modeæ¨¡å¼çš„è§¦æ‘¸å‚æ•°ï¼Œå…¶å®ƒæ¨¡å¼çš„ä¸å˜
+  * @note  æœ¬å‡½æ•°è°ƒç”¨åä¼šæŠŠæ¶²æ™¶æ¨¡å¼è®¾ç½®ä¸ºLCD_Mode
   *
-	* @param  LCD_Mode:ÒªĞ£Õı´¥Ãş²ÎÊıµÄÒº¾§Ä£Ê½
-	* @param  forceCal:ÊÇ·ñÇ¿ÖÆÖØĞÂĞ£Õı²ÎÊı£¬¿ÉÒÔÎªÒÔÏÂÖµ£º
-	*		@arg 1£ºÇ¿ÖÆÖØĞÂĞ£Õı
-	*		@arg 0£ºÖ»ÓĞµ±FLASHÖĞ²»´æÔÚ´¥Ãş²ÎÊı±êÖ¾Ê±²ÅÖØĞÂĞ£Õı
-  * @retval ÎŞ
+	* @param  LCD_Mode:è¦æ ¡æ­£è§¦æ‘¸å‚æ•°çš„æ¶²æ™¶æ¨¡å¼
+	* @param  forceCal:æ˜¯å¦å¼ºåˆ¶é‡æ–°æ ¡æ­£å‚æ•°ï¼Œå¯ä»¥ä¸ºä»¥ä¸‹å€¼ï¼š
+	*		@arg 1ï¼šå¼ºåˆ¶é‡æ–°æ ¡æ­£
+	*		@arg 0ï¼šåªæœ‰å½“FLASHä¸­ä¸å­˜åœ¨è§¦æ‘¸å‚æ•°æ ‡å¿—æ—¶æ‰é‡æ–°æ ¡æ­£
+  * @retval æ— 
   */	
 void Calibrate_or_Get_TouchParaWithFlash(uint8_t LCD_Mode,uint8_t forceCal)
 {
 	uint8_t para_flag=0;
 	
-	//³õÊ¼»¯FLASH
+	//åˆå§‹åŒ–FLASH
 	SPI_FLASH_Init();
 	
-	//¶ÁÈ¡´¥Ãş²ÎÊı±êÖ¾
+	//è¯»å–è§¦æ‘¸å‚æ•°æ ‡å¿—
 	SPI_FLASH_BufferRead(&para_flag,FLASH_TOUCH_PARA_FLAG_ADDR,1);
 
-	//Èô²»´æÔÚ±êÖ¾»òflorceCal=1Ê±£¬ÖØĞÂĞ£Õı²ÎÊı
+	//è‹¥ä¸å­˜åœ¨æ ‡å¿—æˆ–florceCal=1æ—¶ï¼Œé‡æ–°æ ¡æ­£å‚æ•°
 	if(para_flag != FLASH_TOUCH_PARA_FLAG_VALUE | forceCal ==1)
 	{ 		
-		//Èô±êÖ¾´æÔÚ£¬ËµÃ÷Ô­±¾FLASHÄÚÓĞ´¥Ãş²ÎÊı£¬
-		//ÏÈ¶Á»ØËùÓĞLCDÄ£Ê½µÄ²ÎÊıÖµ£¬ÒÔ±ãÉÔºóÇ¿ÖÆ¸üĞÂÊ±Ö»¸üĞÂÖ¸¶¨LCDÄ£Ê½µÄ²ÎÊı,ÆäËüÄ£Ê½µÄ²»±ä
+		//è‹¥æ ‡å¿—å­˜åœ¨ï¼Œè¯´æ˜åŸæœ¬FLASHå†…æœ‰è§¦æ‘¸å‚æ•°ï¼Œ
+		//å…ˆè¯»å›æ‰€æœ‰LCDæ¨¡å¼çš„å‚æ•°å€¼ï¼Œä»¥ä¾¿ç¨åå¼ºåˆ¶æ›´æ–°æ—¶åªæ›´æ–°æŒ‡å®šLCDæ¨¡å¼çš„å‚æ•°,å…¶å®ƒæ¨¡å¼çš„ä¸å˜
 		if(  para_flag == FLASH_TOUCH_PARA_FLAG_VALUE && forceCal == 1)
 		{
 			SPI_FLASH_BufferRead((uint8_t *)&strXPT2046_TouchPara,FLASH_TOUCH_PARA_ADDR,4*6*8);	
 		}
 		
-		//µÈ´ı´¥ÃşÆÁĞ£ÕıÍê±Ï,¸üĞÂÖ¸¶¨LCDÄ£Ê½µÄ´¥Ãş²ÎÊıÖµ
+		//ç­‰å¾…è§¦æ‘¸å±æ ¡æ­£å®Œæ¯•,æ›´æ–°æŒ‡å®šLCDæ¨¡å¼çš„è§¦æ‘¸å‚æ•°å€¼
 		while( ! XPT2046_Touch_Calibrate (LCD_Mode) );     
 
-		//²Á³ıÉÈÇø
+		//æ“¦é™¤æ‰‡åŒº
 		SPI_FLASH_SectorErase(0);
 		
-		//ÉèÖÃ´¥Ãş²ÎÊı±êÖ¾
+		//è®¾ç½®è§¦æ‘¸å‚æ•°æ ‡å¿—
 		para_flag = FLASH_TOUCH_PARA_FLAG_VALUE;
-		//Ğ´Èë´¥Ãş²ÎÊı±êÖ¾
+		//å†™å…¥è§¦æ‘¸å‚æ•°æ ‡å¿—
 		SPI_FLASH_BufferWrite(&para_flag,FLASH_TOUCH_PARA_FLAG_ADDR,1);
-		//Ğ´Èë×îĞÂµÄ´¥Ãş²ÎÊı
+		//å†™å…¥æœ€æ–°çš„è§¦æ‘¸å‚æ•°
 		SPI_FLASH_BufferWrite((uint8_t *)&strXPT2046_TouchPara,FLASH_TOUCH_PARA_ADDR,4*6*8);
  
 	}
-	else	//Èô±êÖ¾´æÔÚÇÒ²»Ç¿ÖÆĞ£Õı£¬ÔòÖ±½Ó´ÓFLASHÖĞ¶ÁÈ¡
+	else	//è‹¥æ ‡å¿—å­˜åœ¨ä¸”ä¸å¼ºåˆ¶æ ¡æ­£ï¼Œåˆ™ç›´æ¥ä»FLASHä¸­è¯»å–
 	{
 		SPI_FLASH_BufferRead((uint8_t *)&strXPT2046_TouchPara,FLASH_TOUCH_PARA_ADDR,4*6*8);	 
 
-			#if 0	//Êä³öµ÷ÊÔĞÅÏ¢£¬×¢ÒâÒª³õÊ¼»¯´®¿Ú
+			#if 0	//è¾“å‡ºè°ƒè¯•ä¿¡æ¯ï¼Œæ³¨æ„è¦åˆå§‹åŒ–ä¸²å£
 				{
 					
 					uint8_t para_flag=0,i;
 					float *ulHeadAddres  ;
 					
-					/* ´òÓ¡Ğ£Ğ£×¼ÏµÊı */ 
-					XPT2046_INFO ( "´ÓFLASHÀï¶ÁÈ¡µÃµÄĞ£×¼ÏµÊıÈçÏÂ£º" );
+					/* æ‰“å°æ ¡æ ¡å‡†ç³»æ•° */ 
+					XPT2046_INFO ( "ä»FLASHé‡Œè¯»å–å¾—çš„æ ¡å‡†ç³»æ•°å¦‚ä¸‹ï¼š" );
 					
 					ulHeadAddres = ( float* ) ( & strXPT2046_TouchPara );
 
@@ -720,17 +720,17 @@ void Calibrate_or_Get_TouchParaWithFlash(uint8_t LCD_Mode,uint8_t forceCal)
 }
    
 /**
-  * @brief  »ñÈ¡ XPT2046 ´¥Ãşµã£¨Ğ£×¼ºó£©µÄ×ø±ê
-  * @param  pDisplayCoordinate £º¸ÃÖ¸Õë´æ·Å»ñÈ¡µ½µÄ´¥Ãşµã×ø±ê
-  * @param  pTouchPara£º×ø±êĞ£×¼ÏµÊı
-  * @retval »ñÈ¡Çé¿ö
-	*   ¸Ã·µ»ØÖµÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg 1 :»ñÈ¡³É¹¦
-  *     @arg 0 :»ñÈ¡Ê§°Ü
+  * @brief  è·å– XPT2046 è§¦æ‘¸ç‚¹ï¼ˆæ ¡å‡†åï¼‰çš„åæ ‡
+  * @param  pDisplayCoordinate ï¼šè¯¥æŒ‡é’ˆå­˜æ”¾è·å–åˆ°çš„è§¦æ‘¸ç‚¹åæ ‡
+  * @param  pTouchParaï¼šåæ ‡æ ¡å‡†ç³»æ•°
+  * @retval è·å–æƒ…å†µ
+	*   è¯¥è¿”å›å€¼ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg 1 :è·å–æˆåŠŸ
+  *     @arg 0 :è·å–å¤±è´¥
   */
 uint8_t XPT2046_Get_TouchedPoint ( strType_XPT2046_Coordinate * pDisplayCoordinate, strType_XPT2046_TouchPara * pTouchPara )
 {
-	uint8_t ucRet = 1;           //ÈôÕı³££¬Ôò·µ»Ø0
+	uint8_t ucRet = 1;           //è‹¥æ­£å¸¸ï¼Œåˆ™è¿”å›0
 	
 	strType_XPT2046_Coordinate strScreenCoordinate; 
 	
@@ -742,7 +742,7 @@ uint8_t XPT2046_Get_TouchedPoint ( strType_XPT2046_Coordinate * pDisplayCoordina
 
   }
 	 
-	else ucRet = 0;            //Èç¹û»ñÈ¡µÄ´¥µãĞÅÏ¢ÓĞÎó£¬Ôò·µ»Ø0
+	else ucRet = 0;            //å¦‚æœè·å–çš„è§¦ç‚¹ä¿¡æ¯æœ‰è¯¯ï¼Œåˆ™è¿”å›0
 		
   return ucRet;
 } 
@@ -752,11 +752,11 @@ uint8_t XPT2046_Get_TouchedPoint ( strType_XPT2046_Coordinate * pDisplayCoordina
 
 
 /**
-  * @brief  ´¥ÃşÆÁ¼ì²â×´Ì¬»ú
-  * @retval ´¥Ãş×´Ì¬
-	*   ¸Ã·µ»ØÖµÎªÒÔÏÂÖµÖ®Ò»£º
-  *     @arg TOUCH_PRESSED :´¥Ãş°´ÏÂ
-  *     @arg TOUCH_NOT_PRESSED :ÎŞ´¥Ãş
+  * @brief  è§¦æ‘¸å±æ£€æµ‹çŠ¶æ€æœº
+  * @retval è§¦æ‘¸çŠ¶æ€
+	*   è¯¥è¿”å›å€¼ä¸ºä»¥ä¸‹å€¼ä¹‹ä¸€ï¼š
+  *     @arg TOUCH_PRESSED :è§¦æ‘¸æŒ‰ä¸‹
+  *     @arg TOUCH_NOT_PRESSED :æ— è§¦æ‘¸
   */
 uint8_t XPT2046_TouchDetect(void)
 { 
@@ -767,12 +767,12 @@ uint8_t XPT2046_TouchDetect(void)
 	switch(touch_state)
 	{
 		case XPT2046_STATE_RELEASE:	
-			if(XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel) //µÚÒ»´Î³öÏÖ´¥ÃşĞÅºÅ
+			if(XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel) //ç¬¬ä¸€æ¬¡å‡ºç°è§¦æ‘¸ä¿¡å·
 			{
 				touch_state = XPT2046_STATE_WAITING;
 				detectResult =TOUCH_NOT_PRESSED;
 				}
-			else	//ÎŞ´¥Ãş
+			else	//æ— è§¦æ‘¸
 			{
 				touch_state = XPT2046_STATE_RELEASE;
 				detectResult =TOUCH_NOT_PRESSED;
@@ -783,22 +783,22 @@ uint8_t XPT2046_TouchDetect(void)
 				if(XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel)
 				{
 					 i++;
-					//µÈ´ıÊ±¼ä´óÓÚãĞÖµÔòÈÏÎª´¥Ãş±»°´ÏÂ
-					//Ïû¶¶Ê±¼ä = DURIATION_TIME * ±¾º¯Êı±»µ÷ÓÃµÄÊ±¼ä¼ä¸ô
-					//ÈçÔÚ¶¨Ê±Æ÷ÖĞµ÷ÓÃ£¬Ã¿10msµ÷ÓÃÒ»´Î£¬ÔòÏû¶¶Ê±¼äÎª£ºDURIATION_TIME*10ms
+					//ç­‰å¾…æ—¶é—´å¤§äºé˜ˆå€¼åˆ™è®¤ä¸ºè§¦æ‘¸è¢«æŒ‰ä¸‹
+					//æ¶ˆæŠ–æ—¶é—´ = DURIATION_TIME * æœ¬å‡½æ•°è¢«è°ƒç”¨çš„æ—¶é—´é—´éš”
+					//å¦‚åœ¨å®šæ—¶å™¨ä¸­è°ƒç”¨ï¼Œæ¯10msè°ƒç”¨ä¸€æ¬¡ï¼Œåˆ™æ¶ˆæŠ–æ—¶é—´ä¸ºï¼šDURIATION_TIME*10ms
 					if(i > DURIATION_TIME)		
 					{
 						i=0;
 						touch_state = XPT2046_STATE_PRESSED;
 						detectResult = TOUCH_PRESSED;
 					}
-					else												//µÈ´ıÊ±¼äÀÛ¼Ó
+					else												//ç­‰å¾…æ—¶é—´ç´¯åŠ 
 					{
 						touch_state = XPT2046_STATE_WAITING;
 						detectResult =	 TOUCH_NOT_PRESSED;					
 					}
 				}
-				else	//µÈ´ıÊ±¼äÖµÎ´´ïµ½ãĞÖµ¾ÍÎªÎŞĞ§µçÆ½£¬µ±³É¶¶¶¯´¦Àí					
+				else	//ç­‰å¾…æ—¶é—´å€¼æœªè¾¾åˆ°é˜ˆå€¼å°±ä¸ºæ— æ•ˆç”µå¹³ï¼Œå½“æˆæŠ–åŠ¨å¤„ç†					
 				{
 				    i = 0;
             touch_state = XPT2046_STATE_RELEASE; 
@@ -808,12 +808,12 @@ uint8_t XPT2046_TouchDetect(void)
 			break;
 		
 		case XPT2046_STATE_PRESSED:	
-				if(XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel)		//´¥Ãş³ÖĞø°´ÏÂ
+				if(XPT2046_PENIRQ_Read() == XPT2046_PENIRQ_ActiveLevel)		//è§¦æ‘¸æŒç»­æŒ‰ä¸‹
 				{
 					touch_state = XPT2046_STATE_PRESSED;
 					detectResult = TOUCH_PRESSED;
 				}
-				else	//´¥ÃşÊÍ·Å
+				else	//è§¦æ‘¸é‡Šæ”¾
 				{
 					touch_state = XPT2046_STATE_RELEASE;
 					detectResult = TOUCH_NOT_PRESSED;
@@ -832,54 +832,54 @@ uint8_t XPT2046_TouchDetect(void)
 
 
 /**
-  * @brief   ´¥ÃşÆÁ±»°´ÏÂµÄÊ±ºò»áµ÷ÓÃ±¾º¯Êı
-  * @param  touch°üº¬´¥Ãş×ø±êµÄ½á¹¹Ìå
-  * @note  ÇëÔÚ±¾º¯ÊıÖĞ±àĞ´×Ô¼ºµÄ´¥Ãş°´ÏÂ´¦ÀíÓ¦ÓÃ
-  * @retval ÎŞ
+  * @brief   è§¦æ‘¸å±è¢«æŒ‰ä¸‹çš„æ—¶å€™ä¼šè°ƒç”¨æœ¬å‡½æ•°
+  * @param  touchåŒ…å«è§¦æ‘¸åæ ‡çš„ç»“æ„ä½“
+  * @note  è¯·åœ¨æœ¬å‡½æ•°ä¸­ç¼–å†™è‡ªå·±çš„è§¦æ‘¸æŒ‰ä¸‹å¤„ç†åº”ç”¨
+  * @retval æ— 
   */
 void XPT2046_TouchDown(strType_XPT2046_Coordinate * touch)
 {
-	//ÈôÎª¸ºÖµ±íÊ¾Ö®Ç°ÒÑ´¦Àí¹ı
+	//è‹¥ä¸ºè´Ÿå€¼è¡¨ç¤ºä¹‹å‰å·²å¤„ç†è¿‡
 	if(touch->pre_x == -1 && touch->pre_x == -1)
 		return;
 	
-	/***ÔÚ´Ë´¦±àĞ´×Ô¼ºµÄ´¥Ãş°´ÏÂ´¦ÀíÓ¦ÓÃ***/
+	/***åœ¨æ­¤å¤„ç¼–å†™è‡ªå·±çš„è§¦æ‘¸æŒ‰ä¸‹å¤„ç†åº”ç”¨***/
   
-	/*´¦Àí´¥Ãş»­°åµÄÑ¡Ôñ°´Å¥*/
+	/*å¤„ç†è§¦æ‘¸ç”»æ¿çš„é€‰æ‹©æŒ‰é’®*/
   Touch_Button_Down(touch->x,touch->y);
   
-  /*´¦ÀíÃè»æ¹ì¼£*/
+  /*å¤„ç†æç»˜è½¨è¿¹*/
 	
-	/***ÔÚÉÏÃæ±àĞ´×Ô¼ºµÄ´¥Ãş°´ÏÂ´¦ÀíÓ¦ÓÃ***/
+	/***åœ¨ä¸Šé¢ç¼–å†™è‡ªå·±çš„è§¦æ‘¸æŒ‰ä¸‹å¤„ç†åº”ç”¨***/
 	
 	
 }
 
 /**
-  * @brief   ´¥ÃşÆÁÊÍ·ÅµÄÊ±ºò»áµ÷ÓÃ±¾º¯Êı
-  * @param  touch°üº¬´¥Ãş×ø±êµÄ½á¹¹Ìå
-  * @note  ÇëÔÚ±¾º¯ÊıÖĞ±àĞ´×Ô¼ºµÄ´¥ÃşÊÍ·Å´¦ÀíÓ¦ÓÃ
-  * @retval ÎŞ
+  * @brief   è§¦æ‘¸å±é‡Šæ”¾çš„æ—¶å€™ä¼šè°ƒç”¨æœ¬å‡½æ•°
+  * @param  touchåŒ…å«è§¦æ‘¸åæ ‡çš„ç»“æ„ä½“
+  * @note  è¯·åœ¨æœ¬å‡½æ•°ä¸­ç¼–å†™è‡ªå·±çš„è§¦æ‘¸é‡Šæ”¾å¤„ç†åº”ç”¨
+  * @retval æ— 
   */
 void XPT2046_TouchUp(strType_XPT2046_Coordinate * touch) 
 {
-	//ÈôÎª¸ºÖµ±íÊ¾Ö®Ç°ÒÑ´¦Àí¹ı
+	//è‹¥ä¸ºè´Ÿå€¼è¡¨ç¤ºä¹‹å‰å·²å¤„ç†è¿‡
 	if(touch->pre_x == -1 && touch->pre_x == -1)
 		return;
 		
-	/***ÔÚ´Ë´¦±àĞ´×Ô¼ºµÄ´¥ÃşÊÍ·Å´¦ÀíÓ¦ÓÃ***/
+	/***åœ¨æ­¤å¤„ç¼–å†™è‡ªå·±çš„è§¦æ‘¸é‡Šæ”¾å¤„ç†åº”ç”¨***/
   
-	/*´¦Àí´¥Ãş»­°åµÄÑ¡Ôñ°´Å¥*/
+	/*å¤„ç†è§¦æ‘¸ç”»æ¿çš„é€‰æ‹©æŒ‰é’®*/
   Touch_Button_Up(touch->pre_x,touch->pre_y);	
 	
-	/***ÔÚÉÏÃæ±àĞ´×Ô¼ºµÄ´¥ÃşÊÍ·Å´¦ÀíÓ¦ÓÃ***/
+	/***åœ¨ä¸Šé¢ç¼–å†™è‡ªå·±çš„è§¦æ‘¸é‡Šæ”¾å¤„ç†åº”ç”¨***/
 }
 
 /**
-	* @brief   ¼ì²âµ½´¥ÃşÖĞ¶ÏÊ±µ÷ÓÃµÄ´¦Àíº¯Êı,Í¨¹ıËüµ÷ÓÃtp_down ºÍtp_up»ã±¨´¥Ãşµã
-	*	@note 	 ±¾º¯ÊıĞèÒªÔÚwhileÑ­»·Àï±»µ÷ÓÃ£¬Ò²¿ÉÊ¹ÓÃ¶¨Ê±Æ÷¶¨Ê±µ÷ÓÃ
-	*			ÀıÈç£¬¿ÉÒÔÃ¿¸ô5msµ÷ÓÃÒ»´Î£¬Ïû¶¶ãĞÖµºêDURIATION_TIME¿ÉÉèÖÃÎª2£¬ÕâÑùÃ¿Ãë×î¶à¿ÉÒÔ¼ì²â100¸öµã¡£
-	*						¿ÉÔÚXPT2046_TouchDown¼°XPT2046_TouchUpº¯ÊıÖĞ±àĞ´×Ô¼ºµÄ´¥ÃşÓ¦ÓÃ
+	* @brief   æ£€æµ‹åˆ°è§¦æ‘¸ä¸­æ–­æ—¶è°ƒç”¨çš„å¤„ç†å‡½æ•°,é€šè¿‡å®ƒè°ƒç”¨tp_down å’Œtp_upæ±‡æŠ¥è§¦æ‘¸ç‚¹
+	*	@note 	 æœ¬å‡½æ•°éœ€è¦åœ¨whileå¾ªç¯é‡Œè¢«è°ƒç”¨ï¼Œä¹Ÿå¯ä½¿ç”¨å®šæ—¶å™¨å®šæ—¶è°ƒç”¨
+	*			ä¾‹å¦‚ï¼Œå¯ä»¥æ¯éš”5msè°ƒç”¨ä¸€æ¬¡ï¼Œæ¶ˆæŠ–é˜ˆå€¼å®DURIATION_TIMEå¯è®¾ç½®ä¸º2ï¼Œè¿™æ ·æ¯ç§’æœ€å¤šå¯ä»¥æ£€æµ‹100ä¸ªç‚¹ã€‚
+	*						å¯åœ¨XPT2046_TouchDownåŠXPT2046_TouchUpå‡½æ•°ä¸­ç¼–å†™è‡ªå·±çš„è§¦æ‘¸åº”ç”¨
 	* @param   none
 	* @retval  none
 	*/
@@ -891,16 +891,16 @@ void XPT2046_TouchEvenHandler(void )
 		{
 			LED_GREEN;
 			
-			//»ñÈ¡´¥Ãş×ø±ê
+			//è·å–è§¦æ‘¸åæ ‡
 			XPT2046_Get_TouchedPoint(&cinfo,strXPT2046_TouchPara);
 			
-//			//Êä³öµ÷ÊÔĞÅÏ¢µ½´®¿Ú
+//			//è¾“å‡ºè°ƒè¯•ä¿¡æ¯åˆ°ä¸²å£
 //			XPT2046_DEBUG("x=%d,y=%d",cinfo.x,cinfo.y);
 			
-			//µ÷ÓÃ´¥Ãş±»°´ÏÂÊ±µÄ´¦Àíº¯Êı£¬¿ÉÔÚ¸Ãº¯Êı±àĞ´×Ô¼ºµÄ´¥Ãş°´ÏÂ´¦Àí¹ı³Ì
+			//è°ƒç”¨è§¦æ‘¸è¢«æŒ‰ä¸‹æ—¶çš„å¤„ç†å‡½æ•°ï¼Œå¯åœ¨è¯¥å‡½æ•°ç¼–å†™è‡ªå·±çš„è§¦æ‘¸æŒ‰ä¸‹å¤„ç†è¿‡ç¨‹
 			XPT2046_TouchDown(&cinfo);
 			
-			/*¸üĞÂ´¥ÃşĞÅÏ¢µ½pre xy*/
+			/*æ›´æ–°è§¦æ‘¸ä¿¡æ¯åˆ°pre xy*/
 			cinfo.pre_x = cinfo.x; cinfo.pre_y = cinfo.y;  
 
 		}
@@ -908,10 +908,10 @@ void XPT2046_TouchEvenHandler(void )
 		{
 			LED_BLUE;
 			
-			//µ÷ÓÃ´¥Ãş±»ÊÍ·ÅÊ±µÄ´¦Àíº¯Êı£¬¿ÉÔÚ¸Ãº¯Êı±àĞ´×Ô¼ºµÄ´¥ÃşÊÍ·Å´¦Àí¹ı³Ì
+			//è°ƒç”¨è§¦æ‘¸è¢«é‡Šæ”¾æ—¶çš„å¤„ç†å‡½æ•°ï¼Œå¯åœ¨è¯¥å‡½æ•°ç¼–å†™è‡ªå·±çš„è§¦æ‘¸é‡Šæ”¾å¤„ç†è¿‡ç¨‹
 			XPT2046_TouchUp(&cinfo); 
 			
-			/*´¥±ÊÊÍ·Å£¬°Ñ xy ÖØÖÃÎª¸º*/
+			/*è§¦ç¬”é‡Šæ”¾ï¼ŒæŠŠ xy é‡ç½®ä¸ºè´Ÿ*/
 			cinfo.x = -1;
 			cinfo.y = -1; 
 			cinfo.pre_x = -1;

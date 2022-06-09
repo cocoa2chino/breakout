@@ -4,13 +4,13 @@
   * @author  fire
   * @version V1.0
   * @date    2015-xx-xx
-  * @brief   ´¥Ãş»­°åÓ¦ÓÃº¯Êı
+  * @brief   è§¦æ‘¸ç”»æ¿åº”ç”¨å‡½æ•°
   ******************************************************************************
   * @attention
   *
-  * ÊµÑéÆ½Ì¨:Ò°»ğ  STM32  F429 ¿ª·¢°å
-  * ÂÛÌ³    :http://www.firebbs.cn
-  * ÌÔ±¦    :https://fire-stm32.taobao.com
+  * å®éªŒå¹³å°:é‡ç«  STM32  F429 å¼€å‘æ¿
+  * è®ºå›    :http://www.firebbs.cn
+  * æ·˜å®    :https://fire-stm32.taobao.com
   *
   ******************************************************************************
   */
@@ -27,29 +27,29 @@
 #define MAX_Y	20
 
 
-#define DISPLAY_X_MAX 240     //ÓÎÏ·Ö÷½çÃæÏÔÊ¾ÇøÓòx×ø±ê×î´óÖµ
-#define DISPLAY_Y_MAX 240     //ÓÎÏ·Ö÷½çÃæÏÔÊ¾ÇøÓòy×ø±ê×î´óÖµ
-#define WALL_WIDTH    5       //Ç½ºñ¶È
-#define BOARD_LENGTH  40      //µ²°å³¤¶È
-#define BOARD_WIDTH   3       //µ²°åºñ¶È
-#define BLOCK_LENGTH  10      //×©¿é³¤¶È
-#define BLOCK_WIDTH   8       //×©¿é¿í¶È
+#define DISPLAY_X_MAX 240     //æ¸¸æˆä¸»ç•Œé¢æ˜¾ç¤ºåŒºåŸŸxåæ ‡æœ€å¤§å€¼
+#define DISPLAY_Y_MAX 240     //æ¸¸æˆä¸»ç•Œé¢æ˜¾ç¤ºåŒºåŸŸyåæ ‡æœ€å¤§å€¼
+#define WALL_WIDTH    5       //å¢™åšåº¦
+#define BOARD_LENGTH  40      //æŒ¡æ¿é•¿åº¦
+#define BOARD_WIDTH   3       //æŒ¡æ¿åšåº¦
+#define BLOCK_LENGTH  10      //ç –å—é•¿åº¦
+#define BLOCK_WIDTH   8       //ç –å—å®½åº¦
 
-block *blk;                                             //×©¿éÁ´±íÍ·Ö¸Õë
-uint16_t row = 2;                                   //Éú³É×©¿éĞĞÊı
-int pixel[40][40];    //×´Ì¬Êı×é,´æ´¢ÏñËØĞÅÏ¢
+block *blk;                                             //ç –å—é“¾è¡¨å¤´æŒ‡é’ˆ
+uint16_t row = 2;                                   //ç”Ÿæˆç –å—è¡Œæ•°
+int pixel[40][40];    //çŠ¶æ€æ•°ç»„,å­˜å‚¨åƒç´ ä¿¡æ¯
 extern __IO uint16_t ADC_ConvertedValue;
 
-board *brd;                                             //µ²°åÖ¸Õë
-ball *bal;                                              //Ğ¡ÇòÖ¸Õë
-/*°´Å¥½á¹¹ÌåÊı×é*/
+board *brd;                                             //æŒ¡æ¿æŒ‡é’ˆ
+ball *bal;                                              //å°çƒæŒ‡é’ˆ
+/*æŒ‰é’®ç»“æ„ä½“æ•°ç»„*/
 Touch_Button button[BUTTON_NUM];
-snake *head;//Í·Ö¸Õë
-snake *food1;//Í·Ö¸Õë
+snake *head;//å¤´æŒ‡é’ˆ
+snake *food1;//å¤´æŒ‡é’ˆ
 uint8_t status = 'L';
 uint8_t score;
-uint8_t die = 0; //die == 0ËµÃ÷»î×Å
-uint8_t MODE = 1; // MODE == 1ËµÃ÷ÓÎÏ·ÕıÔÚ½øĞĞ
+uint8_t die = 0; //die == 0è¯´æ˜æ´»ç€
+uint8_t MODE = 1; // MODE == 1è¯´æ˜æ¸¸æˆæ­£åœ¨è¿›è¡Œ
 
 static void Draw_Mode_Button(void *btn);
 static void Draw_Direction_Button(void *btn);
@@ -59,16 +59,16 @@ static void Command_Change_Mode(void *btn);
 
 
 
-//ÑÓÊ±º¯Êı
+//å»¶æ—¶å‡½æ•°
 void Delay(__IO uint32_t nCount)
 {
   for(; nCount != 0; nCount--);
 } 
 
 /**
-* @brief  Palette_Init ÓÎÏ·³õÊ¼»¯
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  Palette_Init æ¸¸æˆåˆå§‹åŒ–
+* @param  æ— 
+* @retval æ— 
 */
 void Palette_Init(uint8_t LCD_Mode)
 {
@@ -80,7 +80,7 @@ void Palette_Init(uint8_t LCD_Mode)
 	score = 0;
 	status = 'L';
 	
-  /* ÕûÆÁÇåÎª°×É« */
+  /* æ•´å±æ¸…ä¸ºç™½è‰² */
 	LCD_SetBackColor(CL_WHITE);
     ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	
 	
@@ -96,7 +96,7 @@ void Palette_Init(uint8_t LCD_Mode)
     BallInit();
     BallDraw();
  	TIM_ITConfig(BASIC_TIM,TIM_IT_Update,ENABLE);
-  /* Ãè»æ°´Å¥ */
+  /* æç»˜æŒ‰é’® */
   for(i=0;i<BUTTON_NUM;i++)
   {
     button[i].draw_btn(&button[i]);
@@ -109,9 +109,9 @@ void Palette_Init(uint8_t LCD_Mode)
 
 
 /**
-* @brief  Palette_Init1 ÓÎÏ·³õÊ¼»¯
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  Palette_Init1 æ¸¸æˆåˆå§‹åŒ–
+* @param  æ— 
+* @retval æ— 
 */
 void Palette_Init1(uint8_t LCD_Mode)
 {
@@ -123,7 +123,7 @@ void Palette_Init1(uint8_t LCD_Mode)
 	score = 0;
 	status = 'L';
 
-  /* ÕûÆÁÇåÎª°×É« */
+  /* æ•´å±æ¸…ä¸ºç™½è‰² */
 	LCD_SetBackColor(CL_WHITE);
   ILI9341_Clear(0,0,LCD_X_LENGTH,LCD_Y_LENGTH);	
 
@@ -132,7 +132,7 @@ void Palette_Init1(uint8_t LCD_Mode)
 	Snake_Init();
 
   TIM_ITConfig(BASIC_TIM,TIM_IT_Update,ENABLE);
-  /* Ãè»æ°´Å¥ */
+  /* æç»˜æŒ‰é’® */
   for(i=0;i<BUTTON_NUM;i++)
   {
     button[i].draw_btn(&button[i]);
@@ -144,27 +144,27 @@ void Palette_Init1(uint8_t LCD_Mode)
 
 
 /**
-* @brief  Snake_Init ÉßÉí³õÊ¼»¯£¬¸ø¶¨Ò»¸ö³¤¶È4
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  Snake_Init è›‡èº«åˆå§‹åŒ–ï¼Œç»™å®šä¸€ä¸ªé•¿åº¦4
+* @param  æ— 
+* @retval æ— 
 */
 void Snake_Init(void)//
 {
 	int i;
-	snake *tail;//Î²Ö¸Õë
-	tail =( snake*)malloc(sizeof(snake));//µÚÒ»¸ö½Úµã/Í·½áµã
-	tail->x = 30;//2µÄ±¶Êı£¬ÒòÎª·½¿éµÄ³¤ÊÇÁ½¸öµ¥Î»
-	tail->y = 10;//1¸öµ¥Î»
+	snake *tail;//å°¾æŒ‡é’ˆ
+	tail =( snake*)malloc(sizeof(snake));//ç¬¬ä¸€ä¸ªèŠ‚ç‚¹/å¤´ç»“ç‚¹
+	tail->x = 30;//2çš„å€æ•°ï¼Œå› ä¸ºæ–¹å—çš„é•¿æ˜¯ä¸¤ä¸ªå•ä½
+	tail->y = 10;//1ä¸ªå•ä½
 	tail->next=NULL;
-	for(i=1;i<=4;i++)//Î²²å·¨
+	for(i=1;i<=4;i++)//å°¾æ’æ³•
 	{
-		head=(snake*)malloc(sizeof(snake));//ÉêÇëÒ»¸ö½Úµã
-		head->next=tail;//Á¬½Ó³ÉÁ´
-		head->x = 30-i;//ÏÂÒ»¸ö½ÚµãµÄÎ»ÖÃ
+		head=(snake*)malloc(sizeof(snake));//ç”³è¯·ä¸€ä¸ªèŠ‚ç‚¹
+		head->next=tail;//è¿æ¥æˆé“¾
+		head->x = 30-i;//ä¸‹ä¸€ä¸ªèŠ‚ç‚¹çš„ä½ç½®
 		head->y = 10;
 		tail=head;
 	} 
-	//±éÀú´òÓ¡³öÀ´
+	//éå†æ‰“å°å‡ºæ¥
 	while(tail->next!=NULL)
 	{
 		LCD_SetColors(CL_GREEN,CL_WHITE);
@@ -176,9 +176,9 @@ void Snake_Init(void)//
 
 
 /**
-* @brief snakeMove ÉßÒÆ¶¯¹ı³Ìº¯Êı£¬ºËĞÄ²¿·Ö
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief snakeMove è›‡ç§»åŠ¨è¿‡ç¨‹å‡½æ•°ï¼Œæ ¸å¿ƒéƒ¨åˆ†
+* @param  æ— 
+* @retval æ— 
 */
 void snakeMove(void)
 {
@@ -188,49 +188,49 @@ void snakeMove(void)
 	nexthead=(snake*)malloc(sizeof(snake));
 	if (die == 0 && MODE==1)
 	{
-		if(status=='R')//ÏòÓÒ×ß
+		if(status=='R')//å‘å³èµ°
 		{
 			nexthead->x = head->x+1;
 			nexthead->y = head->y;
 		}
-		else if(status=='L')//Ïò×ó×ß
+		else if(status=='L')//å‘å·¦èµ°
 		{ 
 			nexthead->x = head->x-1;
 			nexthead->y = head->y;
 		}
-		else if(status=='U')//ÏòÉÏ×ß
+		else if(status=='U')//å‘ä¸Šèµ°
 		{
 			nexthead->x = head->x;
 			nexthead->y = head->y-1;
 		}
-		else if(status=='D')//ÏòÏÂ×ß
+		else if(status=='D')//å‘ä¸‹èµ°
 		{
 			nexthead->x = head->x;
 			nexthead->y = head->y+1;
 		}
 		LCD_SetColors(CL_GREEN,CL_WHITE);
-		if(nexthead->x==food1->x && nexthead->y==food1->y)//³ÔµôÁËÊ³Îï
+		if(nexthead->x==food1->x && nexthead->y==food1->y)//åƒæ‰äº†é£Ÿç‰©
 		{
 			nexthead->next=head;
 			head=nexthead;
-			p=head;//pÓÃÀ´´ÓÍ·±éÀú£¬´òÓ¡·½¿é
+			p=head;//pç”¨æ¥ä»å¤´éå†ï¼Œæ‰“å°æ–¹å—
 			while(p->next!=NULL)
 			{
 				ILI9341_DrawRectangle(p->x*6,p->y*6,6,6,1);
 				p=p->next;
-			}//³ÔµôÁËÊ³ÎïµÃ´´Ôì
+			}//åƒæ‰äº†é£Ÿç‰©å¾—åˆ›é€ 
 			score=score+1;
-			sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+			sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
 			creatFood();
 		}
-		else//Ã»ÓĞÊ³Îï
+		else//æ²¡æœ‰é£Ÿç‰©
 		{
 			nexthead->next=head;
 			head=nexthead;
-			p=head;//pÓÃÀ´´ÓÍ·±éÀú£¬´òÓ¡·½¿é
+			p=head;//pç”¨æ¥ä»å¤´éå†ï¼Œæ‰“å°æ–¹å—
 			while(p->next->next!=NULL)
 			{
 				ILI9341_DrawRectangle(p->x*6,p->y*6,6,6,1);
@@ -244,18 +244,18 @@ void snakeMove(void)
 	}
 
 	
-	judgeAlive(); //ÅĞ¶Ï´æ»îÇé¿ö
-	if(die == 1)    //Èç¹ûËÀÁË¾ÍÖØÆô
+	judgeAlive(); //åˆ¤æ–­å­˜æ´»æƒ…å†µ
+	if(die == 1)    //å¦‚æœæ­»äº†å°±é‡å¯
 	{
 		LCD_SetColors(CL_RED,CL_WHITE);
 		LCD_SetFont(&Font24x32);
 		ILI9341_DispString_EN_CH(12,120,"Game over");
 		LCD_SetFont(&Font8x16);
-		ILI9341_DispString_EN_CH(64,157,"µã»÷ÈÎÒâ´¦¿ªÊ¼");
-		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //²»Ê¹ÄÜÖĞ¶Ï£¬¼´²»ÊÇÄÜ5¸ö°´¼ü
-		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//°´ÈÎÒâÎ»ÖÃÖØĞÂ³õÊ¼»¯
+		ILI9341_DispString_EN_CH(64,157,"ç‚¹å‡»ä»»æ„å¤„å¼€å§‹");
+		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //ä¸ä½¿èƒ½ä¸­æ–­ï¼Œå³ä¸æ˜¯èƒ½5ä¸ªæŒ‰é”®
+		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//æŒ‰ä»»æ„ä½ç½®é‡æ–°åˆå§‹åŒ–
 		p = q = head;
-		while(p != NULL)   //ÊÍ·ÅÄÚ´æ
+		while(p != NULL)   //é‡Šæ”¾å†…å­˜
 		{
 			p = q->next;
 			free(q);
@@ -266,24 +266,24 @@ void snakeMove(void)
 		die = 0;
 	}
 	
-	Delay(0xfffff);//¿ÉÒÔµ÷½ÚÉßÒÆ¶¯µÄËÙ¶È£¬ÀïÃæÊÇºÁÃë£¬Ô½´óËÙ¶ÈÔ½Âı
+	Delay(0xfffff);//å¯ä»¥è°ƒèŠ‚è›‡ç§»åŠ¨çš„é€Ÿåº¦ï¼Œé‡Œé¢æ˜¯æ¯«ç§’ï¼Œè¶Šå¤§é€Ÿåº¦è¶Šæ…¢
 }
 
 
 
 
 /**
-* @brief judgeAlive ÅĞ¶ÏÉßµÄËÀ»î
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief judgeAlive åˆ¤æ–­è›‡çš„æ­»æ´»
+* @param  æ— 
+* @retval æ— 
 */
 void judgeAlive(void)
 {
 	snake *q;
-	if(head->x==-1||head->y==-1||head->x==40||head->y==40)//Åöµ½Ç½
+	if(head->x==-1||head->y==-1||head->x==40||head->y==40)//ç¢°åˆ°å¢™
 		die=1;
 	q=head->next;
-	while(q!=NULL)   // ³Ôµ½×Ô¼º
+	while(q!=NULL)   // åƒåˆ°è‡ªå·±
 	{
 		if(q->x==head->x && head->y==q->y)
 			die=1;
@@ -292,20 +292,20 @@ void judgeAlive(void)
 }
 
 /**
-* @brief  creatFood Ëæ»úÉú³ÉÒ»¸ö×ø±ê²¢»æÖÆÊ³Îï
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  creatFood éšæœºç”Ÿæˆä¸€ä¸ªåæ ‡å¹¶ç»˜åˆ¶é£Ÿç‰©
+* @param  æ— 
+* @retval æ— 
 */
 void creatFood(void)
 {
-	snake *food;//´´ÔìÒ»¸öÊ³Îï
+	snake *food;//åˆ›é€ ä¸€ä¸ªé£Ÿç‰©
 	snake *p;
   food=(snake*)malloc(sizeof(snake));
-	srand(ADC_ConvertedValue);//Ëæ×ÅADC±ä»¯£¬²úÉú²»Ò»ÑùÖÖ×Ó£¬¾Í»áµÃµ½Ã»¹æÂÉµÄÊ³Îï
+	srand(ADC_ConvertedValue);//éšç€ADCå˜åŒ–ï¼Œäº§ç”Ÿä¸ä¸€æ ·ç§å­ï¼Œå°±ä¼šå¾—åˆ°æ²¡è§„å¾‹çš„é£Ÿç‰©
 	food->x = rand()%39;
 	food->y = rand()%39;
-	p = head;//ÓÃpÀ´±éÀú
-  while(p->next!=NULL)//½â¾öÊ³Îï³öÏÖÔÚÉß±¾Éí
+	p = head;//ç”¨pæ¥éå†
+  while(p->next!=NULL)//è§£å†³é£Ÿç‰©å‡ºç°åœ¨è›‡æœ¬èº«
 	{
 	    if(food->x==p->x&&food->y==p->y)
 			{
@@ -316,20 +316,20 @@ void creatFood(void)
 	}
 	LCD_SetColors(CL_RED,CL_WHITE);
 	ILI9341_DrawRectangle(food->x*6,food->y*6,6,6,1);
-	food1=food;//food1ÓÃÀ´±ê¼ÇµÄ×÷ÓÃ
+	food1=food;//food1ç”¨æ¥æ ‡è®°çš„ä½œç”¨
 
 }
 
 
 /**
-* @brief  GenWall Éú³É×ó/ÓÒ/ÉÏ·½Ç½±Ú
+* @brief  GenWall ç”Ÿæˆå·¦/å³/ä¸Šæ–¹å¢™å£
 * @param  --
 * @retval --
 */
 void GenWall()
 {
 	int i;
-	//LCDÏÔÊ¾
+	//LCDæ˜¾ç¤º
     ILI9341_DrawRectangle(0, 0, 6, 240, 1);
     ILI9341_DrawRectangle(240-6, 0, 6, 240, 1);
     ILI9341_DrawRectangle(6, 0, 240, 6, 1);
@@ -350,15 +350,15 @@ void GenWall()
 
 
 /**
-* @brief  GenBlock ³õÊ¼»¯×©¿é
-* @param  blk ×©¿éÁ´±íÖ¸ÕëÒıÓÃ
-* @param  row Éú³É×©¿éĞĞÊı
+* @brief  GenBlock åˆå§‹åŒ–ç –å—
+* @param  blk ç –å—é“¾è¡¨æŒ‡é’ˆå¼•ç”¨
+* @param  row ç”Ÿæˆç –å—è¡Œæ•°
 * @retval --
 */
 void GenBlock()
 {
 	int i,j;
-    //³õÊ¼»¯µÚÒ»¸ö×©¿é
+    //åˆå§‹åŒ–ç¬¬ä¸€ä¸ªç –å—
     for(i = 1; i <= row; i++)
     {
         for(j = 1; j < 39; j++)
@@ -371,8 +371,8 @@ void GenBlock()
 
 
 /**
-* @brief  DrawBlock ×©¿é»æÖÆ
-* @param  blk ×©¿éÁ´±íÍ·Ö¸ÕëÒıÓÃ
+* @brief  DrawBlock ç –å—ç»˜åˆ¶
+* @param  blk ç –å—é“¾è¡¨å¤´æŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void DrawBlock()
@@ -389,8 +389,8 @@ void DrawBlock()
 
 
 /**
-* @brief  DelBlock ×©¿éÏû³ı
-* @param  blki ×©¿éÖ¸ÕëÒıÓÃ
+* @brief  DelBlock ç –å—æ¶ˆé™¤
+* @param  blki ç –å—æŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void DelBlock(int x,int y)
@@ -402,8 +402,8 @@ void DelBlock(int x,int y)
 
 
 /**
-* @brief  BallInit ³õÊ¼»¯Ğ¡Çò
-* @param  bal Ğ¡ÇòÖ¸ÕëÒıÓÃ
+* @brief  BallInit åˆå§‹åŒ–å°çƒ
+* @param  bal å°çƒæŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void BallInit()
@@ -419,9 +419,9 @@ void BallInit()
 }
 
 /**
-* @brief  BallRestart Ê§°ÜÖ®ºóÖØĞÂ¿ªÊ¼,Ğ¡ÇòÔÚµ±Ç°µ²°åÖĞ¼äÉú³É
-* @param  bal Ğ¡ÇòÖ¸ÕëÒıÓÃ
-* @param  pos_x µ²°åÖĞµãx×ø±ê
+* @brief  BallRestart å¤±è´¥ä¹‹åé‡æ–°å¼€å§‹,å°çƒåœ¨å½“å‰æŒ¡æ¿ä¸­é—´ç”Ÿæˆ
+* @param  bal å°çƒæŒ‡é’ˆå¼•ç”¨
+* @param  pos_x æŒ¡æ¿ä¸­ç‚¹xåæ ‡
 * @retval --
 */
 void BallRestart()
@@ -434,8 +434,8 @@ void BallRestart()
 }
 
 /**
-* @brief  BallDraw Ğ¡Çò»æÖÆ
-* @param  bal Ğ¡ÇòÖ¸ÕëÒıÓÃ
+* @brief  BallDraw å°çƒç»˜åˆ¶
+* @param  bal å°çƒæŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void BallDraw()
@@ -448,10 +448,10 @@ void Play()
 	BoardMove();
 	BallMove();
     LCD_SetColors(CL_GREEN,CL_WHITE);
-	/* ÓÎÏ·ÇøÓòÇåÎª°×É« */
+	/* æ¸¸æˆåŒºåŸŸæ¸…ä¸ºç™½è‰² */
 	LCD_SetBackColor(CL_WHITE);
 	//ILI9341_Clear(6, 6, DISPLAY_X_MAX-12, DISPLAY_Y_MAX-6);
-	/* ÖØĞÂÏÔÊ¾ĞÂµÄ»­Ãæ */
+	/* é‡æ–°æ˜¾ç¤ºæ–°çš„ç”»é¢ */
 	//GenWall();
 	//DrawBlock();
 	//BoardDraw();
@@ -462,8 +462,8 @@ void Play()
 
 
 /**
-* @brief  BallMove Ğ¡ÇòÒÆ¶¯¹ı³Ìº¯Êı
-* @param  bal Ğ¡ÇòÖ¸ÕëÒıÓÃ
+* @brief  BallMove å°çƒç§»åŠ¨è¿‡ç¨‹å‡½æ•°
+* @param  bal å°çƒæŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void BallMove()
@@ -471,51 +471,51 @@ void BallMove()
     char disbuff[20];
     uint16_t x = bal->pos_x;
     uint16_t y = bal->pos_y;
-    if(!MODE)   return;     /*ÓÎÏ·ÔİÍ£,Ğ¡ÇòÎ»ÖÃ²»±ä»¯*/
+    if(!MODE)   return;     /*æ¸¸æˆæš‚åœ,å°çƒä½ç½®ä¸å˜åŒ–*/
     ILI9341_Clear(bal->pos_x *6, bal->pos_y*6, 6,6);   
     switch(bal->direct)
     {
-    //µ±Ç°³¯ÓÒÉÏ
+    //å½“å‰æœå³ä¸Š
     case 0:
-        if(x+1 >= 39)     /*Åöµ½ÓÒ±ßÇ½±Ú*/
+        if(x+1 >= 39)     /*ç¢°åˆ°å³è¾¹å¢™å£*/
         {
             bal->direct = 2;
-            //ÔÙµ÷ÓÃÒ»´Î,±£Ö¤Ò»¸öÊ±¿ÌÄÚÇò»áÒÆ¶¯
+            //å†è°ƒç”¨ä¸€æ¬¡,ä¿è¯ä¸€ä¸ªæ—¶åˆ»å†…çƒä¼šç§»åŠ¨
             BallMove();
         }
-        else if(y-1 <= 0)                /*Åöµ½ÉÏÃæÇ½±Ú*/
+        else if(y-1 <= 0)                /*ç¢°åˆ°ä¸Šé¢å¢™å£*/
         {
             bal->direct = 1;
             BallMove();
         }
-        else if(pixel[x+1][y])                    /*Åöµ½ÓÒ±ß×©¿é*/
+        else if(pixel[x+1][y])                    /*ç¢°åˆ°å³è¾¹ç –å—*/
         {
             bal->direct = 2;
             DelBlock(x + 1, y);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x][y-1])                    /*Åöµ½ÉÏÃæ×©¿é*/
+        else if(pixel[x][y-1])                    /*ç¢°åˆ°ä¸Šé¢ç –å—*/
         {
             bal->direct = 1;
             DelBlock( x, y - 1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x+1][y-1])                    /*Åöµ½ÓÒÉÏÃæ×©¿é*/
+        else if(pixel[x+1][y-1])                    /*ç¢°åˆ°å³ä¸Šé¢ç –å—*/
         {
             bal->direct = 3;
             DelBlock( x+1, y - 1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
@@ -527,14 +527,14 @@ void BallMove()
             bal->pos_y = bal->pos_y - bal->speed;
         }
         break;
-    //µ±Ç°³¯ÓÒÏÂ
+    //å½“å‰æœå³ä¸‹
     case 1:
-        if(x + 1 >= 39)                 /*Åöµ½ÓÒ±ßÇ½±Ú*/
+        if(x + 1 >= 39)                 /*ç¢°åˆ°å³è¾¹å¢™å£*/
         {
             bal->direct = 3;
             BallMove();
         }
-        else if(y + 1 >= 39)           /*Åöµ½ÏÂÃæµ²°å*/
+        else if(y + 1 >= 39)           /*ç¢°åˆ°ä¸‹é¢æŒ¡æ¿*/
         {
             if((brd->pos_x<=x)&&(brd->pos_x+8>=x))
             {
@@ -546,34 +546,34 @@ void BallMove()
                 die=1;
             }
         }
-        else if(pixel[x+1][y])                                /*Åöµ½ÓÒ±ß×©¿é*/
+        else if(pixel[x+1][y])                                /*ç¢°åˆ°å³è¾¹ç –å—*/
         {
             bal->direct = 3;
             DelBlock( x + 1, y);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x][y+1])                                /*Åöµ½ÏÂÃæ×©¿é*/
+        else if(pixel[x][y+1])                                /*ç¢°åˆ°ä¸‹é¢ç –å—*/
         {
             bal->direct = 0;
             DelBlock( x, y + 1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x+1][y+1])                    /*Åöµ½ÓÒÏÂÃæ×©¿é*/
+        else if(pixel[x+1][y+1])                    /*ç¢°åˆ°å³ä¸‹é¢ç –å—*/
         {
             bal->direct = 2;
             DelBlock( x+1, y +1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
@@ -585,47 +585,47 @@ void BallMove()
             bal->pos_y = bal->pos_y + bal->speed;
         }
         break;
-    //µ±Ç°³¯×óÉÏ
+    //å½“å‰æœå·¦ä¸Š
     case 2:
-        if(x - 1 <=0)                     /*Åöµ½×ó±ßÇ½±Ú*/
+        if(x - 1 <=0)                     /*ç¢°åˆ°å·¦è¾¹å¢™å£*/
         {
             bal->direct = 0;
-            //ÔÙµ÷ÓÃÒ»´Î,±£Ö¤Ò»¸öÊ±¿ÌÄÚÇò»áÒÆ¶¯
+            //å†è°ƒç”¨ä¸€æ¬¡,ä¿è¯ä¸€ä¸ªæ—¶åˆ»å†…çƒä¼šç§»åŠ¨
             BallMove();
         }
-        else if(y - 1 <= 0)                /*Åöµ½ÉÏÃæÇ½±Ú*/
+        else if(y - 1 <= 0)                /*ç¢°åˆ°ä¸Šé¢å¢™å£*/
         {
             bal->direct = 3;
             BallMove();
         }
-        else if(pixel[x - 1][y])                    /*Åöµ½×ó±ß×©¿é*/
+        else if(pixel[x - 1][y])                    /*ç¢°åˆ°å·¦è¾¹ç –å—*/
         {
             bal->direct = 0;
             DelBlock( x - 1, y);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x][y-1])                    /*Åöµ½ÉÏÃæ×©¿é*/
+        else if(pixel[x][y-1])                    /*ç¢°åˆ°ä¸Šé¢ç –å—*/
         {
             bal->direct = 3;
             DelBlock( x, y - 1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x-1][y-1])                    /*Åöµ½×óÉÏÃæ×©¿é*/
+        else if(pixel[x-1][y-1])                    /*ç¢°åˆ°å·¦ä¸Šé¢ç –å—*/
         {
             bal->direct = 1;
             DelBlock( x-1, y -1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
@@ -637,14 +637,14 @@ void BallMove()
             bal->pos_y = bal->pos_y - bal->speed;
         }
         break;
-    //µ±Ç°³¯×óÏÂ
+    //å½“å‰æœå·¦ä¸‹
     case 3:
-        if(x - 1 <=0)                                 /*Åöµ½×ó±ßÇ½±Ú*/
+        if(x - 1 <=0)                                 /*ç¢°åˆ°å·¦è¾¹å¢™å£*/
         {
             bal->direct = 1;
             BallMove();
         }
-       else if(y + 1 >= 39)           /*Åöµ½ÏÂÃæµ²°å*/
+       else if(y + 1 >= 39)           /*ç¢°åˆ°ä¸‹é¢æŒ¡æ¿*/
         {
             if((brd->pos_x<=x)&&(brd->pos_x+8>=x))
             {
@@ -656,34 +656,34 @@ void BallMove()
                 die=1;
             }
         }
-        else if(pixel[x-1][y])                                /*Åöµ½×ó±ß×©¿é*/
+        else if(pixel[x-1][y])                                /*ç¢°åˆ°å·¦è¾¹ç –å—*/
         {
             bal->direct = 1;
             DelBlock( x - 1, y);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x][y+1])                                /*Åöµ½ÏÂÃæ×©¿é*/
+        else if(pixel[x][y+1])                                /*ç¢°åˆ°ä¸‹é¢ç –å—*/
         {
             bal->direct = 2;
             DelBlock( x, y + 1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
             BallMove();
         }
-        else if(pixel[x-1][y+1])                    /*Åöµ½×óÏÂÃæ×©¿é*/
+        else if(pixel[x-1][y+1])                    /*ç¢°åˆ°å·¦ä¸‹é¢ç –å—*/
         {
             bal->direct = 2;
             DelBlock( x-1, y +1);
             score++;
-            sprintf(disbuff,"Score:%d",score);//´òÓ¡³É¼¨
+            sprintf(disbuff,"Score:%d",score);//æ‰“å°æˆç»©
 			LCD_SetFont(&Font8x16);
 			LCD_SetColors(CL_BLACK,CL_WHITE);
 			ILI9341_DispString_EN_CH(162,253,disbuff);
@@ -710,16 +710,16 @@ void BoardInit(void)
 }
 
 /**
-* @brief  BoardMove µ²°åÒÆ¶¯
-* @param  brd µ²°åÖ¸ÕëÒıÓÃ
+* @brief  BoardMove æŒ¡æ¿ç§»åŠ¨
+* @param  brd æŒ¡æ¿æŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void BoardMove()
 {
     
-    if(MODE && status == 'L')                                               /*ÓÎÏ·ÕıÔÚ½øĞĞÇÒ×ó·½Ïò¼ü±»°´ÏÂ*/
+    if(MODE && status == 'L')                                               /*æ¸¸æˆæ­£åœ¨è¿›è¡Œä¸”å·¦æ–¹å‘é”®è¢«æŒ‰ä¸‹*/
     {
-        if(brd->pos_x > 1)                      /*Ã»ÓĞÅöµ½×ó²àÇ½±Ú*/
+        if(brd->pos_x > 1)                      /*æ²¡æœ‰ç¢°åˆ°å·¦ä¾§å¢™å£*/
         {
             LCD_SetColors(CL_GREEN,CL_WHITE);
             ILI9341_Clear(brd->pos_x *6+48, brd->pos_y*6, 6,6);
@@ -727,9 +727,9 @@ void BoardMove()
             ILI9341_DrawRectangle(brd->pos_x *6, brd->pos_y*6, 6, 6, 1);
         }
     }
-    else if(MODE && status == 'R')                                          /*ÓÎÏ·ÕıÔÚ½øĞĞÇÒÓÒ·½Ïò¼ü±»°´ÏÂ*/
+    else if(MODE && status == 'R')                                          /*æ¸¸æˆæ­£åœ¨è¿›è¡Œä¸”å³æ–¹å‘é”®è¢«æŒ‰ä¸‹*/
     {
-        if(brd->pos_x + 10 < 40)      /*Ã»ÓĞÅöµ½ÓÒ²àÇ½±Ú*/
+        if(brd->pos_x + 10 < 40)      /*æ²¡æœ‰ç¢°åˆ°å³ä¾§å¢™å£*/
         {
             LCD_SetColors(CL_GREEN,CL_WHITE);
             ILI9341_Clear(brd->pos_x *6, brd->pos_y*6, 6,6);
@@ -738,47 +738,47 @@ void BoardMove()
         }
     }
 
-    if(die == 1)    //Èç¹ûËÀÁË¾ÍÖØÆô
+    if(die == 1)    //å¦‚æœæ­»äº†å°±é‡å¯
 	{
 		LCD_SetColors(CL_RED,CL_WHITE);
 		LCD_SetFont(&Font24x32);
 		ILI9341_DispString_EN_CH(12,120,"Game over");
 		LCD_SetFont(&Font8x16);
-		ILI9341_DispString_EN_CH(64,157,"µã»÷ÈÎÒâ´¦¿ªÊ¼");
-		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //²»Ê¹ÄÜÖĞ¶Ï£¬¼´²»ÊÇÄÜ5¸ö°´¼ü
-		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//°´ÈÎÒâÎ»ÖÃÖØĞÂ³õÊ¼»¯
+		ILI9341_DispString_EN_CH(64,157,"ç‚¹å‡»ä»»æ„å¤„å¼€å§‹");
+		TIM_ITConfig(BASIC_TIM,TIM_IT_Update,DISABLE);  //ä¸ä½¿èƒ½ä¸­æ–­ï¼Œå³ä¸æ˜¯èƒ½5ä¸ªæŒ‰é”®
+		while(XPT2046_TouchDetect() != TOUCH_PRESSED);//æŒ‰ä»»æ„ä½ç½®é‡æ–°åˆå§‹åŒ–
 		Palette_Init(6);  
 		die = 0;
 	}
 }
 
 /**
-* @brief  BoardDraw µ²°å»æÖÆ
-* @param  brd µ²°åÖ¸ÕëÒıÓÃ
+* @brief  BoardDraw æŒ¡æ¿ç»˜åˆ¶
+* @param  brd æŒ¡æ¿æŒ‡é’ˆå¼•ç”¨
 * @retval --
 */
 void BoardDraw()
 {
     int i=0;
-	//LCDÏÔÊ¾
+	//LCDæ˜¾ç¤º
     ILI9341_DrawRectangle(brd->pos_x *6, brd->pos_y*6, 48, 6, 1);
 	for(i=0;i<8;i++){
 		pixel[brd->pos_x+i][brd->pos_y] = 1;
 	}
-    //¸üĞÂ×´Ì¬Êı×é
+    //æ›´æ–°çŠ¶æ€æ•°ç»„
 }
 
 
 /**
-* @brief  Touch_Button_Init ³õÊ¼»¯Íâ¿òÓÎÏ·ÇøÓò
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  Touch_Button_Init åˆå§‹åŒ–å¤–æ¡†æ¸¸æˆåŒºåŸŸ
+* @param  æ— 
+* @retval æ— 
 */
 void Square_Init(void)
 {
 	LCD_SetColors(CL_BLUE,CL_WHITE);
 	ILI9341_DrawLine(0,240,240,240);
-	//»æÖÆÏÔÊ¾·ÖÊıµÄ¸ñ×Ó
+	//ç»˜åˆ¶æ˜¾ç¤ºåˆ†æ•°çš„æ ¼å­
 	LCD_SetColors(CL_WHITE,CL_WHITE);
   ILI9341_DrawRectangle(BUTTON_START_X + COLOR_BLOCK_WIDTH*2,
 														320-COLOR_BLOCK_HEIGHT*2,
@@ -796,13 +796,13 @@ void Square_Init(void)
 
 
 /**
-* @brief  Touch_Button_Init ³õÊ¼»¯°´Å¥²ÎÊı
-* @param  ÎŞ
-* @retval ÎŞ
+* @brief  Touch_Button_Init åˆå§‹åŒ–æŒ‰é’®å‚æ•°
+* @param  æ— 
+* @retval æ— 
 */
 void Touch_Button_Init(void)
 {
-  /*·½Ïò¼ü*/
+  /*æ–¹å‘é”®*/
   button[0].start_x = BUTTON_START_X;
   button[0].start_y = 320-COLOR_BLOCK_HEIGHT;
   button[0].end_x = BUTTON_START_X + COLOR_BLOCK_WIDTH ;
@@ -838,7 +838,7 @@ void Touch_Button_Init(void)
   button[3].touch_flag = 0;  
   button[3].draw_btn = Draw_Direction_Button;
   button[3].btn_command = Command_Control_Direction ;
-//ÏÂÃæÊÇ¿ªÊ¼»òÔİÍ£¼ü  
+//ä¸‹é¢æ˜¯å¼€å§‹æˆ–æš‚åœé”®  
   button[4].start_x = BUTTON_START_X;
   button[4].start_y = 320-COLOR_BLOCK_HEIGHT*2;
   button[4].end_x = BUTTON_START_X+COLOR_BLOCK_WIDTH ;
@@ -851,10 +851,10 @@ void Touch_Button_Init(void)
 }
 
 /**
-* @brief  Touch_Button_Down °´¼ü±»°´ÏÂÊ±µ÷ÓÃµÄº¯Êı£¬ÓÉ´¥ÃşÆÁµ÷ÓÃ
-* @param  x ´¥ÃşÎ»ÖÃµÄx×ø±ê
-* @param  y ´¥ÃşÎ»ÖÃµÄy×ø±ê
-* @retval ÎŞ
+* @brief  Touch_Button_Down æŒ‰é”®è¢«æŒ‰ä¸‹æ—¶è°ƒç”¨çš„å‡½æ•°ï¼Œç”±è§¦æ‘¸å±è°ƒç”¨
+* @param  x è§¦æ‘¸ä½ç½®çš„xåæ ‡
+* @param  y è§¦æ‘¸ä½ç½®çš„yåæ ‡
+* @retval æ— 
 */
 void Touch_Button_Down(uint16_t x,uint16_t y)
 {
@@ -862,22 +862,22 @@ void Touch_Button_Down(uint16_t x,uint16_t y)
   for(i=0;i<BUTTON_NUM;i++)
   {
     
-    /* ´¥Ãşµ½ÁË°´Å¥ */
+    /* è§¦æ‘¸åˆ°äº†æŒ‰é’® */
     if(x<=button[i].end_x && y<=button[i].end_y && y>=button[i].start_y && x>=button[i].start_x )
     {
-      if(button[i].touch_flag == 0)     /*Ô­±¾µÄ×´Ì¬ÎªÃ»ÓĞ°´ÏÂ£¬Ôò¸üĞÂ×´Ì¬*/
+      if(button[i].touch_flag == 0)     /*åŸæœ¬çš„çŠ¶æ€ä¸ºæ²¡æœ‰æŒ‰ä¸‹ï¼Œåˆ™æ›´æ–°çŠ¶æ€*/
       {
-      button[i].touch_flag = 1;         /* ¼ÇÂ¼°´ÏÂ±êÖ¾ */
+      button[i].touch_flag = 1;         /* è®°å½•æŒ‰ä¸‹æ ‡å¿— */
       
-      button[i].draw_btn(&button[i]);  /*ÖØ»æ°´Å¥*/
+      button[i].draw_btn(&button[i]);  /*é‡ç»˜æŒ‰é’®*/
       }        
       
     }
-    else if(button[i].touch_flag == 1) /* ´¥ÃşÒÆ³öÁË°´¼üµÄ·¶Î§ÇÒÖ®Ç°ÓĞ°´ÏÂ°´Å¥ */
+    else if(button[i].touch_flag == 1) /* è§¦æ‘¸ç§»å‡ºäº†æŒ‰é”®çš„èŒƒå›´ä¸”ä¹‹å‰æœ‰æŒ‰ä¸‹æŒ‰é’® */
     {
-      button[i].touch_flag = 0;         /* Çå³ı°´ÏÂ±êÖ¾£¬ÅĞ¶ÏÎªÎó²Ù×÷*/
+      button[i].touch_flag = 0;         /* æ¸…é™¤æŒ‰ä¸‹æ ‡å¿—ï¼Œåˆ¤æ–­ä¸ºè¯¯æ“ä½œ*/
       
-      button[i].draw_btn(&button[i]);   /*ÖØ»æ°´Å¥*/
+      button[i].draw_btn(&button[i]);   /*é‡ç»˜æŒ‰é’®*/
     }
 
   }
@@ -885,10 +885,10 @@ void Touch_Button_Down(uint16_t x,uint16_t y)
 }
 
 /**
-* @brief  Touch_Button_Up °´¼ü±»ÊÍ·ÅÊ±µ÷ÓÃµÄº¯Êı£¬ÓÉ´¥ÃşÆÁµ÷ÓÃ
-* @param  x ´¥Ãş×îºóÊÍ·ÅÊ±µÄx×ø±ê
-* @param  y ´¥Ãş×îºóÊÍ·ÅÊ±µÄy×ø±ê
-* @retval ÎŞ
+* @brief  Touch_Button_Up æŒ‰é”®è¢«é‡Šæ”¾æ—¶è°ƒç”¨çš„å‡½æ•°ï¼Œç”±è§¦æ‘¸å±è°ƒç”¨
+* @param  x è§¦æ‘¸æœ€åé‡Šæ”¾æ—¶çš„xåæ ‡
+* @param  y è§¦æ‘¸æœ€åé‡Šæ”¾æ—¶çš„yåæ ‡
+* @retval æ— 
 */
 void Touch_Button_Up(uint16_t x,uint16_t y)
 {
@@ -897,14 +897,14 @@ void Touch_Button_Up(uint16_t x,uint16_t y)
    {
      
      
-     /* ´¥±ÊÔÚ°´Å¥ÇøÓòÊÍ·Å */
+     /* è§¦ç¬”åœ¨æŒ‰é’®åŒºåŸŸé‡Šæ”¾ */
       if((x<button[i].end_x && x>button[i].start_x && y<button[i].end_y && y>button[i].start_y))
       {        
-        button[i].touch_flag = 0;       /*ÊÍ·Å´¥Ãş±êÖ¾*/
+        button[i].touch_flag = 0;       /*é‡Šæ”¾è§¦æ‘¸æ ‡å¿—*/
         
-        button[i].btn_command(&button[i]);  /*Ö´ĞĞ°´¼üµÄ¹¦ÄÜÃüÁî*/
+        button[i].btn_command(&button[i]);  /*æ‰§è¡ŒæŒ‰é”®çš„åŠŸèƒ½å‘½ä»¤*/
 				
-        button[i].draw_btn(&button[i]); /*ÖØ»æ°´Å¥*/
+        button[i].draw_btn(&button[i]); /*é‡ç»˜æŒ‰é’®*/
         break;
       }
     }  
@@ -912,9 +912,9 @@ void Touch_Button_Up(uint16_t x,uint16_t y)
 }
 
 /**
-* @brief  Draw_Direction_Button ·½Ïò¼ü»æÖÆ
+* @brief  Draw_Direction_Button æ–¹å‘é”®ç»˜åˆ¶
 * @param  &button[i]
-* @retval ÎŞ
+* @retval æ— 
 */
 static void Draw_Direction_Button(void *btn)
 {
@@ -931,7 +931,7 @@ static void Draw_Direction_Button(void *btn)
 															ptr->end_y - ptr->start_y,1);
     RGB = CL_BUTTON_GREY;
   }
-  else  /*°´¼ü°´ÏÂ*/
+  else  /*æŒ‰é”®æŒ‰ä¸‹*/
   {
 		
 		LCD_SetColors(CL_WHITE,CL_WHITE);
@@ -952,7 +952,7 @@ static void Draw_Direction_Button(void *btn)
   LCD_SetColors(CL_BLACK,RGB);
 	LCD_SetFont(&Font8x16);
 
-  /*¸ù¾İ°´¼ü·½ÏòĞ´×Ö*/
+  /*æ ¹æ®æŒ‰é”®æ–¹å‘å†™å­—*/
 	switch(ptr->para)
   {
     		
@@ -961,7 +961,7 @@ static void Draw_Direction_Button(void *btn)
         ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16)/2,
 //																ptr->start_y+15,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"×ó");
+																"å·¦");
       
       break;   
       
@@ -970,7 +970,7 @@ static void Draw_Direction_Button(void *btn)
         ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16)/2,
 //																ptr->start_y+15,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"ÏÂ");
+																"ä¸‹");
     
       break;
         
@@ -979,7 +979,7 @@ static void Draw_Direction_Button(void *btn)
         ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16)/2,
 //																ptr->start_y+15,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"ÓÒ");
+																"å³");
  
       break;
     
@@ -988,7 +988,7 @@ static void Draw_Direction_Button(void *btn)
         ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16)/2,
 //																ptr->start_y+15,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"ÉÏ");
+																"ä¸Š");
     
       break;
 		
@@ -997,9 +997,9 @@ static void Draw_Direction_Button(void *btn)
 }
 
 /**
-* @brief  Draw_Mode_Button Ä£Ê½¼ü»æÖÆ
+* @brief  Draw_Mode_Button æ¨¡å¼é”®ç»˜åˆ¶
 * @param  &button[i]
-* @retval ÎŞ
+* @retval æ— 
 */
 static void Draw_Mode_Button(void *btn)
 {
@@ -1016,7 +1016,7 @@ static void Draw_Mode_Button(void *btn)
 															ptr->end_y - ptr->start_y,1);
     RGB = CL_BUTTON_GREY;
   }
-  else  /*°´¼ü°´ÏÂ*/
+  else  /*æŒ‰é”®æŒ‰ä¸‹*/
   {
 		
 		LCD_SetColors(CL_WHITE,CL_WHITE);
@@ -1040,20 +1040,20 @@ static void Draw_Mode_Button(void *btn)
 	{
 		ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16*2)/2,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"ÔİÍ£");
+																"æš‚åœ");
 	}
 	else
 	{
 		ILI9341_DispString_EN_CH( ptr->start_x + (ptr->end_x - ptr->start_x - 16*2)/2,
 																ptr->start_y+ ((ptr->end_y - ptr->start_y-16)/2),	
-																"¼ÌĞø");
+																"ç»§ç»­");
 	}
 }
 
 /**
-* @brief  Command_Change_Mode ¿ØÖÆÓÎÏ·µÄÔİÍ£Óë¼ÌĞø
-* @param  btn Touch_Button ÀàĞÍµÄ°´¼ü²ÎÊı
-* @retval ÎŞ
+* @brief  Command_Change_Mode æ§åˆ¶æ¸¸æˆçš„æš‚åœä¸ç»§ç»­
+* @param  btn Touch_Button ç±»å‹çš„æŒ‰é”®å‚æ•°
+* @retval æ— 
 */
 static void Command_Change_Mode(void *btn)
 {
@@ -1061,9 +1061,9 @@ static void Command_Change_Mode(void *btn)
 }
 
 /**
-* @brief  Command_Control_Direction ÔË¶¯·½Ïò¹¦ÄÜÖ´ĞĞº¯Êı
-* @param  btn Touch_Button ÀàĞÍµÄ°´¼ü²ÎÊı
-* @retval ÎŞ
+* @brief  Command_Control_Direction è¿åŠ¨æ–¹å‘åŠŸèƒ½æ‰§è¡Œå‡½æ•°
+* @param  btn Touch_Button ç±»å‹çš„æŒ‰é”®å‚æ•°
+* @retval æ— 
 */
 static void Command_Control_Direction(void *btn)
 {
