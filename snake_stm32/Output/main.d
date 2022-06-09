@@ -36,6 +36,7 @@
 ..\..\output\main.o: ..\..\User\./lcd/bsp_xpt2046_lcd.h
 ..\..\output\main.o: ..\..\User\./flash/bsp_spi_flash.h
 ..\..\output\main.o: ..\..\User\./led/bsp_led.h
+..\..\output\main.o: ..\..\User\./key/bsp_key.h
 ..\..\output\main.o: ..\..\User\palette.h
 ..\..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\..\output\main.o: ..\..\User\TimBase\bsp_TiMbase.h

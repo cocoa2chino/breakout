@@ -36,6 +36,7 @@
 "..\..\output\palette.o"
 "..\..\output\bsp_adc.o"
 "..\..\output\bsp_timbase.o"
+"..\..\output\bsp_key.o"
 --library_type=microlib --strict --scatter "..\..\Output\Template.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

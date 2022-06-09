@@ -12,12 +12,12 @@
 #define PALETTE_START_Y   0
 #define PALETTE_END_Y     LCD_Y_LENGTH
 
-#if 1     //��ť�������
+#if 1     //��ť�������?
   #define BUTTON_START_X     0
   #define PALETTE_START_X   (COLOR_BLOCK_WIDTH*2+1)
   #define PALETTE_END_X     LCD_X_LENGTH
 
-#else     //��ť�����ұߣ�(���ڴ�������ʱҲ���bug�����ڲ��Դ�������߽�)
+#else     //��ť�����ұߣ�(���ڴ�������ʱҲ���bug�����ڲ��Դ�������߽�?)
   #define BUTTON_START_X      (LCD_X_LENGTH-2*COLOR_BLOCK_WIDTH)
   #define PALETTE_START_X   	0
   #define PALETTE_END_X     	(LCD_X_LENGTH-2*COLOR_BLOCK_WIDTH)
@@ -31,9 +31,9 @@
 	16Bit�ɸ�λ����λ�� RRRR RGGG GGGB BBBB
 
 	�����RGB �꽫24λ��RGBֵת��Ϊ16λ��ʽ��
-	����windows�Ļ��ʳ��򣬵���༭��ɫ��ѡ���Զ�����ɫ�����Ի�õ�RGBֵ��
+	����windows�Ļ��ʳ��򣬵����?��ɫ��ѡ���Զ�����ɫ�����Ի�õ�RGBֵ��
 
-	�Ƽ�ʹ������ȡɫ����������㿴���Ľ�����ɫ��
+	�Ƽ�ʹ������ȡɫ����������㿴���Ľ������?��
 */
 #if LCD_RGB_888
 /*RGB888��ɫת��*/
@@ -58,15 +58,15 @@ enum
 	CL_BLUE     = RGB(  0,	0,255),	/* ��ɫ */
 	CL_YELLOW   = RGB(255,255,  0),	/* ��ɫ */
 
-	CL_GREY    = RGB( 98, 98, 98), 	/* ���ɫ */
+	CL_GREY    = RGB( 98, 98, 98), 	/* ����? */
 	CL_GREY1		= RGB( 150, 150, 150), 	/* ǳ��ɫ */
 	CL_GREY2		= RGB( 180, 180, 180), 	/* ǳ��ɫ */
 	CL_GREY3		= RGB( 200, 200, 200), 	/* ��ǳ��ɫ */
 	CL_GREY4		= RGB( 230, 230, 230), 	/* ��ǳ��ɫ */
 
-	CL_BUTTON_GREY	= RGB( 195, 195, 195), /* WINDOWS ��ť�����ɫ */
+	CL_BUTTON_GREY	= RGB( 195, 195, 195), /* WINDOWS ��ť������? */
 
-	CL_MAGENTA      = RGB(255, 0, 255),	/* ����ɫ�����ɫ */
+	CL_MAGENTA      = RGB(255, 0, 255),	/* ����ɫ������? */
 	CL_CYAN         = RGB( 0, 255, 255),	/* ����ɫ����ɫ */
 
 	CL_BLUE1        = RGB(  0,  0, 240),		/* ����ɫ */
@@ -76,8 +76,8 @@ enum
 
 	/* UI ���� Windows�ؼ�����ɫ */
 	CL_BTN_FACE		  = RGB(236, 233, 216),	/* ��ť������ɫ(��) */
-	CL_BOX_BORDER1	= RGB(172, 168,153),	/* �����������ɫ */
-	CL_BOX_BORDER2	= RGB(255, 255,255),	/* �������Ӱ����ɫ */
+	CL_BOX_BORDER1	= RGB(172, 168,153),	/* ������������? */
+	CL_BOX_BORDER2	= RGB(255, 255,255),	/* �������Ӱ�����? */
                                                                                                                                                                                                               
 	CL_MASK			    = 0x7FFF	/* RGB565��ɫ���룬�������ֱ���͸�� */
 };
@@ -88,10 +88,10 @@ typedef struct
   uint16_t start_y;   //������y��ʼ����
   uint16_t end_x;     //������x�������� 
   uint16_t end_y;     //������y��������
-  uint32_t para;      //��ɫ��ť�б�ʾѡ�����ɫ���ʼ���״��ť�б�ʾѡ��Ļ�ˢ
+  uint32_t para;      //��ɫ��ť�б�ʾѡ������?���ʼ���״��ť�б�ʾѡ��Ļ��?
   uint8_t touch_flag; //�������µı�־
     
-  void (*draw_btn)(void * btn);     //������溯��
+  void (*draw_btn)(void * btn);     //�������?��
   void (*btn_command)(void * btn);  //��������ִ�к����������л���ɫ����ˢ
  
 }Touch_Button;
@@ -121,10 +121,10 @@ typedef struct Snake//�൱����һ���ڵ�
 
 typedef struct Block
 {
-  int pos_x;    //扫描方向下起始点x坐标
-  int pos_y;    //扫描方向下起始点y坐标
+  int pos_x;    //�?描方向下起�?�点x坐标
+  int pos_y;    //�?描方向下起�?�点y坐标
 
-  //双链表形式
+  //双链表形�?
   struct Block *prev;
   struct Block *next;
 }block;
@@ -132,8 +132,8 @@ typedef struct Block
 //挡板信息
 typedef struct Board
 {
-  uint16_t pos_x;    //中点x坐标
-  uint16_t pos_y;    //中点y坐标
+  uint16_t pos_x;    //�?点x坐标
+  uint16_t pos_y;    //�?点y坐标
   uint16_t speed;    //移动速度
 }board;
 
@@ -142,7 +142,7 @@ typedef struct Ball
 {
   uint16_t pos_x;    //圆心x坐标
   uint16_t pos_y;    //圆心y坐标
-  uint16_t radius;   //圆半径
+  uint16_t radius;   //圆半�?
   /*
     运动方向(45°)
     0:右上
@@ -158,6 +158,7 @@ typedef struct Ball
 
 void Delay(__IO uint32_t nCount);
 void Palette_Init(uint8_t LCD_Mode);
+void Palette_Init1(uint8_t LCD_Mode);
 void creatFood(void);
 void snakeMove(void);
 void judgeAlive(void);
